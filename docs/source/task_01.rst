@@ -113,3 +113,64 @@ Verification output is part of the ``sh l2vpn evpn summary`` command:
       cfg03-L3#sh l2vpn evpn summary | i Default
       Advertise Default Gateway: Yes
       Default Gateway Addresses: 0
+
+Step 3: Create VNI to vlan stitching for vlan901 (L3VNI), create SVIs for L2VNIs and L3VNI
+******************************************************************************************
+
+At this step, we create vlan 901 and SVI 901 to be mapped to L3VNI 50901. Similarly, we create SVIs for L2VNIs for routing between L2 domains. 
+
+    * All SVI interfaces are part of “green” VRF. 
+    * For L3VNI SVI make sure to enable IP processing on the Loopback1 interface without assigning an explicit IP address to the SVI.
+
+.. list-table::
+    :widths: 33 33 33
+    :header-rows: 1
+    :width: 100%
+
+    * - VLAN
+      - VNI
+      - IP Address
+    * - 101
+      - 102
+      - 901
+    * - 10101
+      - 10102
+      - 50901
+    * - 172.16.101.1
+      - 172.16.102.1
+      - ip unnumbered lo0
+
+.. image:: assets/cfg01_vni.png
+    :align: center
+
+L1/L2/L3 nodes
+
+.. code-block:: console
+
+    conf t
+    !
+    vlan 901
+    !
+    vlan configuration 901
+    member vni 50901
+    !
+    interface Vlan101
+    vrf forwarding green
+    ip address 172.16.101.1 255.255.255.0
+    no shut
+    !
+    interface Vlan102
+    vrf forwarding green
+    ip address 172.16.102.1 255.255.255.0
+    no shut
+    !
+    interface vlan901
+    vrf forwarding green
+    ip unnumbered lo1
+    no autostate
+    no shut
+
+.. note::
+
+    Same gateway IP and MAC address are used for L2VNI SVI interfaces across all the Leafs, to make a distributed anycast gateway.
+
