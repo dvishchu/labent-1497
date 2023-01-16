@@ -43,12 +43,12 @@ L1/L2/L3 nodes
 .. code-block:: console
 
     conf t
+    !
     vrf def green
      rd 1:1
      address-family ipv4 unicast
       route-target both 1:1
       route-target both 10:10 stitching
-      end
 
 You can check results with the ``show vrf detail <VRF_Name>`` command, e.g.:
 
@@ -74,3 +74,42 @@ L1 node
     No import route-map
     No global export route-map
     No export route-map
+
+
+Step 2: Configure MAC Aliasing for the distributed anycast gateway
+******************************************************************
+
+.. note::
+
+    Distributed anycast gateway is a default gateway addressing mechanism in a BGP EVPN VXLAN fabric.
+
+    This feature enables the use of the same gateway IP and MAC address across all the Leafs in an EVPN VXLAN network, to ensure that every Leaf functions as the default gateway for the workloads directly connected to it. The feature facilitates flexible workload placement, host mobility, and optimal traffic forwarding across the BGP EVPN VXLAN fabric. 
+
+In our lab scenario we are using ``MAC aliasing``, which allows the Leafs to advertise their VLAN MAC addresses as the gateway MAC addresses to all the other Leafs in the network. The Leafs in the network store the advertised MAC address as a gateway MAC address provided their VLAN IP address matches with the gateway IP address.
+
+Alternative way (not shown in the lab scenarios) would be to manually configure the same MAC address on the VLAN interfaces of all Leaf switches in the network. 
+
+L1/L2/L3 nodes
+
+.. code-block:: console
+
+    conf t
+    !
+    l2vpn evpn
+    default-gateway advertise 
+
+Verification output is part of the ``sh l2vpn evpn summary`` command:
+
+.. code-block:: console
+
+      cfg03-L1#sh l2vpn evpn summary | i Default
+      Advertise Default Gateway: Yes
+      Default Gateway Addresses: 0
+
+      cfg03-L2#sh l2vpn evpn summary | i Default
+      Advertise Default Gateway: Yes
+      Default Gateway Addresses: 0
+
+      cfg03-L3#sh l2vpn evpn summary | i Default
+      Advertise Default Gateway: Yes
+      Default Gateway Addresses: 0
