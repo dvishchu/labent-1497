@@ -131,13 +131,13 @@ At this step, we create vlan 901 and SVI 901 to be mapped to L3VNI 50901. Simila
       - VNI
       - IP Address
     * - 101
-      - 102
-      - 901
-    * - 10101
+      - 10101
+      - 172.16.101.1
+    * - 102
       - 10102
-      - 50901
-    * - 172.16.101.1
       - 172.16.102.1
+    * - 901
+      - 50901
       - ip unnumbered lo0
 
 .. image:: assets/cfg01_vni.png
