@@ -143,7 +143,6 @@ At this step, we create vlan 901 and SVI 901 to be mapped to L3VNI 50901. Simila
 .. image:: assets/cfg01_vni.png
     :align: center
 
-
 L1/L2/L3 nodes
 
 .. code-block:: console
@@ -203,3 +202,58 @@ Finally, on the NVE interface the L3VNI has to be associated with the VRF ``gree
     !
     interface nve1
      member vni 50901 vrf green
+
+Step 6: Verification
+***********************************
+
+At the end of this task you would be able to ping between hosts located in different vlans, as routing is enabled now between different subnets via L3VNI 50901, Vlan 901.
+
+.. code-block:: console
+
+    cfg03-H1#ping vrf h1 172.16.102.11 source 172.16.101.10
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.102.11, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.101.10
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+
+    cfg03-H1#ping vrf h1 172.16.102.12 source 172.16.101.10
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.102.12, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.101.10
+    .!!!!
+    Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/1 ms
+
+    cfg03-H1#ping vrf h2 172.16.101.11 source 172.16.102.10
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.102.10
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+
+    cfg03-H1#ping vrf h2 172.16.101.12 source 172.16.102.10
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.101.12, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.102.10
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/3 ms
+
+In the routing table of VRF ``green`` we should be able to see remote host routes learned from other Leafs, over Vlan 901, e.g. for the Leaf1:
+
+L1 node
+
+.. code-block:: console
+
+    cfg03-L1#sh ip route vrf green
+
+    Routing Table: green
+
+        172.16.0.0/16 is variably subnetted, 8 subnets, 2 masks
+    C        172.16.101.0/24 is directly connected, Vlan101
+    L        172.16.101.1/32 is directly connected, Vlan101
+    B        172.16.101.11/32 [200/0] via 10.1.254.4, 00:05:52, Vlan901
+    B        172.16.101.12/32 [200/0] via 10.1.254.5, 00:05:53, Vlan901
+    C        172.16.102.0/24 is directly connected, Vlan102
+    L        172.16.102.1/32 is directly connected, Vlan102
+    B        172.16.102.11/32 [200/0] via 10.1.254.4, 00:05:52, Vlan901
+    B        172.16.102.12/32 [200/0] via 10.1.254.5, 00:05:53, Vlan901
