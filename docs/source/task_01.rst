@@ -96,7 +96,7 @@ L1/L2/L3 nodes
     conf t
     !
     l2vpn evpn
-    default-gateway advertise 
+     default-gateway advertise 
 
 Verification output is part of the ``sh l2vpn evpn summary`` command:
 
@@ -143,6 +143,7 @@ At this step, we create vlan 901 and SVI 901 to be mapped to L3VNI 50901. Simila
 .. image:: assets/cfg01_vni.png
     :align: center
 
+
 L1/L2/L3 nodes
 
 .. code-block:: console
@@ -152,25 +153,53 @@ L1/L2/L3 nodes
     vlan 901
     !
     vlan configuration 901
-    member vni 50901
+     member vni 50901
     !
     interface Vlan101
-    vrf forwarding green
-    ip address 172.16.101.1 255.255.255.0
-    no shut
+     vrf forwarding green
+     ip address 172.16.101.1 255.255.255.0
+     no shut
     !
     interface Vlan102
-    vrf forwarding green
-    ip address 172.16.102.1 255.255.255.0
-    no shut
+     vrf forwarding green
+     ip address 172.16.102.1 255.255.255.0
+     no shut
     !
     interface vlan901
-    vrf forwarding green
-    ip unnumbered lo1
-    no autostate
-    no shut
+     vrf forwarding green
+     ip unnumbered lo1
+     no autostate
+     no shut
 
 .. note::
 
     Same gateway IP and MAC address are used for L2VNI SVI interfaces across all the Leafs, to make a distributed anycast gateway.
 
+
+Step 4: Configure BGP for VRF
+*****************************
+
+For the VRF we need to advertise Layer 2 VPN EVPN routes within a tenant VRF, which can be done with ``advertise l2vpn evpn`` command under the corresponding BGP address-family on all Leafs. 
+
+L1/L2/L3 nodes
+
+.. code-block:: console
+
+    conf t
+    !
+    router bgp 65001
+     address-family ipv4 unicast vrf green
+      advertise l2vpn evpn 
+
+
+Step 5: Add L3 SVI to NVE interface
+***********************************
+
+Finally, on the NVE interface the L3VNI has to be associated with the VRF ``green``, to indicate that it is being used for routing. 
+
+.. code-block:: console
+
+    conf t
+    !
+    interface nve1
+     member vni 50901 vrf green
