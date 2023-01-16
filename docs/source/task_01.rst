@@ -2,6 +2,7 @@ Task CFG01: Configure L2/L3 + Spines EVPN connectivity with Spines
 ==================================================================
 
 .. image:: assets/cfg01_topology.png
+    :align: center
 
 In this task, we will be exploring the example of the Leafs+Spines topology with the addition of L3 VNI.
 
