@@ -1,6 +1,8 @@
 Task CFG01: Configure L2/L3 + Spines EVPN connectivity with Spines
 ==================================================================
 
+.. image:: assets/cfg01_topology.png
+
 In this task, we will be exploring the example of the Leafs+Spines topology with the addition of L3 VNI.
 
 An EVPN VXLAN Layer 3 overlay network allows host devices in different Layer 2 networks to send Layer 3 or routed traffic to each other. The network forwards the routed traffic using a Layer 3 virtual network instance (VNI) and an IP VRF.
@@ -23,7 +25,7 @@ First step to configure L3 VNI routing is to have VRF defined with RD (route dis
 
 .. note::
 
-    stitching is a new keyword added to the existing route-target configuration to specify the route targets to be used when doing EVPN related processing.
+    ``stitching`` is a new keyword added to the existing route-target configuration to specify the route targets to be used when doing EVPN related processing.
 
     EVPN->VRF
         EVPN routes that contain RT matching an import “stitching RT” specified in a VRF configuration are accepted by the router and imported into the corresponding BGP L3VPN VRF. The resulting L3VPN prefix retains the same route target. 
@@ -46,3 +48,28 @@ L1/L2/L3 nodes
       route-target both 1:1
       route-target both 10:10 stitching
       end
+
+You can check results with the ``show vrf detail <VRF_Name>`` command, e.g.:
+
+L1 node
+
+.. code-block:: console
+
+    cfg03-L1#sh vrf detail green
+    VRF green (VRF Id = 1); default RD 1:1; default VPNID <not set>
+    New CLI format, supports multiple address-families
+    Flags: 0x180C
+    No interfaces
+    Address family ipv4 unicast (Table ID = 0x1):
+    Flags: 0x0
+    Export VPN route-target communities
+        RT:1:1
+    Import VPN route-target communities
+        RT:1:1
+    Export VPN route-target stitching communities
+        RT:10:10
+    Import VPN route-target stitching communities
+        RT:10:10
+    No import route-map
+    No global export route-map
+    No export route-map
