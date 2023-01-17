@@ -41,7 +41,7 @@ VRF name is ``green``. RT ``1:1`` is to be used for base route target configurat
 L1/L2/L3 nodes
 
 .. code-block:: console
-   :lineos:
+   :linenos:
 
     conf t
     !
