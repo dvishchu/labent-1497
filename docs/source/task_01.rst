@@ -42,7 +42,7 @@ L1/L2/L3 nodes
 
 .. code-block:: console
 
-    :navy:`conf t`
+    conf t
     !
     vrf def green
      rd 1:1
