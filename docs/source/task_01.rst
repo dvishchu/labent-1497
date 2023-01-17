@@ -56,7 +56,7 @@ L1 node
 
 .. code-block:: console
 
-    cfg03-L1#sh vrf detail green
+    cfg01-L1#sh vrf detail green
     VRF green (VRF Id = 1); default RD 1:1; default VPNID <not set>
     New CLI format, supports multiple address-families
     Flags: 0x180C
@@ -102,15 +102,15 @@ Verification output is part of the ``sh l2vpn evpn summary`` command:
 
 .. code-block:: console
 
-      cfg03-L1#sh l2vpn evpn summary | i Default
+      cfg01-L1#sh l2vpn evpn summary | i Default
       Advertise Default Gateway: Yes
       Default Gateway Addresses: 0
 
-      cfg03-L2#sh l2vpn evpn summary | i Default
+      cfg01-L2#sh l2vpn evpn summary | i Default
       Advertise Default Gateway: Yes
       Default Gateway Addresses: 0
 
-      cfg03-L3#sh l2vpn evpn summary | i Default
+      cfg01-L3#sh l2vpn evpn summary | i Default
       Advertise Default Gateway: Yes
       Default Gateway Addresses: 0
 
@@ -210,28 +210,28 @@ At the end of this task you would be able to ping between hosts located in diffe
 
 .. code-block:: console
 
-    cfg03-H1#ping vrf h1 172.16.102.11 source 172.16.101.10
+    cfg01-H1#ping vrf h1 172.16.102.11 source 172.16.101.10
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.102.11, timeout is 2 seconds:
     Packet sent with a source address of 172.16.101.10
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
 
-    cfg03-H1#ping vrf h1 172.16.102.12 source 172.16.101.10
+    cfg01-H1#ping vrf h1 172.16.102.12 source 172.16.101.10
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.102.12, timeout is 2 seconds:
     Packet sent with a source address of 172.16.101.10
     .!!!!
     Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/1 ms
 
-    cfg03-H1#ping vrf h2 172.16.101.11 source 172.16.102.10
+    cfg01-H1#ping vrf h2 172.16.101.11 source 172.16.102.10
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
     Packet sent with a source address of 172.16.102.10
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
 
-    cfg03-H1#ping vrf h2 172.16.101.12 source 172.16.102.10
+    cfg01-H1#ping vrf h2 172.16.101.12 source 172.16.102.10
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.101.12, timeout is 2 seconds:
     Packet sent with a source address of 172.16.102.10
@@ -244,7 +244,7 @@ L1 node
 
 .. code-block:: console
 
-    cfg03-L1#sh ip route vrf green
+    cfg01-L1#sh ip route vrf green
 
     Routing Table: green
 
