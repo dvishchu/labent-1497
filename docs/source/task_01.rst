@@ -208,6 +208,8 @@ Step 6: Verification
 
 At the end of this task you would be able to ping between hosts located in different vlans, as routing is enabled now between different subnets via L3VNI 50901, Vlan 901.
 
+H1 node
+
 .. code-block:: console
 
     cfg01-H1#ping vrf h1 172.16.102.11 source 172.16.101.10
@@ -238,6 +240,70 @@ At the end of this task you would be able to ping between hosts located in diffe
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/3 ms
 
+H2 node
+
+.. code-block:: console
+
+    cfg03-H2#ping vrf h1 172.16.102.10 source 172.16.101.11
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.102.10, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.101.11
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+
+    cfg03-H2#ping vrf h1 172.16.102.12 source 172.16.101.11
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.102.12, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.101.11
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+
+    cfg03-H2#ping vrf h2 172.16.101.10 source 172.16.102.11
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.101.10, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.102.11
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+
+    cfg03-H2#ping vrf h2 172.16.101.12 source 172.16.102.11
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.101.12, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.102.11
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+
+H3 node 
+
+.. code-block:: console
+
+    cfg03-H3#ping vrf h1 172.16.102.10 source 172.16.101.12
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.102.10, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.101.12
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+
+    cfg03-H3#ping vrf h1 172.16.102.11 source 172.16.101.12
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.102.11, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.101.12
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+
+    cfg03-H3#ping vrf h2 172.16.101.10 source 172.16.102.12
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.101.10, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.102.12
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+
+    cfg03-H3#ping vrf h2 172.16.101.11 source 172.16.102.12
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
+    Packet sent with a source address of 172.16.102.12
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+
 In the routing table of VRF ``green`` we should be able to see remote host routes learned from other Leafs, over Vlan 901, e.g. for the Leaf1:
 
 L1 node
@@ -257,3 +323,91 @@ L1 node
     L        172.16.102.1/32 is directly connected, Vlan102
     B        172.16.102.11/32 [200/0] via 10.1.254.4, 00:05:52, Vlan901
     B        172.16.102.12/32 [200/0] via 10.1.254.5, 00:05:53, Vlan901
+
+The L3VNI 50901 state should be Up. Note that Mode is L3CP for it – indicating it is used for routing. Also, you can see which VRF it is linked to.
+
+L1 node
+
+.. code-block:: console
+
+    cfg03-L1#sh nve int nve1
+    Interface: nve1, State: Admin Up, Oper Up, Encapsulation: Vxlan,
+    BGP host reachability: Enable, VxLAN dport: 4789
+    VNI number: L3CP 1 L2CP 2 L2DP 0
+    source-interface: Loopback1 (primary:10.1.254.3 vrf:0)
+    tunnel interface: Tunnel0
+
+    cfg03-L1#sh l2vpn evpn evi 101 detail
+    EVPN instance:       101 (VLAN Based)
+    RD:                10.1.255.3:101 (auto)
+    Import-RTs:        65001:101
+    Export-RTs:        65001:101
+    Per-EVI Label:     none
+    State:             Established
+    Replication Type:  Ingress (global)
+    Encapsulation:     vxlan
+    IP Local Learn:    Enabled (global)
+    Adv. Def. Gateway: Enabled (global)
+    Re-originate RT5:  Disabled
+    Adv. Multicast:    Disabled (global)
+    Vlan:              101
+        Ethernet-Tag:    0
+        State:           Established
+        Flood Suppress:  Attached
+        Core If:         Vlan901
+        Access If:       Vlan101
+        NVE If:          nve1
+        RMAC:            aabb.cc80.0300
+        Core Vlan:       901
+        L2 VNI:          10101
+        L3 VNI:          50901
+        VTEP IP:         10.1.254.3
+        VRF:             green
+        IPv4 IRB:        Enabled
+        IPv6 IRB:        Disabled
+        Pseudoports:
+        Ethernet0/0 service instance 101
+            Routes: 0 MAC, 1 MAC/IP
+        Peers:
+        10.1.254.4
+            Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
+        10.1.254.5
+            Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
+
+    cfg03-L1#sh l2vpn evpn evi 102 detail
+    EVPN instance:       102 (VLAN Based)
+    RD:                10.1.255.3:102 (auto)
+    Import-RTs:        65001:102
+    Export-RTs:        65001:102
+    Per-EVI Label:     none
+    State:             Established
+    Replication Type:  Static
+    Encapsulation:     vxlan
+    IP Local Learn:    Enabled (global)
+    Adv. Def. Gateway: Enabled (global)
+    Re-originate RT5:  Disabled
+    Adv. Multicast:    Disabled (global)
+    Vlan:              102
+        Ethernet-Tag:    0
+        State:           Established
+        Flood Suppress:  Attached
+        Core If:         Vlan901
+        Access If:       Vlan102
+        NVE If:          nve1
+        RMAC:            aabb.cc80.0300
+        Core Vlan:       901
+        L2 VNI:          10102
+        L3 VNI:          50901
+        VTEP IP:         10.1.254.3
+        MCAST IP:        225.0.1.102
+        VRF:             green
+        IPv4 IRB:        Enabled
+        IPv6 IRB:        Disabled
+        Pseudoports:
+        Ethernet0/0 service instance 102
+            Routes: 0 MAC, 1 MAC/IP
+        Peers:
+        10.1.254.4
+            Routes: 2 MAC, 2 MAC/IP, 0 IMET, 0 EAD
+        10.1.254.5
+            Routes: 2 MAC, 2 MAC/IP, 0 IMET, 0 EAD
