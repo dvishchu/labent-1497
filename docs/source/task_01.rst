@@ -57,6 +57,7 @@ You can check results with the ``show vrf detail <VRF_Name>`` command, e.g.:
 L1 node
 
 **cfg01-L1#sh vrf detail green**
+
 .. code-block:: console
    :linenos:
    :emphasize-lines: 4,6
