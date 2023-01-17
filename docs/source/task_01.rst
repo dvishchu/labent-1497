@@ -45,7 +45,7 @@ L1/L2/L3 nodes
 
     conf t
     !
-    vrf def green
+    **vrf def green**
      rd 1:1
      address-family ipv4 unicast
       route-target both 1:1
