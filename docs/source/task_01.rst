@@ -244,28 +244,28 @@ H2 node
 
 .. code-block:: console
 
-    cfg03-H2#ping vrf h1 172.16.102.10 source 172.16.101.11
+    cfg01-H2#ping vrf h1 172.16.102.10 source 172.16.101.11
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.102.10, timeout is 2 seconds:
     Packet sent with a source address of 172.16.101.11
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
 
-    cfg03-H2#ping vrf h1 172.16.102.12 source 172.16.101.11
+    cfg01-H2#ping vrf h1 172.16.102.12 source 172.16.101.11
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.102.12, timeout is 2 seconds:
     Packet sent with a source address of 172.16.101.11
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
 
-    cfg03-H2#ping vrf h2 172.16.101.10 source 172.16.102.11
+    cfg01-H2#ping vrf h2 172.16.101.10 source 172.16.102.11
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.101.10, timeout is 2 seconds:
     Packet sent with a source address of 172.16.102.11
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
 
-    cfg03-H2#ping vrf h2 172.16.101.12 source 172.16.102.11
+    cfg01-H2#ping vrf h2 172.16.101.12 source 172.16.102.11
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.101.12, timeout is 2 seconds:
     Packet sent with a source address of 172.16.102.11
@@ -276,28 +276,28 @@ H3 node
 
 .. code-block:: console
 
-    cfg03-H3#ping vrf h1 172.16.102.10 source 172.16.101.12
+    cfg01-H3#ping vrf h1 172.16.102.10 source 172.16.101.12
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.102.10, timeout is 2 seconds:
     Packet sent with a source address of 172.16.101.12
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
 
-    cfg03-H3#ping vrf h1 172.16.102.11 source 172.16.101.12
+    cfg01-H3#ping vrf h1 172.16.102.11 source 172.16.101.12
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.102.11, timeout is 2 seconds:
     Packet sent with a source address of 172.16.101.12
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
 
-    cfg03-H3#ping vrf h2 172.16.101.10 source 172.16.102.12
+    cfg01-H3#ping vrf h2 172.16.101.10 source 172.16.102.12
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.101.10, timeout is 2 seconds:
     Packet sent with a source address of 172.16.102.12
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
 
-    cfg03-H3#ping vrf h2 172.16.101.11 source 172.16.102.12
+    cfg01-H3#ping vrf h2 172.16.101.11 source 172.16.102.12
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
     Packet sent with a source address of 172.16.102.12
@@ -330,14 +330,14 @@ L1 node
 
 .. code-block:: console
 
-    cfg03-L1#sh nve int nve1
+    cfg01-L1#sh nve int nve1
     Interface: nve1, State: Admin Up, Oper Up, Encapsulation: Vxlan,
     BGP host reachability: Enable, VxLAN dport: 4789
     VNI number: L3CP 1 L2CP 2 L2DP 0
     source-interface: Loopback1 (primary:10.1.254.3 vrf:0)
     tunnel interface: Tunnel0
 
-    cfg03-L1#sh l2vpn evpn evi 101 detail
+    cfg01-L1#sh l2vpn evpn evi 101 detail
     EVPN instance:       101 (VLAN Based)
     RD:                10.1.255.3:101 (auto)
     Import-RTs:        65001:101
@@ -374,7 +374,7 @@ L1 node
         10.1.254.5
             Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
 
-    cfg03-L1#sh l2vpn evpn evi 102 detail
+    cfg01-L1#sh l2vpn evpn evi 102 detail
     EVPN instance:       102 (VLAN Based)
     RD:                10.1.255.3:102 (auto)
     Import-RTs:        65001:102
