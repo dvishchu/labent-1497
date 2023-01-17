@@ -228,6 +228,7 @@ BL1/BL2 nodes
      redistribute bgp 65001 route-map RM-BGP-TO-OSPF
 
 Step 4: Verification
+********************
 
 At the end of the task the connectivity should be established between hosts in the fabric (Hosts 1/2/3) and Hosts in the internal fabric (Hosts 4/5), which you can verify with the ping test, e.g. from Host 1 to Host 4:
 
