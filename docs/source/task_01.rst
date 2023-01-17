@@ -41,12 +41,11 @@ VRF name is ``green``. RT ``1:1`` is to be used for base route target configurat
 L1/L2/L3 nodes
 
 .. code-block:: console
-   :emphasize-lines: 3,4,5
    :lineos:
 
     conf t
     !
-    **vrf def green**
+    vrf def green
      rd 1:1
      address-family ipv4 unicast
       route-target both 1:1
