@@ -42,6 +42,7 @@ L1/L2/L3 nodes
 
 .. code-block:: console
    :emphasize-lines: 3,4,5
+   :lineos:
 
     conf t
     !
