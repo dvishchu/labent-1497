@@ -112,15 +112,9 @@ Verification output is part of the ``sh l2vpn evpn summary`` command:
     Advertise Default Gateway: Yes
     Default Gateway Addresses: 0
 
-.. code-block:: console
-    :class: highlight-command
-
     cfg01-L2#sh l2vpn evpn summary | i Default
     Advertise Default Gateway: Yes
     Default Gateway Addresses: 0
-
-.. code-block:: console
-    :class: highlight-command
 
     cfg01-L3#sh l2vpn evpn summary | i Default
     Advertise Default Gateway: Yes
