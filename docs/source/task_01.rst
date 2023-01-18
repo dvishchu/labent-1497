@@ -97,6 +97,7 @@ Alternative way (not shown in the lab scenarios) would be to manually configure 
 L1/L2/L3 nodes
 
 .. code-block:: console
+    :linenos:
 
     conf t
     !
@@ -106,6 +107,7 @@ L1/L2/L3 nodes
 Verification output is part of the ``sh l2vpn evpn summary`` command:
 
 .. code-block:: console
+    :linenos:
     :class: highlight-command
 
     cfg01-L1#sh l2vpn evpn summary | i Default
