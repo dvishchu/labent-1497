@@ -56,13 +56,12 @@ You can check results with the ``show vrf detail <VRF_Name>`` command, e.g.:
 
 L1 node
 
-**cfg01-L1#sh vrf detail green**
-
 .. code-block:: console
    :linenos:
    :emphasize-lines: 4,6
    :class: highlight-command
     
+    cfg01-L1#sh vrf detail green
     VRF green (VRF Id = 1); default RD 1:1; default VPNID <not set>
     New CLI format, supports multiple address-families
     Flags: 0x180C
