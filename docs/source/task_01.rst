@@ -61,6 +61,7 @@ L1 node
 .. code-block:: console
    :linenos:
    :emphasize-lines: 4,6
+   :class: green
     
     VRF green (VRF Id = 1); default RD 1:1; default VPNID <not set>
     New CLI format, supports multiple address-families
