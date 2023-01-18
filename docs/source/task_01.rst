@@ -106,18 +106,25 @@ L1/L2/L3 nodes
 Verification output is part of the ``sh l2vpn evpn summary`` command:
 
 .. code-block:: console
+    :class: highlight-command
 
-      cfg01-L1#sh l2vpn evpn summary | i Default
-      Advertise Default Gateway: Yes
-      Default Gateway Addresses: 0
+    cfg01-L1#sh l2vpn evpn summary | i Default
+    Advertise Default Gateway: Yes
+    Default Gateway Addresses: 0
 
-      cfg01-L2#sh l2vpn evpn summary | i Default
-      Advertise Default Gateway: Yes
-      Default Gateway Addresses: 0
+.. code-block:: console
+    :class: highlight-command
 
-      cfg01-L3#sh l2vpn evpn summary | i Default
-      Advertise Default Gateway: Yes
-      Default Gateway Addresses: 0
+    cfg01-L2#sh l2vpn evpn summary | i Default
+    Advertise Default Gateway: Yes
+    Default Gateway Addresses: 0
+
+.. code-block:: console
+    :class: highlight-command
+
+    cfg01-L3#sh l2vpn evpn summary | i Default
+    Advertise Default Gateway: Yes
+    Default Gateway Addresses: 0
 
 Step 3: Create VNI to vlan stitching for vlan901 (L3VNI), create SVIs for L2VNIs and L3VNI
 ******************************************************************************************
