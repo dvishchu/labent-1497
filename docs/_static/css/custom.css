@@ -95,3 +95,13 @@
   color: black;
   font-weight: 600;
 }
+
+.highlight-command-5 pre :nth-child(3) {
+  color: black;
+  font-weight: 600;
+}
+
+.highlight-command-9 pre :nth-child(3) {
+  color: black;
+  font-weight: 600;
+}
