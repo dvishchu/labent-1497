@@ -89,10 +89,9 @@
   white-space: normal;
 }
 
-/* TESTING CSS CLASSES */
+/* HIGHLIGHT COMMANDS IN OUTPUTS */
 
-.test-css-class pre :nth-child(3) {
-  text-decoration: underline;
+.highlight-command pre :nth-child(3) {
   color: black;
   font-weight: 600;
 }
