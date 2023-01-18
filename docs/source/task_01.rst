@@ -154,6 +154,7 @@ At this step, we create vlan 901 and SVI 901 to be mapped to L3VNI 50901. Simila
 L1/L2/L3 nodes
 
 .. code-block:: console
+    :linenos:
 
     conf t
     !
@@ -191,6 +192,7 @@ For the VRF we need to advertise Layer 2 VPN EVPN routes within a tenant VRF, wh
 L1/L2/L3 nodes
 
 .. code-block:: console
+    :linenos:
 
     conf t
     !
@@ -205,6 +207,7 @@ Step 5: Add L3 SVI to NVE interface
 Finally, on the NVE interface the L3VNI has to be associated with the VRF ``green``, to indicate that it is being used for routing. 
 
 .. code-block:: console
+    :linenos:
 
     conf t
     !
