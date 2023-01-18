@@ -42,7 +42,7 @@ L1/L2/L3 nodes
 
 .. code-block:: console
    :linenos:
-   :emphasize-lines: 4,6
+   :emphasize-lines: 6,7
 
     conf t
     !
@@ -58,7 +58,7 @@ L1 node
 
 .. code-block:: console
    :linenos:
-   :emphasize-lines: 4,6
+   :emphasize-lines: 9,11,13,15
    :class: highlight-command
     
     cfg01-L1#sh vrf detail green
