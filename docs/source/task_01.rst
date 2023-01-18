@@ -61,7 +61,6 @@ L1 node
 .. code-block:: console
    :linenos:
    :emphasize-lines: 4,6
-   :caption: cfg01-L1#sh vrf detail green
    :class: test-class
     
     VRF green (VRF Id = 1); default RD 1:1; default VPNID <not set>
