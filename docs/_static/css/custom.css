@@ -91,7 +91,7 @@
 
 /* TESTING CSS CLASSES */
 
-.test-css-class pre:nth-child(3) {
+.test-css-class pre :nth-child(3) {
   text-decoration: underline;
   color: black;
   font-weight: 600;
