@@ -1,90 +1,98 @@
 /* Colors definition*/
 
 .black {
-    color: black;
+  color: black;
 }
 
 .gray {
-    color: gray;
+  color: gray;
 }
 
 .grey {
-    color: gray;
+  color: gray;
 }
 
 .silver {
-    color: silver;
+  color: silver;
 }
 
 .white {
-    color: white;
+  color: white;
 }
 
 .maroon {
-    color: maroon;
+  color: maroon;
 }
 
 .red {
-    color: red;
+  color: red;
 }
 
 .magenta {
-    color: magenta;
+  color: magenta;
 }
 
 .fuchsia {
-    color: fuchsia;
+  color: fuchsia;
 }
 
 .pink {
-    color: pink;
+  color: pink;
 }
 
 .orange {
-    color: orange;
+  color: orange;
 }
 
 .yellow {
-    color: yellow;
+  color: yellow;
 }
 
 .lime {
-    color: lime;
+  color: lime;
 }
 
 .green {
-    color: green;
+  color: green;
 }
 
 .olive {
-    color: olive;
+  color: olive;
 }
 
 .teal {
-    color: teal;
+  color: teal;
 }
 
 .cyan {
-    color: cyan;
+  color: cyan;
 }
 
 .aqua {
-    color: aqua;
+  color: aqua;
 }
 
 .blue {
-    color: blue;
+  color: blue;
 }
 
 .navy {
-    color: navy;
+  color: navy;
 }
 
 .purple {
-    color: purple;
+  color: purple;
 }
 
 /* The table width fix to avoid scrollbar */
 .wy-table-responsive table td {
-    white-space: normal;
+  white-space: normal;
+}
+
+/* TESTING CSS CLASSES */
+
+.test-css-class span.go {
+  text-decoration: underline;
+  color: pink;
+  font-weight: 500;
 }
