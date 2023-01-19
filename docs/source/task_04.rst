@@ -7,6 +7,7 @@ Task TS02: H1(172.16.101.10) cannot ping H3(172.16.101.12) over vxlan via vlan10
 H1 node 
 
 .. code-block:: console
+    :linenos:
 
     ts02-H1#ping vrf h1 172.16.101.12
     Type escape sequence to abort.
@@ -25,6 +26,7 @@ We can see that NVE peering looks fine on Leaf1.
 L1 node 
 
 .. code-block:: console
+    :linenos:
 
     ts02-L1#sh nve peer    
     'M' - MAC entry download flag  'A' - Adjacency download flag
@@ -44,6 +46,7 @@ L1 node
 BGP is up as well and receives prefixes from neighbors.
 
 .. code-block:: console
+    :linenos:
 
     ts02-L1#sh bgp l2vpn evpn summary 
     BGP router identifier 10.1.255.3, local AS number 65001
@@ -65,6 +68,7 @@ We see, however, that 172.16.101.12 prefix is not present in the list of the EVP
 Lets check if we have this route in BGP table – the output below confirms that such route is not present, MAC for the destination host is 0000.0003.0101.
 
 .. code-block:: console
+    :linenos:
 
     ts02-L1#sh bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
     % Network not in table 
@@ -74,6 +78,7 @@ Is it present on RRs (spines)?
 S1 node 
 
 .. code-block:: console
+    :linenos:
 
     ts02-S1#sh bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
     BGP routing table entry for [2][10.1.255.5:101][0][48][000000030101][32][172.16.101.12]/24, version 61
@@ -107,6 +112,7 @@ S1 node
 Route is present and is being advertised to the BGP update-group (note the group number in the output above). Lets see which routers are part of it.
 
 .. code-block:: console
+    :linenos:
 
     ts02-S1#sh bgp l2vpn evpn update-group 2 
     BGP version 4 update-group 2, internal, Address Family: L2VPN E-VPN
@@ -128,6 +134,7 @@ Looking into the update-group members, peer ``10.1.255.3`` is not part of it.
 To identify the reason for this issue, we will check the BGP config for problem and working neighbors.
 
 .. code-block:: console
+    :linenos:
 
     ts02-S1#sh bgp l2vpn evpn neighbors 10.1.255.3 | b L2VPN E-VPN
     For address family: L2VPN E-VPN
@@ -172,6 +179,7 @@ Similarly, such configuration is missing on S2 node too.
 S2 node
 
 .. code-block:: console
+    :linenos:
 
     ts02-S2#sh bgp l2vpn evpn neighbors 10.1.255.3 | b L2VPN E-VPN
     For address family: L2VPN E-VPN
@@ -200,6 +208,7 @@ Lets fix it on S1 and S2 nodes (make sure to do it on both Spines).
 S1/S2 nodes
 
 .. code-block:: console
+    :linenos:
 
     conf t
      router bgp 65001
@@ -209,6 +218,7 @@ S1/S2 nodes
 After that we will see 172.16.101.12 in l2route table of Leaf1.
 
 .. code-block:: console
+    :linenos:
 
     ts02-L1#sh l2route evpn mac ip | i 101                             
     101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
@@ -219,6 +229,7 @@ After that we will see 172.16.101.12 in l2route table of Leaf1.
 Lets try to ping from H1 to verify.
 
 .. code-block:: console
+    :linenos:
 
     ts02-H1#ping vrf h1 172.16.101.12
     Type escape sequence to abort.
