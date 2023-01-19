@@ -108,6 +108,7 @@ Verification output is part of the ``sh l2vpn evpn summary`` command:
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 2,6,10
     :class: highlight-command highlight-command-10 highlight-command-17
 
     cfg01-L1#sh l2vpn evpn summary | i Default
@@ -222,6 +223,7 @@ At the end of this task you would be able to ping between hosts located in diffe
 H1 node
 
 .. code-block:: console
+    :linenos:
 
     cfg01-H1#ping vrf h1 172.16.102.11 source 172.16.101.10
     Type escape sequence to abort.
@@ -254,6 +256,7 @@ H1 node
 H2 node
 
 .. code-block:: console
+    :linenos:
 
     cfg01-H2#ping vrf h1 172.16.102.10 source 172.16.101.11
     Type escape sequence to abort.
@@ -286,6 +289,7 @@ H2 node
 H3 node 
 
 .. code-block:: console
+    :linenos:
 
     cfg01-H3#ping vrf h1 172.16.102.10 source 172.16.101.12
     Type escape sequence to abort.
@@ -320,6 +324,7 @@ In the routing table of VRF ``green`` we should be able to see remote host route
 L1 node
 
 .. code-block:: console
+    :linenos:
 
     cfg01-L1#sh ip route vrf green
 
@@ -340,6 +345,7 @@ The L3VNI 50901 state should be Up. Note that Mode is L3CP for it – indicating
 L1 node
 
 .. code-block:: console
+    :linenos:
 
     cfg01-L1#sh nve int nve1
     Interface: nve1, State: Admin Up, Oper Up, Encapsulation: Vxlan,
