@@ -8,6 +8,7 @@ H1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts01-H1#ping vrf h1 172.16.101.11
     Type escape sequence to abort.
@@ -31,6 +32,7 @@ L1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts01-L1#sh ip arp vrf green 
     Protocol  Address          Age (min)  Hardware Addr   Type   Interface
@@ -43,6 +45,7 @@ We won’t see ARPs for clients over remote VTEP
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts01-L1#sh nve peers 
     'M' - MAC entry download flag  'A' - Adjacency download flag
@@ -52,7 +55,6 @@ We won’t see ARPs for clients over remote VTEP
     nve1       50901    L3CP 10.1.254.4       aabb.cc80.0400 50901      UP  A/M/4 00:02:06
     nve1       50901    L3CP 10.1.254.5       aabb.cc80.0500 50901      UP  A/M/4 00:02:06
     nve1       50901    L3CP 10.1.254.6       aabb.cc80.0600 50901      UP  A/M/4 00:02:06
-
     nve1       50901    L3CP 10.1.254.7       aabb.cc80.0700 50901      UP  A/M/4 00:02:06
     nve1       10102    L2CP 10.1.254.4       4              10102      UP   N/A  00:02:06
     nve1       10102    L2CP 10.1.254.5       4              10102      UP   N/A  00:02:06
@@ -65,6 +67,7 @@ The EVI outputs show the vlan 101 is mapped to the L2 VNI 10110 but the VTEP IP 
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts01-L1#sh l2vpn evpn evi vlan 101
     EVI   VLAN  Ether Tag  L2 VNI    Multicast     Pseudoport
@@ -113,6 +116,7 @@ The MAC/IP information from BGP routes shows that the next show information is a
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts01-L1#sh l2route evpn mac ip 
     EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
@@ -130,6 +134,7 @@ Do those 2 VNIs exist on the switch? Looks like 10110 does not exist – in the 
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts01-L1#sh nve vni 10101
     Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
@@ -177,6 +182,7 @@ L1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts01-L1#sh nve peers  vni 10101
     'M' - MAC entry download flag  'A' - Adjacency download flag
@@ -192,6 +198,7 @@ H1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts01-H1#ping vrf h1 172.16.101.11          
     Type escape sequence to abort.
