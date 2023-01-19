@@ -34,6 +34,7 @@ First, we need to configure underlay and OSPF for routes exchange (area 0 is use
 EXT1 node
 
 .. code-block:: console
+    :linenos:
 
     conf t
     !
@@ -54,6 +55,7 @@ EXT1 node
 EXT2 node
 
 .. code-block:: console
+    :linenos:
 
     conf t
     !
@@ -74,6 +76,7 @@ EXT2 node
 BL1 node
 
 .. code-block:: console
+    :linenos:
 
     conf t
     !
@@ -99,6 +102,7 @@ BL1 node
 BL2 node
 
 .. code-block:: console
+    :linenos:
 
     conf t
     !
@@ -126,6 +130,7 @@ To verify that OSPF is converged properly, check the neighborship status and rou
 BL1 node
 
 .. code-block:: console
+    :linenos:
 
     cfg02-BL1#sh ip ospf 100 nei
     Neighbor ID     Pri   State           Dead Time   Address         Interface
@@ -146,6 +151,7 @@ BL1 node
 BL2 node 
 
 .. code-block:: console
+    :linenos:
 
     cfg02-BL2#sh ip ospf 100 nei
     Neighbor ID     Pri   State           Dead Time   Address         Interface
@@ -165,6 +171,7 @@ BL2 node
 EXT1 node
 
 .. code-block:: console
+    :linenos:
 
     cfg02-EXT1#sh ip ospf nei
     Neighbor ID     Pri   State           Dead Time   Address         Interface
@@ -175,6 +182,7 @@ EXT1 node
 EXT2 node
 
 .. code-block:: console
+    :linenos:
 
     cfg02-EXT2#sh ip ospf nei
     Neighbor ID     Pri   State           Dead Time   Address         Interface
@@ -194,6 +202,7 @@ Next, redistribution of between OSPF and BGP has to be done on the Border Leafs.
 BL1/BL2 node
 
 .. code-block:: console
+    :linenos:
 
     conf t
     router ospf 100 vrf green
@@ -212,6 +221,7 @@ Also, as a part of this lab scenario we will be aggregating routes in BGP addres
 BL1/BL2 nodes
 
 .. code-block:: console
+    :linenos:
 
     conf t
     !
@@ -235,6 +245,7 @@ At the end of the task the connectivity should be established between hosts in t
 H1 node
 
 .. code-block:: console
+    :linenos:
 
     cfg02-H1#ping vrf h1 192.168.201.13
     Type escape sequence to abort.
@@ -247,6 +258,7 @@ Also, connectivity could be verified to the loopback of the external routers EXT
 H1 node
 
 .. code-block:: console
+    :linenos:
 
     cfg02-H1#ping vrf h1 192.168.255.8
     Type escape sequence to abort.
@@ -277,6 +289,7 @@ Additionally, you can check routing information.
 EXT1 node 
 
 .. code-block:: console
+    :linenos:
 
     cfg02-EXT1#sh ip route ospf  | b Gateway
     Gateway of last resort is not set
@@ -295,6 +308,7 @@ EXT1 node
 EXT2 node 
 
 .. code-block:: console
+    :linenos:
 
     cfg02-EXT2#sh ip route ospf  | b Gateway
     Gateway of last resort is not set
@@ -312,6 +326,7 @@ EXT2 node
 BL1 node
 
 .. code-block:: console
+    :linenos:
 
     cfg02-BL1#sh bgp l2vpn evpn | i \[5\]
     *>   [5][1:1][0][16][172.16.0.0]/17
@@ -327,6 +342,7 @@ BL1 node
 BL2 node
 
 .. code-block:: console
+    :linenos:
 
     cfg02-BL2#sh bgp l2vpn evpn | i \[5\]
     *>   [5][1:1][0][16][172.16.0.0]/17
@@ -342,6 +358,7 @@ BL2 node
 L1 node 
 
 .. code-block:: console
+    :linenos:
 
     cfg02-L1#sh ip ro vrf green bgp | b Gateway
     Gateway of last resort is not set
@@ -365,6 +382,7 @@ L1 node
 L2 node 
 
 .. code-block:: console
+    :linenos:
 
     cfg02-L2#sh ip ro vrf green bgp | b Gateway
     Gateway of last resort is not set
@@ -388,6 +406,7 @@ L2 node
 L3 node 
 
 .. code-block:: console
+    :linenos:
 
     cfg02-L3#sh ip ro vrf green bgp | b Gateway
     Gateway of last resort is not set
