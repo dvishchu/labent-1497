@@ -89,6 +89,12 @@
   white-space: normal;
 }
 
+/* CONFIGURATION TEXT COLOR */
+
+.config-text-color pre span.go {
+  color: #000080;
+}
+
 /* HIGHLIGHT COMMANDS IN OUTPUTS */
 
 .highlight-command pre :nth-child(3) {
