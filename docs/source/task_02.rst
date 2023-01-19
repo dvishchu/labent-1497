@@ -139,7 +139,6 @@ BL1 node
     192.168.255.8     0   FULL/  -        00:00:35    192.168.68.8    Ethernet1/1
 
     cfg02-BL1#sh ip ro vrf green ospf | b Gateway
-
     O     192.168.78.0/24 [110/20] via 192.168.68.8, 00:10:52, Ethernet1/1
     O     192.168.79.0/24 [110/20] via 192.168.69.9, 00:10:49, Ethernet1/2
     O     192.168.89.0/24 [110/20] via 192.168.69.9, 00:10:49, Ethernet1/2
@@ -250,6 +249,7 @@ H1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-H1#ping vrf h1 192.168.201.13
     Type escape sequence to abort.
@@ -263,6 +263,7 @@ H1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-H1#ping vrf h1 192.168.255.8
     Type escape sequence to abort.
@@ -294,6 +295,7 @@ EXT1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-EXT1#sh ip route ospf  | b Gateway
     Gateway of last resort is not set
@@ -313,6 +315,7 @@ EXT2 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-EXT2#sh ip route ospf  | b Gateway
     Gateway of last resort is not set
@@ -331,6 +334,7 @@ BL1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-BL1#sh bgp l2vpn evpn | i \[5\]
     *>   [5][1:1][0][16][172.16.0.0]/17
@@ -347,6 +351,7 @@ BL2 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-BL2#sh bgp l2vpn evpn | i \[5\]
     *>   [5][1:1][0][16][172.16.0.0]/17
@@ -363,6 +368,7 @@ L1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-L1#sh ip ro vrf green bgp | b Gateway
     Gateway of last resort is not set
@@ -387,6 +393,7 @@ L2 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-L2#sh ip ro vrf green bgp | b Gateway
     Gateway of last resort is not set
@@ -411,6 +418,7 @@ L3 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-L3#sh ip ro vrf green bgp | b Gateway
     Gateway of last resort is not set
