@@ -8,6 +8,7 @@ H1 node
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 4,11
     :class: highlight-command
 
     ts01-H1#ping vrf h1 172.16.101.11
