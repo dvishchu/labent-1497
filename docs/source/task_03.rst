@@ -9,7 +9,7 @@ H1 node
 .. code-block:: console
     :linenos:
     :emphasize-lines: 4,11
-    :class: highlight-command highlight-command-13 emphasize-hll-8 emphasize-hll-20
+    :class: highlight-command highlight-command-13 emphasize-hll
 
     ts01-H1#ping vrf h1 172.16.101.11
     Type escape sequence to abort.
@@ -69,7 +69,7 @@ The EVI outputs show the vlan 101 is mapped to the L2 VNI ``10110`` but the VTEP
 .. code-block:: console
     :linenos:
     :emphasize-lines: 4,28,30
-    :class: highlight-command
+    :class: highlight-command highlight-command-11 emphasize-hll
 
     ts01-L1#sh l2vpn evpn evi vlan 101
     EVI   VLAN  Ether Tag  L2 VNI    Multicast     Pseudoport
