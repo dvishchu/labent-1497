@@ -137,7 +137,7 @@ Do those 2 VNIs exist on the switch? Looks like ``10110`` does not exist – in 
 .. code-block:: console
     :linenos:
     :emphasize-lines: 3,7,14,21
-    :class: highlight-command emphasize-hll
+    :class: highlight-command highlight-command-9 highlight-command-15 highlight-command-33 emphasize-hll
 
     ts01-L1#sh nve vni 10101
     Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
