@@ -147,7 +147,7 @@ To identify the reason for this issue, we will check the BGP config for problem 
 .. code-block:: console
     :linenos:
     :emphasize-lines: 25
-    :class: highlight-command emphasize-hll-positive
+    :class: highlight-command highlight-command-38 emphasize-hll-positive
 
     ts02-S1#sh bgp l2vpn evpn neighbors 10.1.255.3 | b L2VPN E-VPN
     For address family: L2VPN E-VPN
@@ -185,7 +185,7 @@ To identify the reason for this issue, we will check the BGP config for problem 
         Prefixes Current:              31          5 (Consumes 1120 bytes)
     <...skip....>
 
-Looks like route-reflector command is missing for the 10.1.255.3 neighbor. That configuration command is required since S1 node is acting as a Spine in the EVPN fabric.
+Looks like ``route-reflector-client`` command is missing for the 10.1.255.3 neighbor. That configuration command is required since S1 node is acting as a Spine in the EVPN fabric.
 
 Similarly, such configuration is missing on S2 node too. 
 
