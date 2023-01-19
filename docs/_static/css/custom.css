@@ -105,3 +105,17 @@
   color: black;
   font-weight: 600;
 }
+
+/* HIGHLIGHT EMPHASIZE LINE IN OUTPUTS */
+
+.emphasize-hll-16 pre :nth-child(16) {
+  background-color: #ccfe99;
+}
+
+.emphasize-hll-25 pre :nth-child(25) {
+  background-color: #fecccc;
+}
+
+.emphasize-hll-34 pre :nth-child(34) {
+  background-color: #47a1ff;
+}
