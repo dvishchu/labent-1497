@@ -352,6 +352,7 @@ L1 node
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 2,3,5,14,21,25,26,30,31,51,58,62,63,67,68
 
     cfg01-L1#sh nve int nve1
     Interface: nve1, State: Admin Up, Oper Up, Encapsulation: Vxlan,
