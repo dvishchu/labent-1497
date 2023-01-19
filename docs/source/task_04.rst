@@ -122,7 +122,8 @@ Route is present and is being advertised to the BGP update-group (note the group
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :emphasize-lines: 14
+    :class: highlight-command emphasize-hll
 
     ts02-S1#sh bgp l2vpn evpn update-group 2 
     BGP version 4 update-group 2, internal, Address Family: L2VPN E-VPN
@@ -145,7 +146,8 @@ To identify the reason for this issue, we will check the BGP config for problem 
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :emphasize-lines: 25
+    :class: highlight-command emphasize-hll-positive
 
     ts02-S1#sh bgp l2vpn evpn neighbors 10.1.255.3 | b L2VPN E-VPN
     For address family: L2VPN E-VPN
