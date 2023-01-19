@@ -171,6 +171,10 @@
   background-color: #ccfe99;
 }
 
+.emphasize-hll-24 pre :nth-child(24) {
+  background-color: #ccfe99;
+}
+
 .emphasize-hll-25 pre :nth-child(25) {
   background-color: #fecccc;
 }
