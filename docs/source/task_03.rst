@@ -7,6 +7,7 @@ Task TS01: H1(172.16.101.10) cannot ping H3(172.16.101.11) over vxlan via vlan10
 H1 node 
 
 .. code-block:: console
+    :linenos:
 
     ts01-H1#ping vrf h1 172.16.101.11
     Type escape sequence to abort.
@@ -29,6 +30,7 @@ We will start with the leaf to which the host is connected – Leaf1. In the hos
 L1 node 
 
 .. code-block:: console
+    :linenos:
 
     ts01-L1#sh ip arp vrf green 
     Protocol  Address          Age (min)  Hardware Addr   Type   Interface
@@ -40,6 +42,7 @@ L1 node
 We won’t see ARPs for clients over remote VTEP
 
 .. code-block:: console
+    :linenos:
 
     ts01-L1#sh nve peers 
     'M' - MAC entry download flag  'A' - Adjacency download flag
@@ -61,6 +64,7 @@ In the NVE peers table above that there are no entries that would be showing a p
 The EVI outputs show the vlan 101 is mapped to the L2 VNI 10110 but the VTEP IP is ``UNKNOWN``.
 
 .. code-block:: console
+    :linenos:
 
     ts01-L1#sh l2vpn evpn evi vlan 101
     EVI   VLAN  Ether Tag  L2 VNI    Multicast     Pseudoport
@@ -108,6 +112,7 @@ The EVI outputs show the vlan 101 is mapped to the L2 VNI 10110 but the VTEP IP 
 The MAC/IP information from BGP routes shows that the next show information is actually expecting 10101.
 
 .. code-block:: console
+    :linenos:
 
     ts01-L1#sh l2route evpn mac ip 
     EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
@@ -124,6 +129,7 @@ The MAC/IP information from BGP routes shows that the next show information is a
 Do those 2 VNIs exist on the switch? Looks like 10110 does not exist – in the configuration of NVE we can find out which VNI is actually expected to be here.
 
 .. code-block:: console
+    :linenos:
 
     ts01-L1#sh nve vni 10101
     Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
@@ -154,6 +160,7 @@ Lets fix the configuration mistake on L1 node and reconfigure the NVE-VNI member
 L1 node
 
 .. code-block:: console
+    :linenos:
 
     conf t
     no vlan configuration 101
@@ -169,6 +176,7 @@ Checking the NVE peers for that VNI afterwards, we see remote Leafs and connecti
 L1 node
 
 .. code-block:: console
+    :linenos:
 
     ts01-L1#sh nve peers  vni 10101
     'M' - MAC entry download flag  'A' - Adjacency download flag
@@ -183,6 +191,7 @@ L1 node
 H1 node
 
 .. code-block:: console
+    :linenos:
 
     ts01-H1#ping vrf h1 172.16.101.11          
     Type escape sequence to abort.
