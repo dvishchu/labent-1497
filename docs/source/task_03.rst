@@ -9,7 +9,7 @@ H1 node
 .. code-block:: console
     :linenos:
     :emphasize-lines: 4,11
-    :class: highlight-command
+    :class: highlight-command highlight-command-13 emphasize-hll-8 emphasize-hll-20
 
     ts01-H1#ping vrf h1 172.16.101.11
     Type escape sequence to abort.

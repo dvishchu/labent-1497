@@ -153,8 +153,16 @@
 
 /* HIGHLIGHT EMPHASIZE LINE IN OUTPUTS */
 
+.emphasize-hll-8 pre :nth-child(8) {
+  background-color: #fecccc;
+}
+
 .emphasize-hll-16 pre :nth-child(16) {
   background-color: #ccfe99;
+}
+
+.emphasize-hll-20 pre :nth-child(20) {
+  background-color: #fecccc;
 }
 
 .emphasize-hll-25 pre :nth-child(25) {
