@@ -8,6 +8,7 @@ H1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts02-H1#ping vrf h1 172.16.101.12
     Type escape sequence to abort.
@@ -27,6 +28,7 @@ L1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts02-L1#sh nve peer    
     'M' - MAC entry download flag  'A' - Adjacency download flag
@@ -47,6 +49,7 @@ BGP is up as well and receives prefixes from neighbors.
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts02-L1#sh bgp l2vpn evpn summary 
     BGP router identifier 10.1.255.3, local AS number 65001
@@ -69,6 +72,7 @@ Lets check if we have this route in BGP table – the output below confirms that
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts02-L1#sh bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
     % Network not in table 
@@ -79,6 +83,7 @@ S1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts02-S1#sh bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
     BGP routing table entry for [2][10.1.255.5:101][0][48][000000030101][32][172.16.101.12]/24, version 61
@@ -113,6 +118,7 @@ Route is present and is being advertised to the BGP update-group (note the group
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts02-S1#sh bgp l2vpn evpn update-group 2 
     BGP version 4 update-group 2, internal, Address Family: L2VPN E-VPN
@@ -135,6 +141,7 @@ To identify the reason for this issue, we will check the BGP config for problem 
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts02-S1#sh bgp l2vpn evpn neighbors 10.1.255.3 | b L2VPN E-VPN
     For address family: L2VPN E-VPN
@@ -180,6 +187,7 @@ S2 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts02-S2#sh bgp l2vpn evpn neighbors 10.1.255.3 | b L2VPN E-VPN
     For address family: L2VPN E-VPN
@@ -209,6 +217,7 @@ S1/S2 nodes
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     conf t
      router bgp 65001
@@ -219,6 +228,7 @@ After that we will see 172.16.101.12 in l2route table of Leaf1.
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts02-L1#sh l2route evpn mac ip | i 101                             
     101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
@@ -230,6 +240,7 @@ Lets try to ping from H1 to verify.
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     ts02-H1#ping vrf h1 172.16.101.12
     Type escape sequence to abort.
