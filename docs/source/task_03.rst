@@ -114,7 +114,7 @@ The EVI outputs show the vlan 101 is mapped to the L2 VNI ``10110`` but the VTEP
         10.1.254.7
             Routes: 1 MAC, 2 MAC/IP, 1 IMET, 0 EAD 
 
-The MAC/IP information from BGP routes shows that the next show information is actually expecting 10101.
+The MAC/IP information from BGP routes shows that the next show information is actually expecting ``10101``.
 
 .. code-block:: console
     :linenos:
@@ -132,11 +132,12 @@ The MAC/IP information from BGP routes shows that the next show information is a
     101          0   BGP aabb.cc80.0700    172.16.101.1         V:10101 10.1.254.7
     <...skip...>
 
-Do those 2 VNIs exist on the switch? Looks like 10110 does not exist – in the configuration of NVE we can find out which VNI is actually expected to be here.
+Do those 2 VNIs exist on the switch? Looks like ``10110`` does not exist – in the configuration of NVE we can find out which VNI is actually expected to be here.
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :emphasize-lines: 3,7,14,21
+    :class: highlight-command emphasize-hll
 
     ts01-L1#sh nve vni 10101
     Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
@@ -148,21 +149,21 @@ Do those 2 VNIs exist on the switch? Looks like 10110 does not exist – in the 
 
     ts01-L1#sh run int nve1
     interface nve1
-    no ip address
-    source-interface Loopback1
-    host-reachability protocol bgp
-    member vni 10101 ingress-replication 
-    member vni 10102 mcast-group 225.0.1.102
-    member vni 50901 vrf green
-    end
+     no ip address
+     source-interface Loopback1
+     host-reachability protocol bgp
+     member vni 10101 ingress-replication 
+     member vni 10102 mcast-group 225.0.1.102
+     member vni 50901 vrf green
+     end
 
     ts01-L1#sh run vlan 101
     vlan configuration 101
-    member evpn-instance 101 vni 10110 
+     member evpn-instance 101 vni 10110 
 
 We have identified that there is a mismatch in vlan-to-VNI mapping, as for vlan 101 L2VNI ``10110`` is used instead of the expected VNI ``10101``. Correct L2VNI is not configured on the switch.
 
-Lets fix the configuration mistake on L1 node and reconfigure the NVE-VNI membership to retrigger the NVE peer learning for VNI 10101.
+Lets fix the configuration mistake on L1 node and reconfigure the NVE-VNI membership to retrigger the NVE peer learning for VNI ``10101``.
 
 L1 node
 
