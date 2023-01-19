@@ -109,7 +109,7 @@ Verification output is part of the ``sh l2vpn evpn summary`` command:
 .. code-block:: console
     :linenos:
     :emphasize-lines: 2,6,10
-    :class: highlight-command highlight-command-10 highlight-command-17
+    :class: highlight-command highlight-command-9 highlight-command-15
 
     cfg01-L1#sh l2vpn evpn summary | i Default
     Advertise Default Gateway: Yes
