@@ -68,13 +68,14 @@ BGP is up as well and receives prefixes from neighbors.
     101          0   BGP aabb.cc80.0600    172.16.101.1         V:10101 10.1.254.6
     101          0   BGP aabb.cc80.0700    172.16.101.1         V:10101 10.1.254.7
 
-We see, however, that 172.16.101.12 prefix is not present in the list of the EVPN MAC/IP info. 
+We see, however, that ``172.16.101.12`` prefix is not present in the list of the EVPN MAC/IP info. 
 
 Lets check if we have this route in BGP table – the output below confirms that such route is not present, MAC for the destination host is 0000.0003.0101.
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :emphasize-lines: 2
+    :class: highlight-command emphasize-hll
 
     ts02-L1#sh bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
     % Network not in table 
