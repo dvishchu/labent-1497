@@ -51,7 +51,7 @@ BGP is up as well and receives prefixes from neighbors.
 .. code-block:: console
     :linenos:
     :emphasize-lines: 5,6
-    :class: highlight-command emphasize-hll-positive
+    :class: highlight-command highlight-command-13 emphasize-hll-positive
 
     ts02-L1#sh bgp l2vpn evpn summary 
     BGP router identifier 10.1.255.3, local AS number 65001
@@ -86,7 +86,8 @@ S1 node
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :emphasize-lines: 2,4,5
+    :class: highlight-command emphasize-hll-positive
 
     ts02-S1#sh bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
     BGP routing table entry for [2][10.1.255.5:101][0][48][000000030101][32][172.16.101.12]/24, version 61
