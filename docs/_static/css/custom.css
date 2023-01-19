@@ -93,6 +93,7 @@
 
 .config-text-color pre span.go {
   color: #000080;
+  font-weight: bold;
 }
 
 /* HIGHLIGHT COMMANDS IN OUTPUTS */
