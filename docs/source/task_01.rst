@@ -226,6 +226,7 @@ H1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command-3 highlight-command-16 highlight-command-29 highlight-command-32
 
     cfg01-H1#ping vrf h1 172.16.102.11 source 172.16.101.10
     Type escape sequence to abort.

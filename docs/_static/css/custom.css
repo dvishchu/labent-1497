@@ -106,6 +106,21 @@
   font-weight: 600;
 }
 
+.highlight-command-16 pre :nth-child(16) {
+  color: black;
+  font-weight: 600;
+}
+
+.highlight-command-29 pre :nth-child(29) {
+  color: black;
+  font-weight: 600;
+}
+
+.highlight-command-32 pre :nth-child(32) {
+  color: black;
+  font-weight: 600;
+}
+
 /* HIGHLIGHT EMPHASIZE LINE IN OUTPUTS */
 
 .emphasize-hll-16 pre :nth-child(16) {
