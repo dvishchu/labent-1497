@@ -260,6 +260,7 @@ H2 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command highlight-command-16 highlight-command-29 highlight-command-42
 
     cfg01-H2#ping vrf h1 172.16.102.10 source 172.16.101.11
     Type escape sequence to abort.
@@ -293,6 +294,7 @@ H3 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command highlight-command-16 highlight-command-29 highlight-command-42
 
     cfg01-H3#ping vrf h1 172.16.102.10 source 172.16.101.12
     Type escape sequence to abort.
@@ -328,6 +330,7 @@ L1 node
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 8,9,12,13
 
     cfg01-L1#sh ip route vrf green
 
