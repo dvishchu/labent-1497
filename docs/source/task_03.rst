@@ -145,7 +145,7 @@ Do those 2 VNIs exist on the switch? Looks like ``10110`` does not exist – in 
 
     ts01-L1#sh nve vni 10110 detail 
     Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
-    % VNI 10110 doesnt exist
+    % VNI 10110 doesn\'t exist
 
     ts01-L1#sh run int nve1
     interface nve1
