@@ -131,6 +131,7 @@ BL1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-BL1#sh ip ospf 100 nei
     Neighbor ID     Pri   State           Dead Time   Address         Interface
@@ -152,6 +153,7 @@ BL2 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-BL2#sh ip ospf 100 nei
     Neighbor ID     Pri   State           Dead Time   Address         Interface
@@ -172,6 +174,7 @@ EXT1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-EXT1#sh ip ospf nei
     Neighbor ID     Pri   State           Dead Time   Address         Interface
@@ -183,6 +186,7 @@ EXT2 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg02-EXT2#sh ip ospf nei
     Neighbor ID     Pri   State           Dead Time   Address         Interface
