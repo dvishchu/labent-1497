@@ -35,7 +35,6 @@ EXT1 node
 
 .. code-block:: console
     :linenos:
-    :class: config-text-color
 
     conf t
     !
