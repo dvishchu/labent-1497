@@ -50,7 +50,8 @@ BGP is up as well and receives prefixes from neighbors.
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :emphasize-lines: 5,6
+    :class: highlight-command emphasize-hll-positive
 
     ts02-L1#sh bgp l2vpn evpn summary 
     BGP router identifier 10.1.255.3, local AS number 65001

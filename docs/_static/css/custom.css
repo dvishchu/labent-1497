@@ -167,6 +167,10 @@
   background-color: #fecccc;
 }
 
+.emphasize-hll-positive pre .hll {
+  background-color: #a3f4ac;
+}
+
 .emphasize-hll-8 pre :nth-child(8) {
   background-color: #a3f4ac;
 }
