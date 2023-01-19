@@ -331,6 +331,7 @@ L1 node
 .. code-block:: console
     :linenos:
     :emphasize-lines: 8,9,12,13
+    :class: highlight-command
 
     cfg01-L1#sh ip route vrf green
 
