@@ -223,18 +223,18 @@ S1/S2 nodes
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
 
     conf t
      router bgp 65001
       address-family l2vpn evpn
        neighbor 10.1.255.3 route-reflector-client
 
-After that we will see 172.16.101.12 in l2route table of Leaf1.
+After that we will see ``172.16.101.12`` in l2route table of Leaf1.
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :emphasize-lines: 4
+    :class: highlight-command emphasize-hll-positive
 
     ts02-L1#sh l2route evpn mac ip | i 101                             
     101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
@@ -246,7 +246,8 @@ Lets try to ping from H1 to verify.
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :emphasize-lines: 4
+    :class: highlight-command emphasize-hll-positive
 
     ts02-H1#ping vrf h1 172.16.101.12
     Type escape sequence to abort.
