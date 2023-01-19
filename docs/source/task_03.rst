@@ -23,7 +23,7 @@ H1 node
     Internet  172.16.101.10           -   0000.0001.0101  ARPA   Vlan101
     Internet  172.16.101.11           0   Incomplete      ARPA   
 
-We will start with the leaf to which the host is connected – Leaf1. In the host information we saw that ARP is incomplete. Lets check the same on Leaf1 and also look into the NVE peering.
+We will start with the leaf to which the host is connected – Leaf1. In the host information we saw that ARP is ``incomplete``. Lets check the same on Leaf1 and also look into the NVE peering.
 
 .. note::
 
@@ -62,12 +62,13 @@ We won’t see ARPs for clients over remote VTEP
     nve1       10102    L2CP 10.1.254.6       2              10102      UP   N/A  00:02:06
     nve1       10102    L2CP 10.1.254.7       3              10102      UP   N/A  00:02:06
 
-In the NVE peers table above that there are no entries that would be showing a peering over VNI 10101. Therefore, lets check the EVI for the vlan where we have H1 attached – vlan 101. 
+In the NVE peers table above that there are no entries that would be showing a peering over VNI ``10101``. Therefore, lets check the EVI for the vlan where we have H1 attached – vlan 101. 
 
-The EVI outputs show the vlan 101 is mapped to the L2 VNI 10110 but the VTEP IP is ``UNKNOWN``.
+The EVI outputs show the vlan 101 is mapped to the L2 VNI ``10110`` but the VTEP IP is ``UNKNOWN``.
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 4,28,30
     :class: highlight-command
 
     ts01-L1#sh l2vpn evpn evi vlan 101
