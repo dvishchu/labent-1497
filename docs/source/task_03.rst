@@ -187,7 +187,7 @@ L1 node
     :linenos:
     :class: highlight-command
 
-    ts01-L1#sh nve peers  vni 10101
+    ts01-L1#sh nve peers vni 10101
     'M' - MAC entry download flag  'A' - Adjacency download flag
     '4' - IPv4 flag  '6' - IPv6 flag
 
@@ -201,7 +201,8 @@ H1 node
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :emphasize-lines: 4
+    :class: highlight-command emphasize-hll-8
 
     ts01-H1#ping vrf h1 172.16.101.11          
     Type escape sequence to abort.
