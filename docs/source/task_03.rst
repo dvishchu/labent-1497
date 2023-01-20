@@ -1,7 +1,7 @@
 Task TS01: H1(172.16.101.10) cannot ping H3(172.16.101.11) over vxlan via vlan101
 =================================================================================
 
-.. image:: assets/cfg01_topology.png
+.. image:: assets/ts01_topology.png
     :align: center
 
 H1 node 
