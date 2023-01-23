@@ -38,7 +38,10 @@ First step to configure L3 VNI routing is to have VRF defined with RD (route dis
 
 VRF name is ``green``. RT ``1:1`` is to be used for base route target configuration and RT ``10:10`` for EVPN related processing.
 
-L1/L2/L3 nodes
+.. |config_icon| image:: assets/config_icon.png
+    :height: 25px
+
+|config_icon| L1/L2/L3 nodes
 
 .. code-block:: console
    :linenos:
