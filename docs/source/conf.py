@@ -6,8 +6,8 @@ project = 'LABENT-1497'
 copyright = '2023, Cisco Systems'
 author = 'Cisco Systems'
 
-release = '0.1'
-version = '0.1.0'
+release = '1.0'
+version = '1.0.0'
 
 # -- General configuration
 
