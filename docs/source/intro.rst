@@ -1,7 +1,7 @@
 Get started
 ===============
 
-Please, connect to lab via one of the presented connection options and then proceed to :ref:`Connecting to lab devices` section.
+Please, connect to lab via one of the presented connection options and then proceed to **Connecting to lab devices** section.
 
 Cisco Anyconnect + RDP Option
 *****************************
