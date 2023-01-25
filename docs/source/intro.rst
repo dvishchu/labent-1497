@@ -1,6 +1,8 @@
 Get started
 ===============
 
+Please, connect to lab via one of the presented connections options and then proceed to **Connecting to lab devices** section.
+
 Cisco Anyconnect + RDP Option
 *****************************
 
@@ -35,3 +37,17 @@ Alternatively to using Cisco Anyconnect and RDP applications, you can connect to
     This connectivity option may limit the functionality to copy and paste from your laptop to the lab device consoles
 
 Open the the WebRDP link provided for your lab session by proctor, using your CCO credentials to login into dCloud environment.
+
+Connecting to lab devices
+*************************
+
+On the jumphost workstation you have all required sessions preconfigured for use in the **SuperPutty** session manager. 
+
+Use the ``lab manager`` session to initialize lab devices with the config for corresponding tasks.
+
+You can open connections to all lab devices by selecting **Connect All** in the right-click menu on **nodes** folder.
+
+.. image:: assets/super_putty.png
+
+.. warning:: 
+    See the network topology and follow the guide to complete the lab tasks. At the beginning of each task come back to ``lab manager`` session to re-initialize lab devices with config for that specific task.
