@@ -1,7 +1,7 @@
-LABENT-1497 tutorial
-===================================
+LABENT-1497: Deployment of EVPN Fabric in Campus network
+========================================================
 
-Wellcome to LABENT-1497 tutorial!!!
+In this lab activity, you will learn practical skills of VXLAN EVPN deployment and verification in context of a Campus network. We will explore L2/L3 connectivity across fabric in spine and leaf topology and use case of external connectivity. You will have also opportunity to test your knowledge of EVPN by partaking of prepared troubleshooting tasks.
 
 Contents
 --------
