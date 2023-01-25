@@ -5,6 +5,6 @@ After completion of this lab, you should get experience with EVPN implementation
 
 We hope that you will find content of this lab useful and that you will be able to use gained experience in your daily job.
 
-**Thank you for attending the lab !**
-
 .. image:: assets/cisco_logo.png
+
+**Thank you for attending the lab !**
