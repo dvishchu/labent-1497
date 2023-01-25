@@ -21,9 +21,17 @@ Cisco Anyconnect + RDP Option
 
 #. After connecting to the VPN of the lab pod, use RDP to connect to the jumphost workstation.
 
-    **IP Address** 
-    198.18.133.36
+    **IP Address**: 198.18.133.36
 
-    **Credentials**
-    Username: admin
-    Password: C1sco12345
+    **Credentials**: admin / C1sco12345
+
+WebRDP Option
+*************
+
+Alternatively to using Cisco Anyconnect and RDP applications, you can connect to the lab environment using WebRDP access to the jumphost workstation via the browser.
+
+.. note:: 
+
+    This connectivity option may limit the functionality to copy and paste from your laptop to the lab device consoles
+
+Open the the WebRDP link provided for your lab session by proctor, using your CCO credentials to login into dCloud environment.
