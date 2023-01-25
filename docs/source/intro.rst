@@ -49,5 +49,5 @@ You can open connections to all lab devices by selecting **Connect All** in the 
 
 .. image:: assets/super_putty.png
 
-.. warning:: 
+.. note:: 
     See the network topology and follow the guide to complete the lab tasks. At the beginning of each task come back to ``lab manager`` session to re-initialize lab devices with config for that specific task.
