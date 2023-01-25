@@ -8,6 +8,7 @@ Contents
 
 .. toctree::
 
+   disclaimer
    intro
    task_01
    task_02
