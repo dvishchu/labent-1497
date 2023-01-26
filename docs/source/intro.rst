@@ -43,11 +43,11 @@ Connecting to lab devices
 
 On the jumphost workstation you have all required sessions preconfigured for use in the **SuperPutty** session manager. 
 
-Use the ``lab manager`` session to initialize lab devices with the config for corresponding tasks.
+In the **SupperPutty**, you can find list of saved session in **LABENT-1497** folder. Via ``mgmt`` session, you can access **lab manager**. Please, use **lab manager** to initialize lab devices with the config for corresponding tasks.
 
-You can open connections to all lab devices by selecting **Connect All** in the right-click menu on **nodes** folder.
+You can open connections to all lab devices by selecting **Connect All** in the right-click menu on **LABENT-1497** folder.
 
 .. image:: assets/super_putty.png
 
 .. note:: 
-    See the network topology and follow the guide to complete the lab tasks. At the beginning of each task come back to ``lab manager`` session to re-initialize lab devices with config for that specific task.
+    See the network topology and follow the guide to complete the lab tasks. At the beginning of each task come back to **lab manager** session to re-initialize lab devices with config for that specific task.
