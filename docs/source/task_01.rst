@@ -123,6 +123,24 @@ Verification output is part of the ``sh l2vpn evpn summary`` command:
     Advertise Default Gateway: Yes
     Default Gateway Addresses: 0
 
+.. note:: 
+
+    L2VPN EVPN instance was already preconfigured on device with global replication mode set to static (multicast replication) along with two EVI instances: 101 with static (multicast) replication and 102 with ingress (unicast) replication mode.
+
+    l2vpn evpn
+     replication-type static
+     router-id Loopback1
+     default-gateway advertise
+     !
+     l2vpn evpn instance 101 vlan-based
+     encapsulation vxlan
+     replication-type static
+     !
+     l2vpn evpn instance 102 vlan-based
+     encapsulation vxlan
+     replication-type ingress
+
+
 Step 3: Create VNI to vlan stitching for vlan901 (L3VNI), create SVIs for L2VNIs and L3VNI
 ******************************************************************************************
 
