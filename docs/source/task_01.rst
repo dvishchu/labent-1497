@@ -173,6 +173,10 @@ At this step, we create vlan 901 and SVI 901 to be mapped to L3VNI 50901. Simila
 .. image:: assets/cfg01_vni.png
     :align: center
 
+.. note::
+
+    Same gateway IP and MAC address are used for L2VNI SVI interfaces across all the Leafs, to make a distributed anycast gateway.
+
 L1/L2/L3 nodes
 
 .. code-block:: console
@@ -205,7 +209,17 @@ L1/L2/L3 nodes
 
 .. note::
 
-    Same gateway IP and MAC address are used for L2VNI SVI interfaces across all the Leafs, to make a distributed anycast gateway.
+    Vlan 101 and 102 were already preconfigured along with corresponding VLAN to VNI mappings.
+
+    .. code-block:: console
+        :linenos:
+
+        vlan 101,102
+        !
+        vlan configuration 101
+         member evpn-instance 101 vni 10101
+        vlan configuration 102  
+         member evpn-instance 102 vni 10102
 
 
 Step 4: Configure BGP for VRF
