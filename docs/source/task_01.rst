@@ -125,23 +125,21 @@ Verification output is part of the ``sh l2vpn evpn summary`` command:
 
 .. note:: 
 
-    L2VPN EVPN instance was already preconfigured on device with global replication mode set to static (multicast replication) along with two EVI instances: 101 with static (multicast) replication and 102 with ingress (unicast) replication mode.
+    L2VPN EVPN instance was already preconfigured on device with global replication mode set to ingress (unicast replication) along with two EVI instances: 101 with ingress (unicast) replication and 102 with static (multicast) replication mode.
 
     .. code-block:: console
         :linenos:
 
         l2vpn evpn
-         replication-type static
+         replication-type ingress
          router-id Loopback1
-         default-gateway advertise
          !
          l2vpn evpn instance 101 vlan-based
           encapsulation vxlan
-          replication-type static
          !
          l2vpn evpn instance 102 vlan-based
           encapsulation vxlan
-          replication-type ingress
+          replication-type static
 
 
 Step 3: Create VNI to vlan stitching for vlan901 (L3VNI), create SVIs for L2VNIs and L3VNI
