@@ -60,13 +60,15 @@ BGP is up as well and receives prefixes from neighbors.
     10.1.255.1      4        65001      23      10       44    0    0 00:01:31       23
     10.1.255.2      4        65001      23       9       44    0    0 00:01:26       23
 
-    ts02-L1#sh l2route evpn mac ip | i 101 
-    101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
-    101          0   BGP 0000.0002.0101   172.16.101.11         V:10101 10.1.254.4
-    101          0 L2VPN aabb.cc80.0300    172.16.101.1                    Vl101:0
-    101          0   BGP aabb.cc80.0400    172.16.101.1         V:10101 10.1.254.4
-    101          0   BGP aabb.cc80.0600    172.16.101.1         V:10101 10.1.254.6
-    101          0   BGP aabb.cc80.0700    172.16.101.1         V:10101 10.1.254.7
+    ts02-L1#sh l2route evpn mac ip topology 101
+      EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
+    ----- ---------- ----- -------------- --------------- --------------------------
+      101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
+      101          0   BGP 0000.0002.0101   172.16.101.11         V:10101 10.1.254.4
+      101          0 L2VPN aabb.cc80.0300    172.16.101.1                    Vl101:0
+      101          0   BGP aabb.cc80.0400    172.16.101.1         V:10101 10.1.254.4
+      101          0   BGP aabb.cc80.0600    172.16.101.1         V:10101 10.1.254.6
+      101          0   BGP aabb.cc80.0700    172.16.101.1         V:10101 10.1.254.6
 
 We see, however, that ``172.16.101.12`` prefix is not present in the list of the EVPN MAC/IP info. 
 
@@ -233,14 +235,20 @@ After that we will see ``172.16.101.12`` in l2route table of Leaf1.
 
 .. code-block:: console
     :linenos:
-    :emphasize-lines: 4
+    :emphasize-lines: 6
     :class: highlight-command emphasize-hll-positive
 
-    ts02-L1#sh l2route evpn mac ip | i 101                             
-    101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
-    101          0   BGP 0000.0002.0101   172.16.101.11         V:10101 10.1.254.4
-    101          0   BGP 0000.0003.0101   172.16.101.12         V:10101 10.1.254.5 
-    <...skip....>
+    ts02-L1#sh l2route evpn mac ip topology 101
+      EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
+    ----- ---------- ----- -------------- --------------- --------------------------
+      101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
+      101          0   BGP 0000.0002.0101   172.16.101.11         V:10101 10.1.254.4
+      101          0   BGP 0000.0003.0101   172.16.101.12         V:10101 10.1.254.5
+      101          0 L2VPN aabb.cc80.0300    172.16.101.1                    Vl101:0
+      101          0   BGP aabb.cc80.0400    172.16.101.1         V:10101 10.1.254.4
+      101          0   BGP aabb.cc80.0500    172.16.101.1         V:10101 10.1.254.5
+      101          0   BGP aabb.cc80.0600    172.16.101.1         V:10101 10.1.254.6
+      101          0   BGP aabb.cc80.0700    172.16.101.1         V:10101 10.1.254.7
 
 Lets try to ping from H1 to verify.
 
