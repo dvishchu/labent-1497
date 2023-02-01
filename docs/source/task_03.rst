@@ -4,6 +4,10 @@ Task TS01: H1(172.16.101.10) cannot ping H3(172.16.101.11) over vxlan via vlan10
 .. image:: assets/ts01_topology.png
     :align: center
 
+.. note:: 
+
+    To get started, please select in lab manager option ``03`` to initialize lab devices. Please, wait a minute after lab start for network convergence.
+
 H1 node 
 
 .. code-block:: console
