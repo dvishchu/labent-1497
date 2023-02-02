@@ -36,7 +36,7 @@ L1 node
     :linenos:
     :class: highlight-command
 
-    ts02-L1#sh nve peer    
+    ts02-L1#show nve peer    
     'M' - MAC entry download flag  'A' - Adjacency download flag
     '4' - IPv4 flag  '6' - IPv6 flag
 
@@ -58,14 +58,14 @@ BGP is up as well and receives prefixes from neighbors.
     :emphasize-lines: 5,6
     :class: highlight-command highlight-command-13 emphasize-hll-positive
 
-    ts02-L1#sh bgp l2vpn evpn summary 
+    ts02-L1#show bgp l2vpn evpn summary 
     BGP router identifier 10.1.255.3, local AS number 65001
 
     Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
     10.1.255.1      4        65001      23      10       44    0    0 00:01:31       23
     10.1.255.2      4        65001      23       9       44    0    0 00:01:26       23
 
-    ts02-L1#sh l2route evpn mac ip topology 101
+    ts02-L1#show l2route evpn mac ip topology 101
       EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
     ----- ---------- ----- -------------- --------------- --------------------------
       101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
@@ -84,7 +84,7 @@ Lets check if we have this route in BGP table – the output below confirms that
     :emphasize-lines: 2
     :class: highlight-command emphasize-hll
 
-    ts02-L1#sh bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
+    ts02-L1#show bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
     % Network not in table 
 
 Is it present on RRs (spines)?
@@ -96,7 +96,7 @@ S1 node
     :emphasize-lines: 2,4,5
     :class: highlight-command emphasize-hll-positive
 
-    ts02-S1#sh bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
+    ts02-S1#show bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
     BGP routing table entry for [2][10.1.255.5:101][0][48][000000030101][32][172.16.101.12]/24, version 61
     Paths: (2 available, best #1, table EVPN-BGP-Table)
     Advertised to update-groups:
@@ -132,7 +132,7 @@ Route is present and is being advertised to the BGP update-group (note the group
     :emphasize-lines: 14
     :class: highlight-command emphasize-hll
 
-    ts02-S1#sh bgp l2vpn evpn update-group 2 
+    ts02-S1#show bgp l2vpn evpn update-group 2 
     BGP version 4 update-group 2, internal, Address Family: L2VPN E-VPN
     BGP Update version : 79/0, messages 0, active RGs: 1
     Route-Reflector Client
@@ -156,7 +156,7 @@ To identify the reason for this issue, we will check the BGP config for problem 
     :emphasize-lines: 25
     :class: highlight-command highlight-command-38 emphasize-hll-positive
 
-    ts02-S1#sh bgp l2vpn evpn neighbors 10.1.255.3 | b L2VPN E-VPN
+    ts02-S1#show bgp l2vpn evpn neighbors 10.1.255.3 | begin L2VPN E-VPN
     For address family: L2VPN E-VPN
     Session: 10.1.255.3
     BGP table version 62, neighbor version 62/0
@@ -174,7 +174,7 @@ To identify the reason for this issue, we will check the BGP config for problem 
         Prefixes Total:                37          9
     <...skip...>
 
-    ts02-S1#sh bgp l2vpn evpn neighbors 10.1.255.4 | b L2VPN E-VPN
+    ts02-S1#show bgp l2vpn evpn neighbors 10.1.255.4 | begin L2VPN E-VPN
     For address family: L2VPN E-VPN
     Session: 10.1.255.4
     BGP table version 62, neighbor version 62/0
@@ -202,7 +202,7 @@ S2 node
     :linenos:
     :class: highlight-command
 
-    ts02-S2#sh bgp l2vpn evpn neighbors 10.1.255.3 | b L2VPN E-VPN
+    ts02-S2#show bgp l2vpn evpn neighbors 10.1.255.3 | begin L2VPN E-VPN
     For address family: L2VPN E-VPN
     Session: 10.1.255.3
     BGP table version 101, neighbor version 101/0
@@ -243,7 +243,7 @@ After that we will see ``172.16.101.12`` in l2route table of Leaf1.
     :emphasize-lines: 6
     :class: highlight-command emphasize-hll-positive
 
-    ts02-L1#sh l2route evpn mac ip topology 101
+    ts02-L1#show l2route evpn mac ip topology 101
       EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
     ----- ---------- ----- -------------- --------------- --------------------------
       101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101

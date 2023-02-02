@@ -62,7 +62,7 @@ L1 node
    :emphasize-lines: 9,11,13,15
    :class: highlight-command
     
-    cfg01-L1#sh vrf detail green
+    cfg01-L1#show vrf detail green
     VRF green (VRF Id = 1); default RD 1:1; default VPNID <not set>
     New CLI format, supports multiple address-families
     Flags: 0x180C
@@ -112,15 +112,15 @@ Verification output is part of the ``sh l2vpn evpn summary`` command:
     :emphasize-lines: 2,6,10
     :class: highlight-command highlight-command-9 highlight-command-15
 
-    cfg01-L1#sh l2vpn evpn summary | i Default
+    cfg01-L1#show l2vpn evpn summary | include Default
     Advertise Default Gateway: Yes
     Default Gateway Addresses: 0
 
-    cfg01-L2#sh l2vpn evpn summary | i Default
+    cfg01-L2#show l2vpn evpn summary | include Default
     Advertise Default Gateway: Yes
     Default Gateway Addresses: 0
 
-    cfg01-L3#sh l2vpn evpn summary | i Default
+    cfg01-L3#show l2vpn evpn summary | include Default
     Advertise Default Gateway: Yes
     Default Gateway Addresses: 0
 
@@ -277,14 +277,14 @@ L1 node
     :emphasize-lines: 2,3,5,14,21,25,26,30,31,51,58,62,63,67,68
     :class: highlight-command highlight-command-13 highlight-command-80 emphasize-hll-37 emphasize-hll-44 emphasize-hll-45 emphasize-hll-52 emphasize-hll-53 emphasize-hll-104 emphasize-hll-111 emphasize-hll-112 emphasize-hll-119 emphasize-hll-120
 
-    cfg01-L1#sh nve int nve1
+    cfg01-L1#show nve int nve1
     Interface: nve1, State: Admin Up, Oper Up, Encapsulation: Vxlan,
     BGP host reachability: Enable, VxLAN dport: 4789
     VNI number: L3CP 1 L2CP 2 L2DP 0
     source-interface: Loopback1 (primary:10.1.254.3 vrf:0)
     tunnel interface: Tunnel0
 
-    cfg01-L1#sh l2vpn evpn evi 101 detail
+    cfg01-L1#show l2vpn evpn evi 101 detail
     EVPN instance:       101 (VLAN Based)
     RD:                10.1.255.3:101 (auto)
     Import-RTs:        65001:101
@@ -321,7 +321,7 @@ L1 node
         10.1.254.5
             Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
 
-    cfg01-L1#sh l2vpn evpn evi 102 detail
+    cfg01-L1#show l2vpn evpn evi 102 detail
     EVPN instance:       102 (VLAN Based)
     RD:                10.1.255.3:102 (auto)
     Import-RTs:        65001:102
@@ -367,7 +367,7 @@ L1 node
     :linenos:
     :class: highlight-command
 
-    cfg01-L1#sh nve peers
+    cfg01-L1#show nve peers
     'M' - MAC entry download flag  'A' - Adjacency download flag
     '4' - IPv4 flag  '6' - IPv6 flag
 
@@ -388,7 +388,7 @@ L1 node
     :emphasize-lines: 8,9,12,13
     :class: highlight-command
 
-    cfg01-L1#sh ip route vrf green
+    cfg01-L1#show ip route vrf green
 
     Routing Table: green
 

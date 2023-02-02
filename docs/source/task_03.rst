@@ -21,7 +21,7 @@ H1 node
     .....
     Success rate is 0 percent (0/5)
 
-    ts01-H1#sh ip arp vrf h1
+    ts01-H1#show ip arp vrf h1
     Protocol  Address          Age (min)  Hardware Addr   Type   Interface
     Internet  172.16.101.1            0   aabb.cc80.0300  ARPA   Vlan101
     Internet  172.16.101.10           -   0000.0001.0101  ARPA   Vlan101
@@ -39,7 +39,7 @@ L1 node
     :linenos:
     :class: highlight-command
 
-    ts01-L1#sh ip arp vrf green 
+    ts01-L1#show ip arp vrf green 
     Protocol  Address          Age (min)  Hardware Addr   Type   Interface
     Internet  10.1.254.3              -   aabb.cc80.0300  ARPA   Vlan901
     Internet  172.16.101.1            -   aabb.cc80.0300  ARPA   Vlan101
@@ -52,7 +52,7 @@ We won’t see ARPs for clients over remote VTEP
     :linenos:
     :class: highlight-command
 
-    ts01-L1#sh nve peers 
+    ts01-L1#show nve peers 
     'M' - MAC entry download flag  'A' - Adjacency download flag
     '4' - IPv4 flag  '6' - IPv6 flag
 
@@ -75,7 +75,7 @@ The EVI outputs show the vlan 101 is mapped to the L2 VNI ``10110`` but the VTEP
     :emphasize-lines: 4,28,30
     :class: highlight-command highlight-command-11 emphasize-hll
 
-    ts01-L1#sh l2vpn evpn evi vlan 101
+    ts01-L1#show l2vpn evpn evi vlan 101
     EVI   VLAN  Ether Tag  L2 VNI    Multicast     Pseudoport
     ----- ----- ---------- --------- ------------- ------------------
     101   101   0          10110     UNKNOWN       Et0/0:101 
@@ -124,7 +124,7 @@ The MAC/IP information from BGP routes shows that the next show information is a
     :linenos:
     :class: highlight-command
 
-    ts01-L1#sh l2route evpn mac ip 
+    ts01-L1#show l2route evpn mac ip 
     EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
     ----- ---------- ----- -------------- --------------- --------------------------
     101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
@@ -143,15 +143,15 @@ Do those 2 VNIs exist on the switch? Looks like ``10110`` does not exist – in 
     :emphasize-lines: 3,7,14,21
     :class: highlight-command highlight-command-9 highlight-command-15 highlight-command-33 emphasize-hll emphasize-hll-24
 
-    ts01-L1#sh nve vni 10101
+    ts01-L1#show nve vni 10101
     Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
     nve1       10101      N/A             BD Down/Re L2CP  N/A   CLI N/A    
 
-    ts01-L1#sh nve vni 10110 detail 
+    ts01-L1#show nve vni 10110 detail 
     Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
     % VNI 10110 doesnt exist
 
-    ts01-L1#sh run int nve1
+    ts01-L1#show run int nve1
     interface nve1
      no ip address
      source-interface Loopback1
@@ -161,7 +161,7 @@ Do those 2 VNIs exist on the switch? Looks like ``10110`` does not exist – in 
      member vni 50901 vrf green
      end
 
-    ts01-L1#sh run vlan 101
+    ts01-L1#show run vlan 101
     vlan configuration 101
      member evpn-instance 101 vni 10110 
 
@@ -191,7 +191,7 @@ L1 node
     :linenos:
     :class: highlight-command
 
-    ts01-L1#sh nve peers vni 10101
+    ts01-L1#show nve peers vni 10101
     'M' - MAC entry download flag  'A' - Adjacency download flag
     '4' - IPv4 flag  '6' - IPv6 flag
 

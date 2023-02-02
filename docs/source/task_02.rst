@@ -133,16 +133,16 @@ BL1 node
     :linenos:
     :class: highlight-command highlight-command-12
 
-    cfg02-BL1#sh ip ospf 100 nei
+    cfg02-BL1#show ip ospf 100 neighbor
     Neighbor ID     Pri   State           Dead Time   Address         Interface
     192.168.255.9     0   FULL/  -        00:00:30    192.168.69.9    Ethernet1/2
     192.168.255.8     0   FULL/  -        00:00:35    192.168.68.8    Ethernet1/1
 
-    cfg02-BL1#sh ip ro vrf green ospf | b Gateway
+    cfg02-BL1#show ip route vrf green ospf | begin Gateway
     O     192.168.78.0/24 [110/20] via 192.168.68.8, 00:10:52, Ethernet1/1
     O     192.168.79.0/24 [110/20] via 192.168.69.9, 00:10:49, Ethernet1/2
     O     192.168.89.0/24 [110/20] via 192.168.69.9, 00:10:49, Ethernet1/2
-                        [110/20] via 192.168.68.8, 00:10:52, Ethernet1/1
+                          [110/20] via 192.168.68.8, 00:10:52, Ethernet1/1
     O IA  192.168.201.0/24 [110/11] via 192.168.68.8, 00:10:52, Ethernet1/1
         192.168.255.0/32 is subnetted, 2 subnets
     O        192.168.255.8 [110/11] via 192.168.68.8, 00:10:52, Ethernet1/1
@@ -154,16 +154,16 @@ BL2 node
     :linenos:
     :class: highlight-command highlight-command-12
 
-    cfg02-BL2#sh ip ospf 100 nei
+    cfg02-BL2#show ip ospf 100 neighbor
     Neighbor ID     Pri   State           Dead Time   Address         Interface
     192.168.255.9     0   FULL/  -        00:00:34    192.168.79.9    Ethernet1/2
     192.168.255.8     0   FULL/  -        00:00:31    192.168.78.8    Ethernet1/1
 
-    cfg02-BL2#sh ip ro vrf green ospf | b Gateway
+    cfg02-BL2#show ip route vrf green ospf | begin Gateway
     O     192.168.68.0/24 [110/20] via 192.168.78.8, 00:10:57, Ethernet1/1
     O     192.168.69.0/24 [110/20] via 192.168.79.9, 00:10:55, Ethernet1/2
     O     192.168.89.0/24 [110/20] via 192.168.79.9, 00:10:55, Ethernet1/2
-                        [110/20] via 192.168.78.8, 00:10:57, Ethernet1/1
+                          [110/20] via 192.168.78.8, 00:10:57, Ethernet1/1
     O IA  192.168.201.0/24 [110/11] via 192.168.78.8, 00:10:57, Ethernet1/1
         192.168.255.0/32 is subnetted, 2 subnets
     O        192.168.255.8 [110/11] via 192.168.78.8, 00:10:57, Ethernet1/1
@@ -175,7 +175,7 @@ EXT1 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT1#sh ip ospf nei
+    cfg02-EXT1#show ip ospf neighbor
     Neighbor ID     Pri   State           Dead Time   Address         Interface
     172.16.255.7      0   FULL/  -        00:00:32    192.168.78.7    Ethernet1/2
     172.16.255.6      0   FULL/  -        00:00:33    192.168.68.6    Ethernet1/1
@@ -187,7 +187,7 @@ EXT2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT2#sh ip ospf nei
+    cfg02-EXT2#show ip ospf neighbor
     Neighbor ID     Pri   State           Dead Time   Address         Interface
     172.16.255.7      0   FULL/  -        00:00:34    192.168.79.7    Ethernet1/2
     172.16.255.6      0   FULL/  -        00:00:32    192.168.69.6    Ethernet1/1
@@ -223,9 +223,9 @@ EXT1 node
     :linenos:
     :class: highlight-command
     
-    cfg02-EXT1#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
+    cfg02-EXT1#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
 
-    172.16.0.0/32 is subnetted, 6 subnets
+        172.16.0.0/32 is subnetted, 6 subnets
     O E2     172.16.101.10 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
                            [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
     O E2     172.16.101.11 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
@@ -245,9 +245,9 @@ EXT2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT2#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
+    cfg02-EXT2#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
 
-    172.16.0.0/32 is subnetted, 6 subnets
+        172.16.0.0/32 is subnetted, 6 subnets
     O E2     172.16.101.10 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
                            [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
     O E2     172.16.101.11 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
@@ -293,7 +293,7 @@ EXT1 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT1#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
+    cfg02-EXT1#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
 
     O E2  172.16.0.0/16 [110/1] via 192.168.78.7, 00:00:25, Ethernet1/2
                         [110/1] via 192.168.68.6, 00:00:25, Ethernet1/1
@@ -304,7 +304,7 @@ EXT2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT2#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
+    cfg02-EXT2#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
 
     O E2  172.16.0.0/16 [110/1] via 192.168.79.7, 00:00:38, Ethernet1/2
                         [110/1] via 192.168.69.6, 00:00:38, Ethernet1/1
@@ -366,7 +366,7 @@ EXT1 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT1#sh ip route ospf  | b Gateway
+    cfg02-EXT1#show ip route ospf | begin Gateway
     Gateway of last resort is not set
 
     O E2  172.16.0.0/16 [110/1] via 192.168.78.7, 00:00:27, Ethernet1/2
@@ -384,7 +384,7 @@ EXT2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT2#sh ip route ospf  | b Gateway
+    cfg02-EXT2#show ip route ospf | begin Gateway
     Gateway of last resort is not set
 
     O E2  172.16.0.0/16 [110/1] via 192.168.79.7, 00:00:58, Ethernet1/2
@@ -403,7 +403,7 @@ BL1 node
     :linenos:
     :class: highlight-command
 
-    cfg02-BL1#sh bgp l2vpn evpn | i \[5\]
+    cfg02-BL1#show bgp l2vpn evpn | include \[5\]
     *>   [5][1:1][0][16][172.16.0.0]/17
     *>   [5][1:1][0][24][192.168.68.0]/17
     *>   [5][1:1][0][24][192.168.69.0]/17
@@ -420,7 +420,7 @@ BL2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-BL2#sh bgp l2vpn evpn | i \[5\]
+    cfg02-BL2#show bgp l2vpn evpn | include \[5\]
     *>   [5][1:1][0][16][172.16.0.0]/17
     *>   [5][1:1][0][24][192.168.68.0]/17
     *>   [5][1:1][0][24][192.168.69.0]/17
@@ -437,7 +437,7 @@ L1 node
     :linenos:
     :class: highlight-command
 
-    cfg02-L1#sh ip ro vrf green bgp | b Gateway
+    cfg02-L1#show ip route vrf green bgp | begin Gateway
     Gateway of last resort is not set
 
         172.16.0.0/16 is variably subnetted, 9 subnets, 3 masks
@@ -462,7 +462,7 @@ L2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-L2#sh ip ro vrf green bgp | b Gateway
+    cfg02-L2#show ip route vrf green bgp | begin Gateway
     Gateway of last resort is not set
 
         172.16.0.0/16 is variably subnetted, 9 subnets, 3 masks
@@ -487,7 +487,7 @@ L3 node
     :linenos:
     :class: highlight-command
 
-    cfg02-L3#sh ip ro vrf green bgp | b Gateway
+    cfg02-L3#show ip route vrf green bgp | begin Gateway
     Gateway of last resort is not set
 
         172.16.0.0/16 is variably subnetted, 9 subnets, 3 masks
