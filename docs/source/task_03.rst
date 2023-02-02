@@ -80,7 +80,7 @@ The EVI outputs show the vlan 101 is mapped to the L2 VNI ``10110`` but the VTEP
     ----- ----- ---------- --------- ------------- ------------------
     101   101   0          10110     UNKNOWN       Et0/0:101 
 
-    ts01-L1#sh l2vpn evpn evi vlan 101 detail 
+    ts01-L1#show l2vpn evpn evi vlan 101 detail 
     EVPN instance:       101 (VLAN Based)
     RD:                10.1.255.3:101 (auto)
     Import-RTs:        65001:101 
