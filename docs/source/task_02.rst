@@ -215,11 +215,54 @@ BL1/BL2 node
      add ipv4 uni vrf green
       redistribute ospf 100
 
+Once we configured redistribution between OSPF and BGP, we can see on EXT devices host /32 routes from the fabric. 
+
+EXT1 node
+
+.. code-block:: console
+    :class: highlight-command
+    
+    cfg02-EXT1#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
+
+    172.16.0.0/32 is subnetted, 6 subnets
+    O E2     172.16.101.10 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+    O E2     172.16.101.11 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+    O E2     172.16.101.12 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+    O E2     172.16.102.10 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+    O E2     172.16.102.11 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+    O E2     172.16.102.12 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+
+EXT2 node
+
+.. code-block:: console
+    :class: highlight-command
+
+    cfg02-EXT2#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
+
+    172.16.0.0/32 is subnetted, 6 subnets
+    O E2     172.16.101.10 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
+    O E2     172.16.101.11 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
+    O E2     172.16.101.12 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
+    O E2     172.16.102.10 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
+    O E2     172.16.102.11 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
+    O E2     172.16.102.12 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
 
 Step 3: Configure the BGP aggregation route-map
 ***********************************************
 
-Also, as a part of this lab scenario we will be aggregating routes in BGP address-family for VRF ``green`` by a /16 mask. 
+Redistribution of all host routes in fabric to external network may not be always desired since it can significantly increase size of routing table in external network depending on number of hosts in fabric. Therefore, we will implement aggregation of these routes in BGP for VRF ``green`` and we will aggregate all /32 routes under single /16 route.
 
 BL1/BL2 nodes
 
@@ -239,6 +282,28 @@ BL1/BL2 nodes
     !
     router ospf 100 vrf green
      redistribute bgp 65001 route-map RM-BGP-TO-OSPF
+
+After we updated our configuration of redistribution, we can see that EXT devices now holds only single /16 route, which aggregates host /32 routes from fabric.
+
+EXT1 node
+
+.. code-block:: console
+    :class: highlight-command
+
+    cfg02-EXT1#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
+
+    O E2  172.16.0.0/16 [110/1] via 192.168.78.7, 00:00:25, Ethernet1/2
+                        [110/1] via 192.168.68.6, 00:00:25, Ethernet1/1
+
+EXT2 node
+
+.. code-block:: console
+    :class: highlight-command
+
+    cfg02-EXT2#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
+
+    O E2  172.16.0.0/16 [110/1] via 192.168.79.7, 00:00:38, Ethernet1/2
+                        [110/1] via 192.168.69.6, 00:00:38, Ethernet1/1
 
 Step 4: Verification
 ********************
