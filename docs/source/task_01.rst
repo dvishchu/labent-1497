@@ -253,7 +253,7 @@ Finally, on the NVE interface the L3VNI has to be associated with the VRF ``gree
 
 .. note:: 
 
-    Corresponding L2 VNI configuration of NVE interface was already preconfigured for you. As you can see below, VNI 10101 was configured with ingress (unicast) replication and VNI 10102 was set with multicast (static) replication. 
+    Corresponding L2 VNI configuration of NVE interface was already preconfigured for you. As you can see below, VNI 10101 was configured with ingress (unicast) replication and VNI 10102 was configured with multicast (static) replication. 
 
     .. code-block:: console
         :linenos:
