@@ -220,6 +220,7 @@ Once we configured redistribution between OSPF and BGP, we can see on EXT device
 EXT1 node
 
 .. code-block:: console
+    :linenos:
     :class: highlight-command
     
     cfg02-EXT1#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
@@ -241,6 +242,7 @@ EXT1 node
 EXT2 node
 
 .. code-block:: console
+    :linenos:
     :class: highlight-command
 
     cfg02-EXT2#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
@@ -288,6 +290,7 @@ After we updated our configuration of redistribution, we can see that EXT device
 EXT1 node
 
 .. code-block:: console
+    :linenos:
     :class: highlight-command
 
     cfg02-EXT1#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
@@ -298,6 +301,7 @@ EXT1 node
 EXT2 node
 
 .. code-block:: console
+    :linenos:
     :class: highlight-command
 
     cfg02-EXT2#sh ip ro 172.16.0.0 255.255.0.0 longer-prefixes
