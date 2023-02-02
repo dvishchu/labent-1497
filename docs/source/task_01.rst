@@ -16,7 +16,8 @@ To get started, please select in ``lab manager`` option ``01`` to initialize lab
         * IGP is UP
         * BGP is up
         * Multicast is configured
-        * L2VNI, EVI, VNI are configured and up
+    
+    In this lab task, we will mainly focus on L3 part of the configuration. The L2 parts like L2 VNI, EVI, VNI are already preconfigured and running. At the relevant steps, there will also provide reference of pre applied L2 configuration for your awareness. 
 
 
 Step 1: Create VRF
@@ -249,6 +250,20 @@ Finally, on the NVE interface the L3VNI has to be associated with the VRF ``gree
     !
     interface nve1
      member vni 50901 vrf green
+
+.. note:: 
+
+    Corresponding L2 VNI configuration of NVE interface was already preconfigured for you. As you can see below, VNI 10101 was configured with ingress (unicast) replication and VNI 10102 was set with multicast (static) replication. 
+
+    .. code-block:: console
+        :linenos:
+
+        interface nve1
+         source-interface Loopback1
+         host-reachability protocol bgp
+         member vni 10101 ingress-replication
+         member vni 10102 mcast-group 225.0.1.102
+
 
 Step 6: Verification
 ***********************************
