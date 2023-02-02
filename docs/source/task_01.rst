@@ -268,7 +268,141 @@ Finally, on the NVE interface the L3VNI has to be associated with the VRF ``gree
 Step 6: Verification
 ***********************************
 
-At the end of this task you would be able to ping between hosts located in different vlans, as routing is enabled now between different subnets via L3VNI 50901, Vlan 901.
+Let’s now verify state of control plane on our devices. As you can see below, NVE interface state is Up. In terms of EVI 101 and 102, we can see that state is ``established``, which means that EVI was successfully provisioned on device. From the outputs, we can also verify L2 and L3 VNI information’s for corresponding EVI.
+
+L1 node
+
+.. code-block:: console
+    :linenos:
+    :emphasize-lines: 2,3,5,14,21,25,26,30,31,51,58,62,63,67,68
+    :class: highlight-command highlight-command-13 highlight-command-80 emphasize-hll-37 emphasize-hll-44 emphasize-hll-45 emphasize-hll-52 emphasize-hll-53 emphasize-hll-104 emphasize-hll-111 emphasize-hll-112 emphasize-hll-119 emphasize-hll-120
+
+    cfg01-L1#sh nve int nve1
+    Interface: nve1, State: Admin Up, Oper Up, Encapsulation: Vxlan,
+    BGP host reachability: Enable, VxLAN dport: 4789
+    VNI number: L3CP 1 L2CP 2 L2DP 0
+    source-interface: Loopback1 (primary:10.1.254.3 vrf:0)
+    tunnel interface: Tunnel0
+
+    cfg01-L1#sh l2vpn evpn evi 101 detail
+    EVPN instance:       101 (VLAN Based)
+    RD:                10.1.255.3:101 (auto)
+    Import-RTs:        65001:101
+    Export-RTs:        65001:101
+    Per-EVI Label:     none
+    State:             Established
+    Replication Type:  Ingress (global)
+    Encapsulation:     vxlan
+    IP Local Learn:    Enabled (global)
+    Adv. Def. Gateway: Enabled (global)
+    Re-originate RT5:  Disabled
+    Adv. Multicast:    Disabled (global)
+    Vlan:              101
+        Ethernet-Tag:    0
+        State:           Established
+        Flood Suppress:  Attached
+        Core If:         Vlan901
+        Access If:       Vlan101
+        NVE If:          nve1
+        RMAC:            aabb.cc80.0300
+        Core Vlan:       901
+        L2 VNI:          10101
+        L3 VNI:          50901
+        VTEP IP:         10.1.254.3
+        VRF:             green
+        IPv4 IRB:        Enabled
+        IPv6 IRB:        Disabled
+        Pseudoports:
+        Ethernet0/0 service instance 101
+            Routes: 0 MAC, 1 MAC/IP
+        Peers:
+        10.1.254.4
+            Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
+        10.1.254.5
+            Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
+
+    cfg01-L1#sh l2vpn evpn evi 102 detail
+    EVPN instance:       102 (VLAN Based)
+    RD:                10.1.255.3:102 (auto)
+    Import-RTs:        65001:102
+    Export-RTs:        65001:102
+    Per-EVI Label:     none
+    State:             Established
+    Replication Type:  Static
+    Encapsulation:     vxlan
+    IP Local Learn:    Enabled (global)
+    Adv. Def. Gateway: Enabled (global)
+    Re-originate RT5:  Disabled
+    Adv. Multicast:    Disabled (global)
+    Vlan:              102
+        Ethernet-Tag:    0
+        State:           Established
+        Flood Suppress:  Attached
+        Core If:         Vlan901
+        Access If:       Vlan102
+        NVE If:          nve1
+        RMAC:            aabb.cc80.0300
+        Core Vlan:       901
+        L2 VNI:          10102
+        L3 VNI:          50901
+        VTEP IP:         10.1.254.3
+        MCAST IP:        225.0.1.102
+        VRF:             green
+        IPv4 IRB:        Enabled
+        IPv6 IRB:        Disabled
+        Pseudoports:
+        Ethernet0/0 service instance 102
+            Routes: 0 MAC, 1 MAC/IP
+        Peers:
+        10.1.254.4
+            Routes: 2 MAC, 2 MAC/IP, 0 IMET, 0 EAD
+        10.1.254.5
+            Routes: 2 MAC, 2 MAC/IP, 0 IMET, 0 EAD
+
+We can also see that NVE peers been discovered in both L2 and L3 VNI. Please note that type L3CP indicate that it is used for routing.
+
+L1 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg01-L1#sh nve peers
+    'M' - MAC entry download flag  'A' - Adjacency download flag
+    '4' - IPv4 flag  '6' - IPv6 flag
+
+    Interface  VNI      Type Peer-IP          RMAC/Num_RTs   eVNI     state flags UP time
+    nve1       50901    L3CP 10.1.254.4       aabb.cc80.0400 50901      UP  A/M/4 00:03:05
+    nve1       50901    L3CP 10.1.254.5       aabb.cc80.0500 50901      UP  A/M/4 00:02:56
+    nve1       10101    L2CP 10.1.254.4       5              10101      UP   N/A  00:04:24
+    nve1       10101    L2CP 10.1.254.5       5              10101      UP   N/A  00:04:19
+    nve1       10102    L2CP 10.1.254.4       4              10102      UP   N/A  00:04:24
+    nve1       10102    L2CP 10.1.254.5       4              10102      UP   N/A  00:04:19
+
+In the routing table of VRF ``green``, we should be able to see remote host routes learned from other Leafs over Vlan 901, e.g. L3 VNI vlan.
+
+L1 node
+
+.. code-block:: console
+    :linenos:
+    :emphasize-lines: 8,9,12,13
+    :class: highlight-command
+
+    cfg01-L1#sh ip route vrf green
+
+    Routing Table: green
+
+        172.16.0.0/16 is variably subnetted, 8 subnets, 2 masks
+    C        172.16.101.0/24 is directly connected, Vlan101
+    L        172.16.101.1/32 is directly connected, Vlan101
+    B        172.16.101.11/32 [200/0] via 10.1.254.4, 00:05:52, Vlan901
+    B        172.16.101.12/32 [200/0] via 10.1.254.5, 00:05:53, Vlan901
+    C        172.16.102.0/24 is directly connected, Vlan102
+    L        172.16.102.1/32 is directly connected, Vlan102
+    B        172.16.102.11/32 [200/0] via 10.1.254.4, 00:05:52, Vlan901
+    B        172.16.102.12/32 [200/0] via 10.1.254.5, 00:05:53, Vlan901
+
+You should be also able to ping between the hosts located in different vlans since we enabled routing between different subnets via L3 VNI 50901 (Vlan901).
 
 H1 node
 
@@ -371,117 +505,3 @@ H3 node
     Packet sent with a source address of 172.16.102.12
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
-
-In the routing table of VRF ``green`` we should be able to see remote host routes learned from other Leafs, over Vlan 901, e.g. for the Leaf1:
-
-L1 node
-
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 8,9,12,13
-    :class: highlight-command
-
-    cfg01-L1#sh ip route vrf green
-
-    Routing Table: green
-
-        172.16.0.0/16 is variably subnetted, 8 subnets, 2 masks
-    C        172.16.101.0/24 is directly connected, Vlan101
-    L        172.16.101.1/32 is directly connected, Vlan101
-    B        172.16.101.11/32 [200/0] via 10.1.254.4, 00:05:52, Vlan901
-    B        172.16.101.12/32 [200/0] via 10.1.254.5, 00:05:53, Vlan901
-    C        172.16.102.0/24 is directly connected, Vlan102
-    L        172.16.102.1/32 is directly connected, Vlan102
-    B        172.16.102.11/32 [200/0] via 10.1.254.4, 00:05:52, Vlan901
-    B        172.16.102.12/32 [200/0] via 10.1.254.5, 00:05:53, Vlan901
-
-The L3VNI 50901 state should be Up. Note that Mode is L3CP for it – indicating it is used for routing. Also, you can see which VRF it is linked to.
-
-L1 node
-
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 2,3,5,14,21,25,26,30,31,51,58,62,63,67,68
-    :class: highlight-command highlight-command-13 highlight-command-80 emphasize-hll-37 emphasize-hll-44 emphasize-hll-45 emphasize-hll-52 emphasize-hll-53 emphasize-hll-104 emphasize-hll-111 emphasize-hll-112 emphasize-hll-119 emphasize-hll-120
-
-    cfg01-L1#sh nve int nve1
-    Interface: nve1, State: Admin Up, Oper Up, Encapsulation: Vxlan,
-    BGP host reachability: Enable, VxLAN dport: 4789
-    VNI number: L3CP 1 L2CP 2 L2DP 0
-    source-interface: Loopback1 (primary:10.1.254.3 vrf:0)
-    tunnel interface: Tunnel0
-
-    cfg01-L1#sh l2vpn evpn evi 101 detail
-    EVPN instance:       101 (VLAN Based)
-    RD:                10.1.255.3:101 (auto)
-    Import-RTs:        65001:101
-    Export-RTs:        65001:101
-    Per-EVI Label:     none
-    State:             Established
-    Replication Type:  Ingress (global)
-    Encapsulation:     vxlan
-    IP Local Learn:    Enabled (global)
-    Adv. Def. Gateway: Enabled (global)
-    Re-originate RT5:  Disabled
-    Adv. Multicast:    Disabled (global)
-    Vlan:              101
-        Ethernet-Tag:    0
-        State:           Established
-        Flood Suppress:  Attached
-        Core If:         Vlan901
-        Access If:       Vlan101
-        NVE If:          nve1
-        RMAC:            aabb.cc80.0300
-        Core Vlan:       901
-        L2 VNI:          10101
-        L3 VNI:          50901
-        VTEP IP:         10.1.254.3
-        VRF:             green
-        IPv4 IRB:        Enabled
-        IPv6 IRB:        Disabled
-        Pseudoports:
-        Ethernet0/0 service instance 101
-            Routes: 0 MAC, 1 MAC/IP
-        Peers:
-        10.1.254.4
-            Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
-        10.1.254.5
-            Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
-
-    cfg01-L1#sh l2vpn evpn evi 102 detail
-    EVPN instance:       102 (VLAN Based)
-    RD:                10.1.255.3:102 (auto)
-    Import-RTs:        65001:102
-    Export-RTs:        65001:102
-    Per-EVI Label:     none
-    State:             Established
-    Replication Type:  Static
-    Encapsulation:     vxlan
-    IP Local Learn:    Enabled (global)
-    Adv. Def. Gateway: Enabled (global)
-    Re-originate RT5:  Disabled
-    Adv. Multicast:    Disabled (global)
-    Vlan:              102
-        Ethernet-Tag:    0
-        State:           Established
-        Flood Suppress:  Attached
-        Core If:         Vlan901
-        Access If:       Vlan102
-        NVE If:          nve1
-        RMAC:            aabb.cc80.0300
-        Core Vlan:       901
-        L2 VNI:          10102
-        L3 VNI:          50901
-        VTEP IP:         10.1.254.3
-        MCAST IP:        225.0.1.102
-        VRF:             green
-        IPv4 IRB:        Enabled
-        IPv6 IRB:        Disabled
-        Pseudoports:
-        Ethernet0/0 service instance 102
-            Routes: 0 MAC, 1 MAC/IP
-        Peers:
-        10.1.254.4
-            Routes: 2 MAC, 2 MAC/IP, 0 IMET, 0 EAD
-        10.1.254.5
-            Routes: 2 MAC, 2 MAC/IP, 0 IMET, 0 EAD
