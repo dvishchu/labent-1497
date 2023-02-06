@@ -124,24 +124,6 @@ Verification output is part of the ``sh l2vpn evpn summary`` command:
     Advertise Default Gateway: Yes
     Default Gateway Addresses: 0
 
-.. note:: 
-
-    L2VPN EVPN instance was already preconfigured on device with global replication mode set to ingress (unicast replication) along with two EVI instances: 101 with ingress (unicast) replication and 102 with static (multicast) replication mode.
-
-    .. code-block:: console
-        :linenos:
-
-        l2vpn evpn
-         replication-type ingress
-         router-id Loopback1
-         !
-         l2vpn evpn instance 101 vlan-based
-          encapsulation vxlan
-         !
-         l2vpn evpn instance 102 vlan-based
-          encapsulation vxlan
-          replication-type static
-
 
 Step 3: Create VNI to vlan stitching for vlan901 (L3VNI), create SVIs for L2VNIs and L3VNI
 ******************************************************************************************
@@ -206,20 +188,6 @@ L1/L2/L3 nodes
      no autostate
      no shut
 
-.. note::
-
-    Vlan 101 and 102 were already preconfigured along with corresponding VLAN to VNI mappings.
-
-    .. code-block:: console
-        :linenos:
-
-        vlan 101,102
-        !
-        vlan configuration 101
-         member evpn-instance 101 vni 10101
-        vlan configuration 102  
-         member evpn-instance 102 vni 10102
-
 
 Step 4: Configure BGP for VRF
 *****************************
@@ -250,19 +218,6 @@ Finally, on the NVE interface the L3VNI has to be associated with the VRF ``gree
     !
     interface nve1
      member vni 50901 vrf green
-
-.. note:: 
-
-    Corresponding L2 VNI configuration of NVE interface was already preconfigured for you. As you can see below, VNI 10101 was configured with ingress (unicast) replication and VNI 10102 was configured with multicast (static) replication. 
-
-    .. code-block:: console
-        :linenos:
-
-        interface nve1
-         source-interface Loopback1
-         host-reachability protocol bgp
-         member vni 10101 ingress-replication
-         member vni 10102 mcast-group 225.0.1.102
 
 
 Step 6: Verification
