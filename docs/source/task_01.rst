@@ -17,7 +17,7 @@ To get started, please select in ``lab manager`` option ``01`` to initialize lab
         * BGP is up
         * Multicast is configured
     
-    In this lab task, we will mainly focus on L3 part of the configuration. The L2 parts like L2 VNI, EVI, VNI are already preconfigured and running. At the relevant steps, there will also provide reference of pre applied L2 configuration for your awareness. 
+    In this lab task, we will mainly focus on L3 part of the configuration. The L2 parts like L2 VNI, EVI, VNI are already preconfigured and running.
 
 
 Step 1: Create VRF
