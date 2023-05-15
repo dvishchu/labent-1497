@@ -1,34 +1,37 @@
-Task TS02: H1(172.16.101.10) cannot ping H3(172.16.101.12) over vxlan via vlan101
+Task TS01: H1(172.16.101.10) cannot ping H3(172.16.101.11) over vxlan via vlan101
 =================================================================================
 
-.. image:: assets/ts02_topology.png
+.. image:: assets/ts01_topology.png
     :align: center
 
 .. note:: 
 
-    To get started, please select in lab manager option ``04`` to initialize lab devices. Please, wait a minute after lab start for network convergence.
-
+    To get started, please select in lab manager option ``03`` to initialize lab devices. Please, wait a minute after lab start for network convergence.
 
 H1 node 
 
 .. code-block:: console
     :linenos:
-    :emphasize-lines: 4,10
-    :class: highlight-command highlight-command-13 emphasize-hll emphasize-hll-18
+    :emphasize-lines: 4,11
+    :class: highlight-command highlight-command-13 emphasize-hll
 
-    ts02-H1#ping vrf h1 172.16.101.12
+    ts01-H1#ping vrf h1 172.16.101.11
     Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.101.12, timeout is 2 seconds:
+    Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
     .....
     Success rate is 0 percent (0/5)
 
-    ts02-H1#ping vrf h1 172.16.101.1 
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.101.1, timeout is 2 seconds:
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+    ts01-H1#show ip arp vrf h1
+    Protocol  Address          Age (min)  Hardware Addr   Type   Interface
+    Internet  172.16.101.1            0   aabb.cc80.0300  ARPA   Vlan101
+    Internet  172.16.101.10           -   0000.0001.0101  ARPA   Vlan101
+    Internet  172.16.101.11           0   Incomplete      ARPA   
 
-We can see that NVE peering looks fine on Leaf1.
+We will start with the leaf to which the host is connected – Leaf1. In the host information we saw that ARP is ``incomplete``. Lets check the same on Leaf1 and also look into the NVE peering.
+
+.. note::
+
+    Note that VRF “green” is used on the Leaf1 node for L3VNI. 
 
 L1 node 
 
@@ -36,233 +39,177 @@ L1 node
     :linenos:
     :class: highlight-command
 
-    ts02-L1#show nve peer    
-    'M' - MAC entry download flag  'A' - Adjacency download flag
-    '4' - IPv4 flag  '6' - IPv6 flag
+    ts01-L1#show ip arp vrf green 
+    Protocol  Address          Age (min)  Hardware Addr   Type   Interface
+    Internet  10.1.254.3              -   aabb.cc80.0300  ARPA   Vlan901
+    Internet  172.16.101.1            -   aabb.cc80.0300  ARPA   Vlan101
+    Internet  172.16.101.10           1   0000.0001.0101  ARPA   Vlan101
+    Internet  172.16.102.10           2   0000.0001.0102  ARPA   Vlan102
 
-    Interface  VNI      Type Peer-IP          RMAC/Num_RTs   eVNI     state flags UP time
-    nve1       50901    L3CP 10.1.254.4       aabb.cc80.0400 50901      UP  A/M/4 00:00:03
-    nve1       50901    L3CP 10.1.254.6       aabb.cc80.0600 50901      UP  A/M/4 00:00:03
-    nve1       50901    L3CP 10.1.254.7       aabb.cc80.0700 50901      UP  A/M/4 00:00:03
-    nve1       10101    L2CP 10.1.254.4       5              10101      UP   N/A  00:00:03
-    nve1       10101    L2CP 10.1.254.6       3              10101      UP   N/A  00:00:03
-    nve1       10101    L2CP 10.1.254.7       3              10101      UP   N/A  00:00:03
-    nve1       10102    L2CP 10.1.254.4       4              10102      UP   N/A  00:00:03
-    nve1       10102    L2CP 10.1.254.6       2              10102      UP   N/A  00:00:03
-    nve1       10102    L2CP 10.1.254.7       2              10102      UP   N/A  00:00:03
-
-BGP is up as well and receives prefixes from neighbors.
-
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 5,6
-    :class: highlight-command highlight-command-13 emphasize-hll-positive
-
-    ts02-L1#show bgp l2vpn evpn summary 
-    BGP router identifier 10.1.255.3, local AS number 65001
-
-    Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
-    10.1.255.1      4        65001      23      10       44    0    0 00:01:31       23
-    10.1.255.2      4        65001      23       9       44    0    0 00:01:26       23
-
-    ts02-L1#show l2route evpn mac ip topology 101
-      EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
-    ----- ---------- ----- -------------- --------------- --------------------------
-      101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
-      101          0   BGP 0000.0002.0101   172.16.101.11         V:10101 10.1.254.4
-      101          0 L2VPN aabb.cc80.0300    172.16.101.1                    Vl101:0
-      101          0   BGP aabb.cc80.0400    172.16.101.1         V:10101 10.1.254.4
-      101          0   BGP aabb.cc80.0600    172.16.101.1         V:10101 10.1.254.6
-      101          0   BGP aabb.cc80.0700    172.16.101.1         V:10101 10.1.254.6
-
-We see, however, that ``172.16.101.12`` prefix is not present in the list of the EVPN MAC/IP info. 
-
-Lets check if we have this route in BGP table – the output below confirms that such route is not present, MAC for the destination host is 0000.0003.0101.
-
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 2
-    :class: highlight-command emphasize-hll
-
-    ts02-L1#show bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
-    % Network not in table 
-
-Is it present on RRs (spines)?
-
-S1 node 
-
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 2,4,5
-    :class: highlight-command emphasize-hll-positive
-
-    ts02-S1#show bgp l2vpn evpn route-type 2 0 000000030101 172.16.101.12
-    BGP routing table entry for [2][10.1.255.5:101][0][48][000000030101][32][172.16.101.12]/24, version 61
-    Paths: (2 available, best #1, table EVPN-BGP-Table)
-    Advertised to update-groups:
-        2
-    Refresh Epoch 1
-    Local
-        10.1.254.5 (metric 11) (via default) from 10.1.255.5 (10.1.255.5)
-        Origin incomplete, metric 0, localpref 100, valid, internal, best
-        EVPN ESI: 00000000000000000000, Label1 10101, Label2 50901
-        Extended Community: RT:10:10 RT:65001:101 ENCAP:8
-            Router MAC:AABB.CC80.0500
-        rx pathid: 0, tx pathid: 0x0
-        Updated on Mar 25 2021 20:06:24 CET
-    Refresh Epoch 1
-    Local, (Received from a RR-client)
-        10.1.254.5 (metric 11) (via default) from 10.1.255.2 (10.1.255.2)
-        Origin incomplete, metric 0, localpref 100, valid, internal
-        EVPN ESI: 00000000000000000000, Label1 10101, Label2 50901
-        Extended Community: RT:10:10 RT:65001:101 ENCAP:8
-            Router MAC:AABB.CC80.0500
-        Originator: 10.1.255.5, Cluster list: 10.1.255.2
-        rx pathid: 0, tx pathid: 0
-        Updated on Mar 25 2021 20:06:24 CET
-
-.. note::
-
-    The update-group might be different in your lab!
-
-Route is present and is being advertised to the BGP update-group (note the group number in the output above). Lets see which routers are part of it.
-
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 14
-    :class: highlight-command emphasize-hll
-
-    ts02-S1#show bgp l2vpn evpn update-group 2 
-    BGP version 4 update-group 2, internal, Address Family: L2VPN E-VPN
-    BGP Update version : 79/0, messages 0, active RGs: 1
-    Route-Reflector Client
-    Community attribute sent to this neighbor
-    Extended-community attribute sent to this neighbor
-    Topology: global, highest version: 79, tail marker: 79
-    Format state: Current working (OK, last not in list)
-        Refresh blocked (not in list, last not in list)
-    Update messages formatted 67, replicated 268, current 0, refresh 0, limit 1000, mss 1460, SSO is disabled
-    Number of NLRIs in the update sent: max 2, min 0
-    Minimum time between advertisement runs is 0 seconds
-    Has 4 members:
-        10.1.255.2       10.1.255.4       10.1.255.6       10.1.255.7      
-
-Looking into the update-group members, peer ``10.1.255.3`` is not part of it. 
-
-To identify the reason for this issue, we will check the BGP config for problem and working neighbors.
-
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 25
-    :class: highlight-command highlight-command-38 emphasize-hll-positive
-
-    ts02-S1#show bgp l2vpn evpn neighbors 10.1.255.3 | begin L2VPN E-VPN
-    For address family: L2VPN E-VPN
-    Session: 10.1.255.3
-    BGP table version 62, neighbor version 62/0
-    Output queue size : 0
-    Index 2, Advertise bit 1
-    2 update-group member
-    Community attribute sent to this neighbor
-    Extended-community attribute sent to this neighbor
-    Slow-peer detection is disabled
-    Slow-peer split-update-group dynamic is disabled
-    Prefers VxLAN if VTEP is UP else MPLS 
-                                    Sent       Rcvd
-    Prefix activity:               ----       ----
-        Prefixes Current:              21          5 (Consumes 1120 bytes)
-        Prefixes Total:                37          9
-    <...skip...>
-
-    ts02-S1#show bgp l2vpn evpn neighbors 10.1.255.4 | begin L2VPN E-VPN
-    For address family: L2VPN E-VPN
-    Session: 10.1.255.4
-    BGP table version 62, neighbor version 62/0
-    Output queue size : 0
-    Index 1, Advertise bit 0
-    Route-Reflector Client 
-    1 update-group member
-    Community attribute sent to this neighbor
-    Extended-community attribute sent to this neighbor
-    Slow-peer detection is disabled
-    Slow-peer split-update-group dynamic is disabled
-    Prefers VxLAN if VTEP is UP else MPLS 
-                                    Sent       Rcvd
-    Prefix activity:               ----       ----
-        Prefixes Current:              31          5 (Consumes 1120 bytes)
-    <...skip....>
-
-Looks like ``route-reflector-client`` command is missing for the 10.1.255.3 neighbor. That configuration command is required since S1 node is acting as a Spine in the EVPN fabric.
-
-Similarly, such configuration is missing on S2 node too. 
-
-S2 node
+We won’t see ARPs for clients over remote VTEP
 
 .. code-block:: console
     :linenos:
     :class: highlight-command
 
-    ts02-S2#show bgp l2vpn evpn neighbors 10.1.255.3 | begin L2VPN E-VPN
-    For address family: L2VPN E-VPN
-    Session: 10.1.255.3
-    BGP table version 101, neighbor version 101/0
-    Output queue size : 0
-    Index 1, Advertise bit 0
-    1 update-group member
-    Community attribute sent to this neighbor
-    Extended-community attribute sent to this neighbor
-    Slow-peer detection is disabled
-    Slow-peer split-update-group dynamic is disabled
-    Prefers VxLAN if VTEP is UP else MPLS
-                                    Sent       Rcvd
-    Prefix activity:               ----       ----
-        Prefixes Current:              21          5 (Consumes 1120 bytes)
-        Prefixes Total:                54         13
-        Implicit Withdraw:             14          0
-        Explicit Withdraw:             19          8
-        Used as bestpath:             n/a          5
-        Used as multipath:            n/a          0
-        Used as secondary:            n/a          0
+    ts01-L1#show nve peers 
+    'M' - MAC entry download flag  'A' - Adjacency download flag
+    '4' - IPv4 flag  '6' - IPv6 flag
 
-Lets fix it on S1 and S2 nodes (make sure to do it on both Spines).
+    Interface  VNI      Type Peer-IP          RMAC/Num_RTs   eVNI     state flags UP time
+    nve1       50901    L3CP 10.1.254.4       aabb.cc80.0400 50901      UP  A/M/4 00:02:06
+    nve1       50901    L3CP 10.1.254.5       aabb.cc80.0500 50901      UP  A/M/4 00:02:06
+    nve1       50901    L3CP 10.1.254.6       aabb.cc80.0600 50901      UP  A/M/4 00:02:06
+    nve1       50901    L3CP 10.1.254.7       aabb.cc80.0700 50901      UP  A/M/4 00:02:06
+    nve1       10102    L2CP 10.1.254.4       4              10102      UP   N/A  00:02:06
+    nve1       10102    L2CP 10.1.254.5       4              10102      UP   N/A  00:02:06
+    nve1       10102    L2CP 10.1.254.6       2              10102      UP   N/A  00:02:06
+    nve1       10102    L2CP 10.1.254.7       3              10102      UP   N/A  00:02:06
 
-S1/S2 nodes
+In the NVE peers table above that there are no entries that would be showing a peering over VNI ``10101``. Therefore, lets check the EVI for the vlan where we have H1 attached – vlan 101. 
+
+The EVI outputs show the vlan 101 is mapped to the L2 VNI ``10110`` but the VTEP IP is ``UNKNOWN``.
+
+.. code-block:: console
+    :linenos:
+    :emphasize-lines: 4,28,30
+    :class: highlight-command highlight-command-11 emphasize-hll
+
+    ts01-L1#show l2vpn evpn evi vlan 101
+    EVI   VLAN  Ether Tag  L2 VNI    Multicast     Pseudoport
+    ----- ----- ---------- --------- ------------- ------------------
+    101   101   0          10110     UNKNOWN       Et0/0:101 
+
+    ts01-L1#show l2vpn evpn evi vlan 101 detail 
+    EVPN instance:       101 (VLAN Based)
+    RD:                10.1.255.3:101 (auto)
+    Import-RTs:        65001:101 
+    Export-RTs:        65001:101 
+    Per-EVI Label:     none
+    State:             Established
+    Replication Type:  Ingress (global)
+    Encapsulation:     vxlan
+    IP Local Learn:    Enabled (global)
+    Adv. Def. Gateway: Enabled (global)
+    Re-originate RT5:  Disabled
+    Adv. Multicast:    Disabled (global)
+    Vlan:              101
+        Ethernet-Tag:    0
+        State:           Established
+        Flood Suppress:  Attached
+        Core If:         
+        Access If:       
+        NVE If:          
+        RMAC:            0000.0000.0000
+        Core Vlan:       0
+        L2 VNI:          10110  
+        L3 VNI:          0
+        VTEP IP:         UNKNOWN 
+        Pseudoports:
+        Ethernet0/0 service instance 101
+            Routes: 1 MAC, 1 MAC/IP
+        Peers:
+        10.1.254.4
+            Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
+        10.1.254.5
+            Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
+        10.1.254.6
+            Routes: 1 MAC, 1 MAC/IP, 1 IMET, 0 EAD
+        10.1.254.7
+            Routes: 1 MAC, 2 MAC/IP, 1 IMET, 0 EAD 
+
+The MAC/IP information from BGP routes shows that the next show information is actually expecting ``10101``.
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    ts01-L1#show l2route evpn mac ip 
+    EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
+    ----- ---------- ----- -------------- --------------- --------------------------
+    101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
+    101          0   BGP 0000.0002.0101   172.16.101.11         V:10101 10.1.254.4
+    101          0   BGP 0000.0003.0101   172.16.101.12         V:10101 10.1.254.5
+    101          0   BGP aabb.cc80.0400    172.16.101.1         V:10101 10.1.254.4
+    101          0   BGP aabb.cc80.0500    172.16.101.1         V:10101 10.1.254.5
+    101          0   BGP aabb.cc80.0600    172.16.101.1         V:10101 10.1.254.6
+    101          0   BGP aabb.cc80.0700    172.16.101.1         V:10101 10.1.254.7
+    <...skip...>
+
+Do those 2 VNIs exist on the switch? Looks like ``10110`` does not exist – in the configuration of NVE we can find out which VNI is actually expected to be here.
+
+.. code-block:: console
+    :linenos:
+    :emphasize-lines: 3,7,14,21
+    :class: highlight-command highlight-command-9 highlight-command-15 highlight-command-33 emphasize-hll emphasize-hll-24
+
+    ts01-L1#show nve vni 10101
+    Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
+    nve1       10101      N/A             BD Down/Re L2CP  N/A   CLI N/A    
+
+    ts01-L1#show nve vni 10110 detail 
+    Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
+    % VNI 10110 doesnt exist
+
+    ts01-L1#show run int nve1
+    interface nve1
+     no ip address
+     source-interface Loopback1
+     host-reachability protocol bgp
+     member vni 10101 ingress-replication 
+     member vni 10102 mcast-group 225.0.1.102
+     member vni 50901 vrf green
+     end
+
+    ts01-L1#show run vlan 101
+    vlan configuration 101
+     member evpn-instance 101 vni 10110 
+
+We have identified that there is a mismatch in vlan-to-VNI mapping, as for vlan 101 L2VNI ``10110`` is used instead of the expected VNI ``10101``. Correct L2VNI is not configured on the switch.
+
+Lets fix the configuration mistake on L1 node and reconfigure the NVE-VNI membership to retrigger the NVE peer learning for VNI ``10101``.
+
+L1 node
 
 .. code-block:: console
     :linenos:
 
     conf t
-     router bgp 65001
-      address-family l2vpn evpn
-       neighbor 10.1.255.3 route-reflector-client
+    no vlan configuration 101
+    vlan configuration 101
+     member evpn-instance 101 vni 10101
+    !
+    int nve1
+     no member vni 10101 ingress-replication
+     member vni 10101 ingress-replication
 
-After that we will see ``172.16.101.12`` in l2route table of Leaf1.
+Checking the NVE peers for that VNI afterwards, we see remote Leafs and connectivity start working.
+
+L1 node
 
 .. code-block:: console
     :linenos:
-    :emphasize-lines: 6
-    :class: highlight-command emphasize-hll-positive
+    :class: highlight-command
 
-    ts02-L1#show l2route evpn mac ip topology 101
-      EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
-    ----- ---------- ----- -------------- --------------- --------------------------
-      101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
-      101          0   BGP 0000.0002.0101   172.16.101.11         V:10101 10.1.254.4
-      101          0   BGP 0000.0003.0101   172.16.101.12         V:10101 10.1.254.5
-      101          0 L2VPN aabb.cc80.0300    172.16.101.1                    Vl101:0
-      101          0   BGP aabb.cc80.0400    172.16.101.1         V:10101 10.1.254.4
-      101          0   BGP aabb.cc80.0500    172.16.101.1         V:10101 10.1.254.5
-      101          0   BGP aabb.cc80.0600    172.16.101.1         V:10101 10.1.254.6
-      101          0   BGP aabb.cc80.0700    172.16.101.1         V:10101 10.1.254.7
+    ts01-L1#show nve peers vni 10101
+    'M' - MAC entry download flag  'A' - Adjacency download flag
+    '4' - IPv4 flag  '6' - IPv6 flag
 
-Lets try to ping from H1 to verify.
+    Interface  VNI      Type Peer-IP          RMAC/Num_RTs   eVNI     state flags UP time
+    nve1       10101    L2CP 10.1.254.4       5              10101      UP   N/A  00:00:23
+    nve1       10101    L2CP 10.1.254.5       5              10101      UP   N/A  00:00:23
+    nve1       10101    L2CP 10.1.254.6       3              10101      UP   N/A  00:00:23
+    nve1       10101    L2CP 10.1.254.7       3              10101      UP   N/A  00:00:23
+
+H1 node
 
 .. code-block:: console
     :linenos:
     :emphasize-lines: 4
-    :class: highlight-command emphasize-hll-positive
+    :class: highlight-command emphasize-hll-8
 
-    ts02-H1#ping vrf h1 172.16.101.12
+    ts01-H1#ping vrf h1 172.16.101.11          
     Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.101.12, timeout is 2 seconds:
-    .!!!!
+    Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms

@@ -1,37 +1,435 @@
-Task TS01: H1(172.16.101.10) cannot ping H3(172.16.101.11) over vxlan via vlan101
-=================================================================================
+Task CFG03: Configure Border Leafs and L3 routing between external network and Fabric
+=====================================================================================
 
-.. image:: assets/ts01_topology.png
+.. image:: assets/cfg02_topology.png
     :align: center
 
-.. note:: 
-
-    To get started, please select in lab manager option ``03`` to initialize lab devices. Please, wait a minute after lab start for network convergence.
-
-H1 node 
-
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 4,11
-    :class: highlight-command highlight-command-13 emphasize-hll
-
-    ts01-H1#ping vrf h1 172.16.101.11
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
-    .....
-    Success rate is 0 percent (0/5)
-
-    ts01-H1#show ip arp vrf h1
-    Protocol  Address          Age (min)  Hardware Addr   Type   Interface
-    Internet  172.16.101.1            0   aabb.cc80.0300  ARPA   Vlan101
-    Internet  172.16.101.10           -   0000.0001.0101  ARPA   Vlan101
-    Internet  172.16.101.11           0   Incomplete      ARPA   
-
-We will start with the leaf to which the host is connected – Leaf1. In the host information we saw that ARP is ``incomplete``. Lets check the same on Leaf1 and also look into the NVE peering.
+In this task we are configuring the more complex topology with a connectivity between fabric and external networks, using the Border Leaf switches.
 
 .. note::
 
-    Note that VRF “green” is used on the Leaf1 node for L3VNI. 
+    External connectivity allows the movement of Layer 2 and Layer 3 traffic between an EVPN VXLAN network and an external network. It also enables the EVPN VXLAN network to exchange routes with the externally connected network. 
+
+    Routes within an EVPN VXLAN network are already shared between all the VTEPs/Leafs. 
+
+    External connectivity uses the Leafs on the periphery of the network to pass on these routes to an external Layer 2 or Layer 3 network. Similarly, the EVPN VXLAN network imports the reachability routes from the external network.
+
+To get started, please select in ``lab manager`` option ``02`` to initialize lab devices.
+
+.. note::
+
+    At the beginning of the task Border Leafs are fully integrated to the fabric, External network is configured.
+
+    L3 interfaces in a dedicated VRF “green” are used on Border Leafs for external connectivity between borders and external nodes.
+
+
+Step 1: Add IP interfaces to BL1/2 and EXT1/2
+*********************************************
+
+.. image:: assets/cfg02_step1_topology.png
+    :align: center
+
+First, we need to configure underlay and OSPF for routes exchange (area 0 is used for the lab scenario). Note that Border Leaf 1 and 2 interfaces towards EXT nodes are part of VRF “green”.
+
+EXT1 node
+
+.. code-block:: console
+    :linenos:
+
+    conf t
+    !
+    interface e1/1
+     no sw
+     no shut
+     ip addr 192.168.68.8 255.255.255.0
+     ip ospf 100 area 0
+     ip ospf net point-to-point
+    !
+    interface e1/2
+     no sw
+     no shut
+     ip addr 192.168.78.8 255.255.255.0
+     ip ospf 100 area 0
+     ip ospf net point-to-point
+
+EXT2 node
+
+.. code-block:: console
+    :linenos:
+
+    conf t
+    !
+    interface e1/1
+     no sw
+     no shut
+     ip addr 192.168.69.9 255.255.255.0
+     ip ospf 100 area 0
+     ip ospf net point-to-point
+    !
+    interface e1/2
+     no sw
+     no shut
+     ip addr 192.168.79.9 255.255.255.0
+     ip ospf 100 area 0
+     ip ospf net point-to-point
+
+BL1 node
+
+.. code-block:: console
+    :linenos:
+
+    conf t
+    !
+    router ospf 100 vrf green
+     router-id 172.16.255.6
+    !
+    interface e1/1
+     no sw
+     no shut
+     vrf for green
+     ip addr 192.168.68.6 255.255.255.0
+     ip ospf 100 area 0
+     ip ospf net point-to-point
+    !
+    interface e1/2
+     no sw
+     no shut
+     vrf for green
+     ip addr 192.168.69.6 255.255.255.0
+     ip ospf 100 area 0
+     ip ospf net point-to-point
+
+BL2 node
+
+.. code-block:: console
+    :linenos:
+
+    conf t
+    !
+    router ospf 100 vrf green
+     router-id 172.16.255.7
+    !
+    interface e1/1
+     no sw
+     no shut
+     vrf for green
+     ip addr 192.168.78.7 255.255.255.0
+     ip ospf 100 area 0
+     ip ospf net point-to-point
+    !
+    interface e1/2
+     no sw
+     no shut
+     vrf for green
+     ip addr 192.168.79.7 255.255.255.0
+     ip ospf 100 area 0
+     ip ospf net point-to-point
+
+To verify that OSPF is converged properly, check the neighborship status and routes exchange:
+
+BL1 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command highlight-command-12
+
+    cfg02-BL1#show ip ospf 100 neighbor
+    Neighbor ID     Pri   State           Dead Time   Address         Interface
+    192.168.255.9     0   FULL/  -        00:00:30    192.168.69.9    Ethernet1/2
+    192.168.255.8     0   FULL/  -        00:00:35    192.168.68.8    Ethernet1/1
+
+    cfg02-BL1#show ip route vrf green ospf | begin Gateway
+    O     192.168.78.0/24 [110/20] via 192.168.68.8, 00:10:52, Ethernet1/1
+    O     192.168.79.0/24 [110/20] via 192.168.69.9, 00:10:49, Ethernet1/2
+    O     192.168.89.0/24 [110/20] via 192.168.69.9, 00:10:49, Ethernet1/2
+                          [110/20] via 192.168.68.8, 00:10:52, Ethernet1/1
+    O IA  192.168.201.0/24 [110/11] via 192.168.68.8, 00:10:52, Ethernet1/1
+        192.168.255.0/32 is subnetted, 2 subnets
+    O        192.168.255.8 [110/11] via 192.168.68.8, 00:10:52, Ethernet1/1
+    O        192.168.255.9 [110/11] via 192.168.69.9, 00:10:49, Ethernet1/2
+
+BL2 node 
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command highlight-command-12
+
+    cfg02-BL2#show ip ospf 100 neighbor
+    Neighbor ID     Pri   State           Dead Time   Address         Interface
+    192.168.255.9     0   FULL/  -        00:00:34    192.168.79.9    Ethernet1/2
+    192.168.255.8     0   FULL/  -        00:00:31    192.168.78.8    Ethernet1/1
+
+    cfg02-BL2#show ip route vrf green ospf | begin Gateway
+    O     192.168.68.0/24 [110/20] via 192.168.78.8, 00:10:57, Ethernet1/1
+    O     192.168.69.0/24 [110/20] via 192.168.79.9, 00:10:55, Ethernet1/2
+    O     192.168.89.0/24 [110/20] via 192.168.79.9, 00:10:55, Ethernet1/2
+                          [110/20] via 192.168.78.8, 00:10:57, Ethernet1/1
+    O IA  192.168.201.0/24 [110/11] via 192.168.78.8, 00:10:57, Ethernet1/1
+        192.168.255.0/32 is subnetted, 2 subnets
+    O        192.168.255.8 [110/11] via 192.168.78.8, 00:10:57, Ethernet1/1
+    O        192.168.255.9 [110/11] via 192.168.79.9, 00:10:55, Ethernet1/2
+
+EXT1 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg02-EXT1#show ip ospf neighbor
+    Neighbor ID     Pri   State           Dead Time   Address         Interface
+    172.16.255.7      0   FULL/  -        00:00:32    192.168.78.7    Ethernet1/2
+    172.16.255.6      0   FULL/  -        00:00:33    192.168.68.6    Ethernet1/1
+    192.168.255.9     0   FULL/  -        00:00:34    192.168.89.9    Ethernet0/3
+
+EXT2 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg02-EXT2#show ip ospf neighbor
+    Neighbor ID     Pri   State           Dead Time   Address         Interface
+    172.16.255.7      0   FULL/  -        00:00:34    192.168.79.7    Ethernet1/2
+    172.16.255.6      0   FULL/  -        00:00:32    192.168.69.6    Ethernet1/1
+    192.168.255.8     0   FULL/  -        00:00:39    192.168.89.8    Ethernet0/3
+
+
+Step 2: Redistribute OSPF 100 to BGP 65001 and vice versa on BL1/2
+******************************************************************
+
+.. image:: assets/cfg02_redistribution.png
+    :align: center
+
+Next, redistribution of between OSPF and BGP has to be done on the Border Leafs. Such redistribution of the IGP is required in the BGP VRF address family to distribute the external prefixes into the BGP EVPN VXLAN fabric.
+
+BL1/BL2 node
+
+.. code-block:: console
+    :linenos:
+
+    conf t
+    router ospf 100 vrf green
+     redistr bgp 65001 subnets
+    !
+    router bgp 65001
+     add ipv4 uni vrf green
+      redistribute ospf 100
+
+Once we configured redistribution between OSPF and BGP, we can see on EXT devices host /32 routes from the fabric. 
+
+EXT1 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+    
+    cfg02-EXT1#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
+
+        172.16.0.0/32 is subnetted, 6 subnets
+    O E2     172.16.101.10 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+    O E2     172.16.101.11 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+    O E2     172.16.101.12 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+    O E2     172.16.102.10 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+    O E2     172.16.102.11 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+    O E2     172.16.102.12 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
+                           [110/1] via 192.168.68.6, 00:01:29, Ethernet1/1
+
+EXT2 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg02-EXT2#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
+
+        172.16.0.0/32 is subnetted, 6 subnets
+    O E2     172.16.101.10 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
+    O E2     172.16.101.11 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
+    O E2     172.16.101.12 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
+    O E2     172.16.102.10 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
+    O E2     172.16.102.11 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
+    O E2     172.16.102.12 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
+                           [110/1] via 192.168.69.6, 00:02:05, Ethernet1/1
+
+Step 3: Configure the BGP aggregation route-map
+***********************************************
+
+Redistribution of all host routes in fabric to external network may not be always desired since it can significantly increase size of routing table in external network depending on number of hosts in fabric. Therefore, we will implement aggregation of these routes in BGP for VRF ``green`` and we will aggregate all /32 routes under single /16 route.
+
+BL1/BL2 nodes
+
+.. code-block:: console
+    :linenos:
+
+    conf t
+    !
+    router bgp 65001
+     add ipv4 uni vrf green
+      aggregate-address 172.16.0.0 255.255.0.0 summary-only
+    !
+    ip prefix-list PL-BGP-TO-OSPF permit 172.16.0.0/16
+    !
+    route-map RM-BGP-TO-OSPF p 10
+     match ip address prefix-list PL-BGP-TO-OSPF
+    !
+    router ospf 100 vrf green
+     redistribute bgp 65001 route-map RM-BGP-TO-OSPF
+
+After we updated our configuration of redistribution, we can see that EXT devices now holds only single /16 route, which aggregates host /32 routes from fabric.
+
+EXT1 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg02-EXT1#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
+
+    O E2  172.16.0.0/16 [110/1] via 192.168.78.7, 00:00:25, Ethernet1/2
+                        [110/1] via 192.168.68.6, 00:00:25, Ethernet1/1
+
+EXT2 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg02-EXT2#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
+
+    O E2  172.16.0.0/16 [110/1] via 192.168.79.7, 00:00:38, Ethernet1/2
+                        [110/1] via 192.168.69.6, 00:00:38, Ethernet1/1
+
+Step 4: Verification
+********************
+
+At the end of the task the connectivity should be established between hosts in the fabric (Hosts 1/2/3) and Hosts in the internal fabric (Hosts 4/5), which you can verify with the ping test, e.g. from Host 1 to Host 4:
+
+H1 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg02-H1#ping vrf h1 192.168.201.13
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 192.168.201.13, timeout is 2 seconds:
+    ..!!!
+    Success rate is 60 percent (3/5), round-trip min/avg/max = 1/1/1 ms
+
+Also, connectivity could be verified to the loopback of the external routers EXT1 and EXT2:
+
+H1 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command highlight-command-14 highlight-command-25 highlight-command-36
+
+    cfg02-H1#ping vrf h1 192.168.255.8
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 192.168.255.8, timeout is 2 seconds:
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+
+    cfg02-H1#ping vrf h1 192.168.255.9
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 192.168.255.9, timeout is 2 seconds:
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+
+    cfg02-H1#ping vrf h2 192.168.255.8
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 192.168.255.8, timeout is 2 seconds:
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/3 ms
+
+    cfg02-H1#ping vrf h2 192.168.255.9
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 192.168.255.9, timeout is 2 seconds:
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+
+Additionally, you can check routing information.
+
+EXT1 node 
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg02-EXT1#show ip route ospf | begin Gateway
+    Gateway of last resort is not set
+
+    O E2  172.16.0.0/16 [110/1] via 192.168.78.7, 00:00:27, Ethernet1/2
+                        [110/1] via 192.168.68.6, 00:00:27, Ethernet1/1
+    O     192.168.69.0/24 [110/20] via 192.168.89.9, 00:22:48, Ethernet0/3
+                        [110/20] via 192.168.68.6, 00:14:08, Ethernet1/1
+    O     192.168.79.0/24 [110/20] via 192.168.89.9, 00:22:48, Ethernet0/3
+                        [110/20] via 192.168.78.7, 00:13:29, Ethernet1/2
+        192.168.255.0/32 is subnetted, 2 subnets
+    O        192.168.255.9 [110/11] via 192.168.89.9, 00:22:48, Ethernet0/3
+
+EXT2 node 
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg02-EXT2#show ip route ospf | begin Gateway
+    Gateway of last resort is not set
+
+    O E2  172.16.0.0/16 [110/1] via 192.168.79.7, 00:00:58, Ethernet1/2
+                        [110/1] via 192.168.69.6, 00:00:58, Ethernet1/1
+    O     192.168.68.0/24 [110/20] via 192.168.89.8, 00:23:40, Ethernet0/3
+                        [110/20] via 192.168.69.6, 00:14:36, Ethernet1/1
+    O     192.168.78.0/24 [110/20] via 192.168.89.8, 00:23:40, Ethernet0/3
+                        [110/20] via 192.168.79.7, 00:13:57, Ethernet1/2
+    O IA  192.168.201.0/24 [110/11] via 192.168.89.8, 00:23:19, Ethernet0/3
+        192.168.255.0/32 is subnetted, 2 subnets
+    O        192.168.255.8 [110/11] via 192.168.89.8, 00:23:40, Ethernet0/3
+
+BL1 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg02-BL1#show bgp l2vpn evpn | include \[5\]
+    *>   [5][1:1][0][16][172.16.0.0]/17
+    *>   [5][1:1][0][24][192.168.68.0]/17
+    *>   [5][1:1][0][24][192.168.69.0]/17
+    * i  [5][1:1][0][24][192.168.78.0]/17
+    * i  [5][1:1][0][24][192.168.79.0]/17
+    *>   [5][1:1][0][24][192.168.89.0]/17
+    *>   [5][1:1][0][24][192.168.201.0]/17
+    *>   [5][1:1][0][32][192.168.255.8]/17
+    *>   [5][1:1][0][32][192.168.255.9]/17
+
+BL2 node
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg02-BL2#show bgp l2vpn evpn | include \[5\]
+    *>   [5][1:1][0][16][172.16.0.0]/17
+    *>   [5][1:1][0][24][192.168.68.0]/17
+    *>   [5][1:1][0][24][192.168.69.0]/17
+    *>   [5][1:1][0][24][192.168.78.0]/17
+    *>   [5][1:1][0][24][192.168.79.0]/17
+    *>   [5][1:1][0][24][192.168.89.0]/17
+    *>   [5][1:1][0][24][192.168.201.0]/17
+    *>   [5][1:1][0][32][192.168.255.8]/17
+    *>   [5][1:1][0][32][192.168.255.9]/17
 
 L1 node 
 
@@ -39,177 +437,71 @@ L1 node
     :linenos:
     :class: highlight-command
 
-    ts01-L1#show ip arp vrf green 
-    Protocol  Address          Age (min)  Hardware Addr   Type   Interface
-    Internet  10.1.254.3              -   aabb.cc80.0300  ARPA   Vlan901
-    Internet  172.16.101.1            -   aabb.cc80.0300  ARPA   Vlan101
-    Internet  172.16.101.10           1   0000.0001.0101  ARPA   Vlan101
-    Internet  172.16.102.10           2   0000.0001.0102  ARPA   Vlan102
+    cfg02-L1#show ip route vrf green bgp | begin Gateway
+    Gateway of last resort is not set
 
-We won’t see ARPs for clients over remote VTEP
+        172.16.0.0/16 is variably subnetted, 9 subnets, 3 masks
+    B        172.16.0.0/16 [200/0] via 10.1.254.6, 00:04:13, Vlan901
+    B        172.16.101.11/32 [200/0] via 10.1.254.4, 00:17:00, Vlan901
+    B        172.16.101.12/32 [200/0] via 10.1.254.5, 00:17:00, Vlan901
+    B        172.16.102.11/32 [200/0] via 10.1.254.4, 00:17:00, Vlan901
+    B        172.16.102.12/32 [200/0] via 10.1.254.5, 00:17:00, Vlan901
+    B     192.168.68.0/24 [200/0] via 10.1.254.6, 00:05:33, Vlan901
+    B     192.168.69.0/24 [200/0] via 10.1.254.6, 00:05:33, Vlan901
+    B     192.168.78.0/24 [200/0] via 10.1.254.7, 00:05:20, Vlan901
+    B     192.168.79.0/24 [200/0] via 10.1.254.7, 00:05:20, Vlan901
+    B     192.168.89.0/24 [200/20] via 10.1.254.6, 00:05:33, Vlan901
+    B     192.168.201.0/24 [200/11] via 10.1.254.6, 00:05:33, Vlan901
+        192.168.255.0/32 is subnetted, 2 subnets
+    B        192.168.255.8 [200/11] via 10.1.254.6, 00:05:33, Vlan901
+    B        192.168.255.9 [200/11] via 10.1.254.6, 00:05:33, Vlan901
 
-.. code-block:: console
-    :linenos:
-    :class: highlight-command
-
-    ts01-L1#show nve peers 
-    'M' - MAC entry download flag  'A' - Adjacency download flag
-    '4' - IPv4 flag  '6' - IPv6 flag
-
-    Interface  VNI      Type Peer-IP          RMAC/Num_RTs   eVNI     state flags UP time
-    nve1       50901    L3CP 10.1.254.4       aabb.cc80.0400 50901      UP  A/M/4 00:02:06
-    nve1       50901    L3CP 10.1.254.5       aabb.cc80.0500 50901      UP  A/M/4 00:02:06
-    nve1       50901    L3CP 10.1.254.6       aabb.cc80.0600 50901      UP  A/M/4 00:02:06
-    nve1       50901    L3CP 10.1.254.7       aabb.cc80.0700 50901      UP  A/M/4 00:02:06
-    nve1       10102    L2CP 10.1.254.4       4              10102      UP   N/A  00:02:06
-    nve1       10102    L2CP 10.1.254.5       4              10102      UP   N/A  00:02:06
-    nve1       10102    L2CP 10.1.254.6       2              10102      UP   N/A  00:02:06
-    nve1       10102    L2CP 10.1.254.7       3              10102      UP   N/A  00:02:06
-
-In the NVE peers table above that there are no entries that would be showing a peering over VNI ``10101``. Therefore, lets check the EVI for the vlan where we have H1 attached – vlan 101. 
-
-The EVI outputs show the vlan 101 is mapped to the L2 VNI ``10110`` but the VTEP IP is ``UNKNOWN``.
-
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 4,28,30
-    :class: highlight-command highlight-command-11 emphasize-hll
-
-    ts01-L1#show l2vpn evpn evi vlan 101
-    EVI   VLAN  Ether Tag  L2 VNI    Multicast     Pseudoport
-    ----- ----- ---------- --------- ------------- ------------------
-    101   101   0          10110     UNKNOWN       Et0/0:101 
-
-    ts01-L1#show l2vpn evpn evi vlan 101 detail 
-    EVPN instance:       101 (VLAN Based)
-    RD:                10.1.255.3:101 (auto)
-    Import-RTs:        65001:101 
-    Export-RTs:        65001:101 
-    Per-EVI Label:     none
-    State:             Established
-    Replication Type:  Ingress (global)
-    Encapsulation:     vxlan
-    IP Local Learn:    Enabled (global)
-    Adv. Def. Gateway: Enabled (global)
-    Re-originate RT5:  Disabled
-    Adv. Multicast:    Disabled (global)
-    Vlan:              101
-        Ethernet-Tag:    0
-        State:           Established
-        Flood Suppress:  Attached
-        Core If:         
-        Access If:       
-        NVE If:          
-        RMAC:            0000.0000.0000
-        Core Vlan:       0
-        L2 VNI:          10110  
-        L3 VNI:          0
-        VTEP IP:         UNKNOWN 
-        Pseudoports:
-        Ethernet0/0 service instance 101
-            Routes: 1 MAC, 1 MAC/IP
-        Peers:
-        10.1.254.4
-            Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
-        10.1.254.5
-            Routes: 2 MAC, 2 MAC/IP, 1 IMET, 0 EAD
-        10.1.254.6
-            Routes: 1 MAC, 1 MAC/IP, 1 IMET, 0 EAD
-        10.1.254.7
-            Routes: 1 MAC, 2 MAC/IP, 1 IMET, 0 EAD 
-
-The MAC/IP information from BGP routes shows that the next show information is actually expecting ``10101``.
+L2 node 
 
 .. code-block:: console
     :linenos:
     :class: highlight-command
 
-    ts01-L1#show l2route evpn mac ip 
-    EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
-    ----- ---------- ----- -------------- --------------- --------------------------
-    101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et0/0:101
-    101          0   BGP 0000.0002.0101   172.16.101.11         V:10101 10.1.254.4
-    101          0   BGP 0000.0003.0101   172.16.101.12         V:10101 10.1.254.5
-    101          0   BGP aabb.cc80.0400    172.16.101.1         V:10101 10.1.254.4
-    101          0   BGP aabb.cc80.0500    172.16.101.1         V:10101 10.1.254.5
-    101          0   BGP aabb.cc80.0600    172.16.101.1         V:10101 10.1.254.6
-    101          0   BGP aabb.cc80.0700    172.16.101.1         V:10101 10.1.254.7
-    <...skip...>
+    cfg02-L2#show ip route vrf green bgp | begin Gateway
+    Gateway of last resort is not set
 
-Do those 2 VNIs exist on the switch? Looks like ``10110`` does not exist – in the configuration of NVE we can find out which VNI is actually expected to be here.
+        172.16.0.0/16 is variably subnetted, 9 subnets, 3 masks
+    B        172.16.0.0/16 [200/0] via 10.1.254.6, 00:04:55, Vlan901
+    B        172.16.101.10/32 [200/0] via 10.1.254.3, 00:22:43, Vlan901
+    B        172.16.101.12/32 [200/0] via 10.1.254.5, 00:17:42, Vlan901
+    B        172.16.102.10/32 [200/0] via 10.1.254.3, 00:22:43, Vlan901
+    B        172.16.102.12/32 [200/0] via 10.1.254.5, 00:17:42, Vlan901
+    B     192.168.68.0/24 [200/0] via 10.1.254.6, 00:06:15, Vlan901
+    B     192.168.69.0/24 [200/0] via 10.1.254.6, 00:06:15, Vlan901
+    B     192.168.78.0/24 [200/0] via 10.1.254.7, 00:06:02, Vlan901
+    B     192.168.79.0/24 [200/0] via 10.1.254.7, 00:06:02, Vlan901
+    B     192.168.89.0/24 [200/20] via 10.1.254.6, 00:06:15, Vlan901
+    B     192.168.201.0/24 [200/11] via 10.1.254.6, 00:06:15, Vlan901
+        192.168.255.0/32 is subnetted, 2 subnets
+    B        192.168.255.8 [200/11] via 10.1.254.6, 00:06:15, Vlan901
+    B        192.168.255.9 [200/11] via 10.1.254.6, 00:06:15, Vlan901
 
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 3,7,14,21
-    :class: highlight-command highlight-command-9 highlight-command-15 highlight-command-33 emphasize-hll emphasize-hll-24
-
-    ts01-L1#show nve vni 10101
-    Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
-    nve1       10101      N/A             BD Down/Re L2CP  N/A   CLI N/A    
-
-    ts01-L1#show nve vni 10110 detail 
-    Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
-    % VNI 10110 doesnt exist
-
-    ts01-L1#show run int nve1
-    interface nve1
-     no ip address
-     source-interface Loopback1
-     host-reachability protocol bgp
-     member vni 10101 ingress-replication 
-     member vni 10102 mcast-group 225.0.1.102
-     member vni 50901 vrf green
-     end
-
-    ts01-L1#show run vlan 101
-    vlan configuration 101
-     member evpn-instance 101 vni 10110 
-
-We have identified that there is a mismatch in vlan-to-VNI mapping, as for vlan 101 L2VNI ``10110`` is used instead of the expected VNI ``10101``. Correct L2VNI is not configured on the switch.
-
-Lets fix the configuration mistake on L1 node and reconfigure the NVE-VNI membership to retrigger the NVE peer learning for VNI ``10101``.
-
-L1 node
-
-.. code-block:: console
-    :linenos:
-
-    conf t
-    no vlan configuration 101
-    vlan configuration 101
-     member evpn-instance 101 vni 10101
-    !
-    int nve1
-     no member vni 10101 ingress-replication
-     member vni 10101 ingress-replication
-
-Checking the NVE peers for that VNI afterwards, we see remote Leafs and connectivity start working.
-
-L1 node
+L3 node 
 
 .. code-block:: console
     :linenos:
     :class: highlight-command
 
-    ts01-L1#show nve peers vni 10101
-    'M' - MAC entry download flag  'A' - Adjacency download flag
-    '4' - IPv4 flag  '6' - IPv6 flag
+    cfg02-L3#show ip route vrf green bgp | begin Gateway
+    Gateway of last resort is not set
 
-    Interface  VNI      Type Peer-IP          RMAC/Num_RTs   eVNI     state flags UP time
-    nve1       10101    L2CP 10.1.254.4       5              10101      UP   N/A  00:00:23
-    nve1       10101    L2CP 10.1.254.5       5              10101      UP   N/A  00:00:23
-    nve1       10101    L2CP 10.1.254.6       3              10101      UP   N/A  00:00:23
-    nve1       10101    L2CP 10.1.254.7       3              10101      UP   N/A  00:00:23
-
-H1 node
-
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 4
-    :class: highlight-command emphasize-hll-8
-
-    ts01-H1#ping vrf h1 172.16.101.11          
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+        172.16.0.0/16 is variably subnetted, 9 subnets, 3 masks
+    B        172.16.0.0/16 [200/0] via 10.1.254.6, 00:05:30, Vlan901
+    B        172.16.101.10/32 [200/0] via 10.1.254.3, 00:23:18, Vlan901
+    B        172.16.101.11/32 [200/0] via 10.1.254.4, 00:18:17, Vlan901
+    B        172.16.102.10/32 [200/0] via 10.1.254.3, 00:23:18, Vlan901
+    B        172.16.102.11/32 [200/0] via 10.1.254.4, 00:18:17, Vlan901
+    B     192.168.68.0/24 [200/0] via 10.1.254.6, 00:06:50, Vlan901
+    B     192.168.69.0/24 [200/0] via 10.1.254.6, 00:06:50, Vlan901
+    B     192.168.78.0/24 [200/0] via 10.1.254.7, 00:06:37, Vlan901
+    B     192.168.79.0/24 [200/0] via 10.1.254.7, 00:06:37, Vlan901
+    B     192.168.89.0/24 [200/20] via 10.1.254.6, 00:06:50, Vlan901
+    B     192.168.201.0/24 [200/11] via 10.1.254.6, 00:06:50, Vlan901
+        192.168.255.0/32 is subnetted, 2 subnets
+    B        192.168.255.8 [200/11] via 10.1.254.6, 00:06:50, Vlan901
+    B        192.168.255.9 [200/11] via 10.1.254.6, 00:06:50, Vlan901
