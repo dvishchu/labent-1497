@@ -7,7 +7,7 @@ To get started, please select in ``lab manager`` option ``01`` to initialize lab
 
 .. note::
 
-    At beginning of this task, underlay configuration was already preconfigured for you. This includes configuration of IGP - OSPF for loopback reachability and multicast routing to support floding of broadcast  / multicast / unknown unicast (BUM) traffic.
+    At beginning of this task, underlay configuration was already preconfigured for you. This includes configuration of IGP - OSPF for loopback reachability and multicast routing to support flooding of broadcast  / multicast / unknown unicast (BUM) traffic.
 
 Step 1: Configure L2VNP and VNI-EVI-VLAN stitching
 **************************************************
