@@ -141,7 +141,7 @@ To identify the reason for this issue, we will check the BGP config for problem 
 .. code-block:: console
     :linenos:
     :emphasize-lines: 25
-    :class: highlight-command highlight-command-38 emphasize-hll-positive
+    :class: highlight-command highlight-command-30 emphasize-hll-positive
 
     ts02-S1#show bgp l2vpn evpn neighbors 10.1.255.3 | begin L2VPN E-VPN
     For address family: L2VPN E-VPN
