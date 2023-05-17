@@ -220,107 +220,40 @@ Step 6: Verification
 
 At this stage of the lab, we should be able to ping between the hosts located in different vlans since we enabled routing between different subnets via L3 VNI 50901 (Vlan901).
 
-H1 node
+H11 node
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command highlight-command-16 highlight-command-29 highlight-command-42
+    :class: highlight-command highlight-command-14
 
-    cfg01-H1#ping vrf h1 172.16.102.11 source 172.16.101.10
+    cfg02-H11#ping 172.16.102.11
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.102.11, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.101.10
     !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
-
-    cfg01-H1#ping vrf h1 172.16.102.12 source 172.16.101.10
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+    
+    cfg02-H11#ping 172.16.102.12
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.102.12, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.101.10
-    .!!!!
-    Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/1 ms
-
-    cfg01-H1#ping vrf h2 172.16.101.11 source 172.16.102.10
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.102.10
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
 
-    cfg01-H1#ping vrf h2 172.16.101.12 source 172.16.102.10
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.101.12, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.102.10
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/3 ms
-
-H2 node
+H12 node
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command highlight-command-16 highlight-command-29 highlight-command-42
+    :class: highlight-command highlight-command-14
 
-    cfg01-H2#ping vrf h1 172.16.102.10 source 172.16.101.11
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.102.10, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.101.11
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
-
-    cfg01-H2#ping vrf h1 172.16.102.12 source 172.16.101.11
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.102.12, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.101.11
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
-
-    cfg01-H2#ping vrf h2 172.16.101.10 source 172.16.102.11
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.101.10, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.102.11
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
-
-    cfg01-H2#ping vrf h2 172.16.101.12 source 172.16.102.11
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.101.12, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.102.11
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
-
-H3 node 
-
-.. code-block:: console
-    :linenos:
-    :class: highlight-command highlight-command-16 highlight-command-29 highlight-command-42
-
-    cfg01-H3#ping vrf h1 172.16.102.10 source 172.16.101.12
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.102.10, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.101.12
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
-
-    cfg01-H3#ping vrf h1 172.16.102.11 source 172.16.101.12
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.102.11, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.101.12
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
-
-    cfg01-H3#ping vrf h2 172.16.101.10 source 172.16.102.12
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 172.16.101.10, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.102.12
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
-
-    cfg01-H3#ping vrf h2 172.16.101.11 source 172.16.102.12
+    cfg02-H12#ping 172.16.101.11
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
-    Packet sent with a source address of 172.16.102.12
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+    cfg02-H12#ping 172.16.101.12
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.101.12, timeout is 2 seconds:
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
 
 Let’s now verify state of control plane on our devices. As you can see below, NVE interface state is Up. In terms of EVI 101 and 102, we can see that state is ``established``, which means that EVI was successfully provisioned on device. From the outputs, we can also verify L2 and L3 VNI information’s for corresponding EVI.
 
