@@ -133,12 +133,12 @@ BL1 node
     :linenos:
     :class: highlight-command highlight-command-12
 
-    cfg02-BL1#show ip ospf 100 neighbor
+    cfg03-BL1#show ip ospf 100 neighbor
     Neighbor ID     Pri   State           Dead Time   Address         Interface
     192.168.255.9     0   FULL/  -        00:00:30    192.168.69.9    Ethernet1/2
     192.168.255.8     0   FULL/  -        00:00:35    192.168.68.8    Ethernet1/1
 
-    cfg02-BL1#show ip route vrf green ospf | begin Gateway
+    cfg03-BL1#show ip route vrf green ospf | begin Gateway
     O     192.168.78.0/24 [110/20] via 192.168.68.8, 00:10:52, Ethernet1/1
     O     192.168.79.0/24 [110/20] via 192.168.69.9, 00:10:49, Ethernet1/2
     O     192.168.89.0/24 [110/20] via 192.168.69.9, 00:10:49, Ethernet1/2
@@ -154,12 +154,12 @@ BL2 node
     :linenos:
     :class: highlight-command highlight-command-12
 
-    cfg02-BL2#show ip ospf 100 neighbor
+    cfg03-BL2#show ip ospf 100 neighbor
     Neighbor ID     Pri   State           Dead Time   Address         Interface
     192.168.255.9     0   FULL/  -        00:00:34    192.168.79.9    Ethernet1/2
     192.168.255.8     0   FULL/  -        00:00:31    192.168.78.8    Ethernet1/1
 
-    cfg02-BL2#show ip route vrf green ospf | begin Gateway
+    cfg03-BL2#show ip route vrf green ospf | begin Gateway
     O     192.168.68.0/24 [110/20] via 192.168.78.8, 00:10:57, Ethernet1/1
     O     192.168.69.0/24 [110/20] via 192.168.79.9, 00:10:55, Ethernet1/2
     O     192.168.89.0/24 [110/20] via 192.168.79.9, 00:10:55, Ethernet1/2
@@ -175,7 +175,7 @@ EXT1 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT1#show ip ospf neighbor
+    cfg03-EXT1#show ip ospf neighbor
     Neighbor ID     Pri   State           Dead Time   Address         Interface
     172.16.255.7      0   FULL/  -        00:00:32    192.168.78.7    Ethernet1/2
     172.16.255.6      0   FULL/  -        00:00:33    192.168.68.6    Ethernet1/1
@@ -187,7 +187,7 @@ EXT2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT2#show ip ospf neighbor
+    cfg03-EXT2#show ip ospf neighbor
     Neighbor ID     Pri   State           Dead Time   Address         Interface
     172.16.255.7      0   FULL/  -        00:00:34    192.168.79.7    Ethernet1/2
     172.16.255.6      0   FULL/  -        00:00:32    192.168.69.6    Ethernet1/1
@@ -223,7 +223,7 @@ EXT1 node
     :linenos:
     :class: highlight-command
     
-    cfg02-EXT1#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
+    cfg03-EXT1#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
 
         172.16.0.0/32 is subnetted, 6 subnets
     O E2     172.16.101.10 [110/1] via 192.168.78.7, 00:01:23, Ethernet1/2
@@ -245,7 +245,7 @@ EXT2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT2#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
+    cfg03-EXT2#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
 
         172.16.0.0/32 is subnetted, 6 subnets
     O E2     172.16.101.10 [110/1] via 192.168.79.7, 00:01:59, Ethernet1/2
@@ -293,7 +293,7 @@ EXT1 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT1#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
+    cfg03-EXT1#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
 
     O E2  172.16.0.0/16 [110/1] via 192.168.78.7, 00:00:25, Ethernet1/2
                         [110/1] via 192.168.68.6, 00:00:25, Ethernet1/1
@@ -304,7 +304,7 @@ EXT2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT2#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
+    cfg03-EXT2#show ip route 172.16.0.0 255.255.0.0 longer-prefixes
 
     O E2  172.16.0.0/16 [110/1] via 192.168.79.7, 00:00:38, Ethernet1/2
                         [110/1] via 192.168.69.6, 00:00:38, Ethernet1/1
@@ -312,47 +312,41 @@ EXT2 node
 Step 4: Verification
 ********************
 
-At the end of the task the connectivity should be established between hosts in the fabric (Hosts 1/2/3) and Hosts in the internal fabric (Hosts 4/5), which you can verify with the ping test, e.g. from Host 1 to Host 4:
+At the end of the task the connectivity should be established between hosts in the fabric (Hosts 1X/2X/3X) and Hosts in the external network (Hosts 4/5), which you can verify with the ping test, e.g. from Host 1 to Host 4:
 
-H1 node
+H11 node
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :class: highlight-command highlight-command-14
 
-    cfg02-H1#ping vrf h1 192.168.201.13
+    cfg03-H11#ping 192.168.201.13
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 192.168.201.13, timeout is 2 seconds:
-    ..!!!
-    Success rate is 60 percent (3/5), round-trip min/avg/max = 1/1/1 ms
+    .!!!!
+    Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/2 ms
+
+    cfg03-H11#ping 192.168.202.14
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 192.168.202.14, timeout is 2 seconds:
+    .!!!!
+    Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/2 ms
 
 Also, connectivity could be verified to the loopback of the external routers EXT1 and EXT2:
 
-H1 node
+H11 node
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command highlight-command-14 highlight-command-25 highlight-command-36
+    :class: highlight-command highlight-command-14
 
-    cfg02-H1#ping vrf h1 192.168.255.8
+    cfg03-H11#ping 192.168.255.8
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 192.168.255.8, timeout is 2 seconds:
     !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
-
-    cfg02-H1#ping vrf h1 192.168.255.9
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 192.168.255.9, timeout is 2 seconds:
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
-
-    cfg02-H1#ping vrf h2 192.168.255.8
-    Type escape sequence to abort.
-    Sending 5, 100-byte ICMP Echos to 192.168.255.8, timeout is 2 seconds:
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/3 ms
-
-    cfg02-H1#ping vrf h2 192.168.255.9
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+    
+    cfg03-H11#ping 192.168.255.9
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 192.168.255.9, timeout is 2 seconds:
     !!!!!
@@ -366,15 +360,15 @@ EXT1 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT1#show ip route ospf | begin Gateway
+    cfg03-EXT1#show ip route ospf | begin Gateway
     Gateway of last resort is not set
 
     O E2  172.16.0.0/16 [110/1] via 192.168.78.7, 00:00:27, Ethernet1/2
                         [110/1] via 192.168.68.6, 00:00:27, Ethernet1/1
     O     192.168.69.0/24 [110/20] via 192.168.89.9, 00:22:48, Ethernet0/3
-                        [110/20] via 192.168.68.6, 00:14:08, Ethernet1/1
+                          [110/20] via 192.168.68.6, 00:14:08, Ethernet1/1
     O     192.168.79.0/24 [110/20] via 192.168.89.9, 00:22:48, Ethernet0/3
-                        [110/20] via 192.168.78.7, 00:13:29, Ethernet1/2
+                          [110/20] via 192.168.78.7, 00:13:29, Ethernet1/2
         192.168.255.0/32 is subnetted, 2 subnets
     O        192.168.255.9 [110/11] via 192.168.89.9, 00:22:48, Ethernet0/3
 
@@ -384,15 +378,15 @@ EXT2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-EXT2#show ip route ospf | begin Gateway
+    cfg03-EXT2#show ip route ospf | begin Gateway
     Gateway of last resort is not set
 
     O E2  172.16.0.0/16 [110/1] via 192.168.79.7, 00:00:58, Ethernet1/2
                         [110/1] via 192.168.69.6, 00:00:58, Ethernet1/1
     O     192.168.68.0/24 [110/20] via 192.168.89.8, 00:23:40, Ethernet0/3
-                        [110/20] via 192.168.69.6, 00:14:36, Ethernet1/1
+                          [110/20] via 192.168.69.6, 00:14:36, Ethernet1/1
     O     192.168.78.0/24 [110/20] via 192.168.89.8, 00:23:40, Ethernet0/3
-                        [110/20] via 192.168.79.7, 00:13:57, Ethernet1/2
+                          [110/20] via 192.168.79.7, 00:13:57, Ethernet1/2
     O IA  192.168.201.0/24 [110/11] via 192.168.89.8, 00:23:19, Ethernet0/3
         192.168.255.0/32 is subnetted, 2 subnets
     O        192.168.255.8 [110/11] via 192.168.89.8, 00:23:40, Ethernet0/3
@@ -403,7 +397,7 @@ BL1 node
     :linenos:
     :class: highlight-command
 
-    cfg02-BL1#show bgp l2vpn evpn | include \[5\]
+    cfg03-BL1#show bgp l2vpn evpn | include \[5\]
     *>   [5][1:1][0][16][172.16.0.0]/17
     *>   [5][1:1][0][24][192.168.68.0]/17
     *>   [5][1:1][0][24][192.168.69.0]/17
@@ -420,7 +414,7 @@ BL2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-BL2#show bgp l2vpn evpn | include \[5\]
+    cfg03-BL2#show bgp l2vpn evpn | include \[5\]
     *>   [5][1:1][0][16][172.16.0.0]/17
     *>   [5][1:1][0][24][192.168.68.0]/17
     *>   [5][1:1][0][24][192.168.69.0]/17
@@ -437,7 +431,7 @@ L1 node
     :linenos:
     :class: highlight-command
 
-    cfg02-L1#show ip route vrf green bgp | begin Gateway
+    cfg03-L1#show ip route vrf green bgp | begin Gateway
     Gateway of last resort is not set
 
         172.16.0.0/16 is variably subnetted, 9 subnets, 3 masks
@@ -462,7 +456,7 @@ L2 node
     :linenos:
     :class: highlight-command
 
-    cfg02-L2#show ip route vrf green bgp | begin Gateway
+    cfg03-L2#show ip route vrf green bgp | begin Gateway
     Gateway of last resort is not set
 
         172.16.0.0/16 is variably subnetted, 9 subnets, 3 masks
@@ -487,7 +481,7 @@ L3 node
     :linenos:
     :class: highlight-command
 
-    cfg02-L3#show ip route vrf green bgp | begin Gateway
+    cfg03-L3#show ip route vrf green bgp | begin Gateway
     Gateway of last resort is not set
 
         172.16.0.0/16 is variably subnetted, 9 subnets, 3 masks
