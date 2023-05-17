@@ -136,7 +136,7 @@ H11 node
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command highlight-command-13
+    :class: highlight-command highlight-command-14
 
     cfg01-H11#ping 172.16.101.11
     Type escape sequence to abort.
@@ -155,7 +155,7 @@ H12 node
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command highlight-command-13
+    :class: highlight-command highlight-command-14
 
     cfg01-H12#ping 172.16.102.11
     Type escape sequence to abort.
