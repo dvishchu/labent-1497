@@ -126,7 +126,9 @@ S1/S2 node
       neighbor 10.1.255.5 send-community both
       neighbor 10.1.255.5 route-reflector-client
 
-After completion of BGP configuration on both leaf and spine switches, we can verify BGP status via command below. 
+After completion of BGP configuration on both leaf and spine switches, we can verify status of BGP peering’s on spines. We should see that both spine switches have running BGP peering with all 3 leafs.
+
+S1 node
 
 .. code-block:: console
     :linenos:
@@ -137,6 +139,8 @@ After completion of BGP configuration on both leaf and spine switches, we can ve
     10.1.255.3      4        65001    2936    2954       16    0    0 1d20h           0
     10.1.255.4      4        65001    2944    2950       16    0    0 1d20h           0
     10.1.255.5      4        65001    2936    2947       16    0    0 1d20h           0
+
+S2 node
 
 .. code-block:: console
     :linenos:
