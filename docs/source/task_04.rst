@@ -70,7 +70,7 @@ The EVI outputs show the vlan 101 is mapped to the L2 VNI ``10110`` but the VTEP
 
 .. code-block:: console
     :linenos:
-    :emphasize-lines: 4,28,30
+    :emphasize-lines: 4,29,31
     :class: highlight-command highlight-command-11 emphasize-hll
 
     ts01-L1#sh l2vpn evpn evi vlan 101
