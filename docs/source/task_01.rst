@@ -47,7 +47,7 @@ L1/L2/L3 nodes
 .. code-block:: console
     :linenos:
     :emphasize-lines: 6,9,13,15
-    :class: emphasize-hll-12 emphasize-hll-17
+    :class: emphasize-hll-12 emphasize-hll-17 emphasize-hll-24 emphasize-hll-27
 
     conf t
     !
