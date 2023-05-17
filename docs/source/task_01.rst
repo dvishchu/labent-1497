@@ -154,6 +154,7 @@ H12 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg01-H12#ping 172.16.102.11
     Type escape sequence to abort.
@@ -178,6 +179,7 @@ H11 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg01-H11# show ip arp
     Protocol  Address          Age (min)  Hardware Addr   Type   Interface
@@ -190,6 +192,7 @@ H12 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg01-H12# show ip arp
     Protocol  Address          Age (min)  Hardware Addr   Type   Interface
@@ -204,6 +207,7 @@ L1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg01-L1# show nve peers
     'M' - MAC entry download flag  'A' - Adjacency download flag
@@ -221,6 +225,7 @@ L1 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command
 
     cfg01-L1#sh l2route evpn mac ip
     EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
