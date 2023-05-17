@@ -1,4 +1,4 @@
-Task CFG03: Configure L3 connectivity between external network and Fabric
+Task CFG03: Configure L3 connectivity between external network and fabric
 =========================================================================
 
 .. image:: assets/cfg02_topology.png
