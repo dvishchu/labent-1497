@@ -180,8 +180,16 @@
   background-color: #a3f4ac;
 }
 
+.emphasize-hll-12 pre :nth-child(12) {
+  background-color: #a3f4ac;
+}
+
 .emphasize-hll-16 pre :nth-child(16) {
   background-color: #ccfe99;
+}
+
+.emphasize-hll-17 pre :nth-child(17) {
+  background-color: #fecccc;
 }
 
 .emphasize-hll-18 pre :nth-child(18) {
