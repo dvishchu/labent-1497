@@ -1,5 +1,5 @@
-Task CFG03: Configure Border Leafs and L3 routing between external network and Fabric
-=====================================================================================
+Task CFG03: Configure L3 connectivity between external network and Fabric
+=========================================================================
 
 .. image:: assets/cfg02_topology.png
     :align: center
