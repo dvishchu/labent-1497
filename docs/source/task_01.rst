@@ -22,6 +22,7 @@ In this scenario, we will configure global context with replication type ingress
     * EVI 102 – replication type static (multicast based), VNI 10102
 
 .. list-table::
+    :widths: 25 25 25 25
     :header-rows: 1
     :width: 100%
 
