@@ -126,6 +126,27 @@ S1/S2 node
       neighbor 10.1.255.5 send-community both
       neighbor 10.1.255.5 route-reflector-client
 
+After completion of BGP configuration on both leaf and spine switches, we can verify BGP status via command below. 
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg01-S1#sh bgp l2vpn evpn summary | beg Neighbor
+    Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+    10.1.255.3      4        65001    2936    2954       16    0    0 1d20h           0
+    10.1.255.4      4        65001    2944    2950       16    0    0 1d20h           0
+    10.1.255.5      4        65001    2936    2947       16    0    0 1d20h           0
+
+.. code-block:: console
+    :linenos:
+    :class: highlight-command
+
+    cfg01-S2#sh bgp l2vpn evpn summary | beg Neighbor
+    Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+    10.1.255.3      4        65001    2942    2951       16    0    0 1d20h           0
+    10.1.255.4      4        65001    2941    2942       16    0    0 1d20h           0
+    10.1.255.5      4        65001    2947    2952       16    0    0 1d20h           0
 
 Step 4: Verification
 ********************
