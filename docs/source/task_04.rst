@@ -1,5 +1,5 @@
-Task TS01: H1(172.16.101.10) cannot ping H3(172.16.101.11) over vxlan via vlan101
-=================================================================================
+Task TS01: H11(172.16.101.10) cannot ping H21(172.16.101.11)
+============================================================
 
 .. image:: assets/ts01_topology.png
     :align: center
@@ -8,24 +8,24 @@ Task TS01: H1(172.16.101.10) cannot ping H3(172.16.101.11) over vxlan via vlan10
 
     To get started, please select in lab manager option ``04`` to initialize lab devices. Please, wait a minute after lab start for network convergence.
 
-H1 node 
+H11 node 
 
 .. code-block:: console
     :linenos:
     :emphasize-lines: 4,11
     :class: highlight-command highlight-command-13 emphasize-hll
 
-    ts01-H1#ping vrf h1 172.16.101.11
+    ts01-H11#ping 172.16.101.11
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
     .....
     Success rate is 0 percent (0/5)
 
-    ts01-H1#show ip arp vrf h1
+    ts01-H11#show ip arp
     Protocol  Address          Age (min)  Hardware Addr   Type   Interface
-    Internet  172.16.101.1            0   aabb.cc80.0300  ARPA   Vlan101
-    Internet  172.16.101.10           -   0000.0001.0101  ARPA   Vlan101
-    Internet  172.16.101.11           0   Incomplete      ARPA   
+    Internet  172.16.101.1            3   aabb.cc80.0300  ARPA   Ethernet0/0
+    Internet  172.16.101.10           -   0000.0001.0101  ARPA   Ethernet0/0
+    Internet  172.16.101.11           0   Incomplete      ARPA
 
 We will start with the leaf to which the host is connected – Leaf1. In the host information we saw that ARP is ``incomplete``. Lets check the same on Leaf1 and also look into the NVE peering.
 
@@ -52,19 +52,17 @@ We won’t see ARPs for clients over remote VTEP
     :linenos:
     :class: highlight-command
 
-    ts01-L1#show nve peers 
+    ts01-L1#show nve peers
     'M' - MAC entry download flag  'A' - Adjacency download flag
     '4' - IPv4 flag  '6' - IPv6 flag
 
     Interface  VNI      Type Peer-IP          RMAC/Num_RTs   eVNI     state flags UP time
-    nve1       50901    L3CP 10.1.254.4       aabb.cc80.0400 50901      UP  A/M/4 00:02:06
-    nve1       50901    L3CP 10.1.254.5       aabb.cc80.0500 50901      UP  A/M/4 00:02:06
-    nve1       50901    L3CP 10.1.254.6       aabb.cc80.0600 50901      UP  A/M/4 00:02:06
-    nve1       50901    L3CP 10.1.254.7       aabb.cc80.0700 50901      UP  A/M/4 00:02:06
-    nve1       10102    L2CP 10.1.254.4       4              10102      UP   N/A  00:02:06
-    nve1       10102    L2CP 10.1.254.5       4              10102      UP   N/A  00:02:06
-    nve1       10102    L2CP 10.1.254.6       2              10102      UP   N/A  00:02:06
-    nve1       10102    L2CP 10.1.254.7       3              10102      UP   N/A  00:02:06
+    nve1       50901    L3CP 10.1.254.4       aabb.cc80.0400 50901      UP  A/M/4 00:03:48
+    nve1       50901    L3CP 10.1.254.5       aabb.cc80.0500 50901      UP  A/M/4 00:03:48
+    nve1       10102    L2CP 10.1.254.4       4              10102      UP   N/A  00:03:48
+    nve1       10102    L2CP 10.1.254.5       4              10102      UP   N/A  00:03:48
+    nve1       10102    L2CP 10.1.254.6       2              10102      UP   N/A  00:03:48
+    nve1       10102    L2CP 10.1.254.7       2              10102      UP   N/A  00:03:48
 
 In the NVE peers table above that there are no entries that would be showing a peering over VNI ``10101``. Therefore, lets check the EVI for the vlan where we have H1 attached – vlan 101. 
 
@@ -75,10 +73,11 @@ The EVI outputs show the vlan 101 is mapped to the L2 VNI ``10110`` but the VTEP
     :emphasize-lines: 4,28,30
     :class: highlight-command highlight-command-11 emphasize-hll
 
-    ts01-L1#show l2vpn evpn evi vlan 101
+    ts01-L1#sh l2vpn evpn evi vlan 101
     EVI   VLAN  Ether Tag  L2 VNI    Multicast     Pseudoport
     ----- ----- ---------- --------- ------------- ------------------
-    101   101   0          10110     UNKNOWN       Et0/0:101 
+    101   101   0          10110     UNKNOWN       Et0/0:101
+                                                   Et1/1:101
 
     ts01-L1#show l2vpn evpn evi vlan 101 detail 
     EVPN instance:       101 (VLAN Based)
@@ -147,7 +146,7 @@ Do those 2 VNIs exist on the switch? Looks like ``10110`` does not exist – in 
     Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
     nve1       10101      N/A             BD Down/Re L2CP  N/A   CLI N/A    
 
-    ts01-L1#show nve vni 10110 detail 
+    ts01-L1#show nve vni 10110 
     Interface  VNI        Multicast-group VNI state  Mode  VLAN  cfg vrf                      
     % VNI 10110 doesnt exist
 
@@ -201,15 +200,16 @@ L1 node
     nve1       10101    L2CP 10.1.254.6       3              10101      UP   N/A  00:00:23
     nve1       10101    L2CP 10.1.254.7       3              10101      UP   N/A  00:00:23
 
-H1 node
+H11 node
 
 .. code-block:: console
     :linenos:
     :emphasize-lines: 4
     :class: highlight-command emphasize-hll-8
 
-    ts01-H1#ping vrf h1 172.16.101.11          
+    ts01-H11#ping 172.16.101.11
     Type escape sequence to abort.
     Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
-    !!!!!
-    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+    .!!!!
+    Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/1 ms
+
