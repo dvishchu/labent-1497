@@ -14,7 +14,7 @@ In this task we are configuring the more complex topology with a connectivity be
 
     External connectivity uses the Leafs on the periphery of the network to pass on these routes to an external Layer 2 or Layer 3 network. Similarly, the EVPN VXLAN network imports the reachability routes from the external network.
 
-To get started, please select in ``lab manager`` option ``02`` to initialize lab devices.
+To get started, please select in ``lab manager`` option ``03`` to initialize lab devices.
 
 .. note::
 
