@@ -183,7 +183,7 @@ H11 node
     :emphasize-lines: 5,6
     :class: highlight-command
 
-    cfg01-H11# show ip arp
+    cfg01-H11#show ip arp
     Protocol  Address          Age (min)  Hardware Addr   Type   Interface
     Internet  172.16.101.1            0   Incomplete      ARPA
     Internet  172.16.101.10           -   0000.0001.0101  ARPA   Ethernet0/0
@@ -197,7 +197,7 @@ H12 node
     :emphasize-lines: 5,6
     :class: highlight-command
 
-    cfg01-H12# show ip arp
+    cfg01-H12#show ip arp
     Protocol  Address          Age (min)  Hardware Addr   Type   Interface
     Internet  172.16.102.1            0   Incomplete      ARPA
     Internet  172.16.102.10           -   0000.0001.0102  ARPA   Ethernet0/0
@@ -212,7 +212,7 @@ L1 node
     :linenos:
     :class: highlight-command
 
-    cfg01-L1# show nve peers
+    cfg01-L1#show nve peers
     'M' - MAC entry download flag  'A' - Adjacency download flag
     '4' - IPv4 flag  '6' - IPv6 flag
 
@@ -230,7 +230,7 @@ L1 node
     :linenos:
     :class: highlight-command
 
-    cfg01-L1#sh l2route evpn mac ip
+    cfg01-L1#show l2route evpn mac ip
     EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
     ----- ---------- ----- -------------- --------------- --------------------------
     101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et1/1:101
