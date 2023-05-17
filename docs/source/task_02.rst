@@ -1,23 +1,18 @@
-Task CFG02: Configure L2/L3 + Spines EVPN connectivity with Spines
-==================================================================
+Task CFG02: Configure L3 EVPN connectivity in fabric
+====================================================
 
 .. image:: assets/cfg01_topology.png
     :align: center
 
-In this task, we will be exploring the example of the Leafs+Spines topology with the addition of L3 VNI.
+In this task, we will continue work in previous spine / leaf topology and we will add L3 connectivity to fabric with addition of L3 VNI. 
 
 An EVPN VXLAN Layer 3 overlay network allows host devices in different Layer 2 networks to send Layer 3 or routed traffic to each other. The network forwards the routed traffic using a Layer 3 virtual network instance (VNI) and an IP VRF.
 
-To get started, please select in ``lab manager`` option ``01`` to initialize lab devices.
+To get started, please select in ``lab manager`` option ``02`` to initialize lab devices.
 
 .. note::
 
-    At the beginning of the task the following protocols are pre-configured and running:
-        * IGP is UP
-        * BGP is up
-        * Multicast is configured
-    
-    In this lab task, we will mainly focus on L3 part of the configuration. The L2 parts like L2 VNI, EVI, VNI are already preconfigured and running.
+    In this lab task, we will mainly focus on L3 part of the configuration. Therefore, L2 parts like L2 VNI /EVI / VNI, which we configured in previous task, are already preconfigured in this task and running.
 
 
 Step 1: Create VRF
@@ -149,7 +144,7 @@ At this step, we create vlan 901 and SVI 901 to be mapped to L3VNI 50901. Simila
       - 172.16.102.1
     * - 901
       - 50901
-      - ip unnumbered lo0
+      - ip unnumbered lo1
 
 .. image:: assets/cfg01_vni.png
     :align: center
