@@ -85,6 +85,7 @@ L1/L2/L3 node
     conf t
     !
     router bgp 65001
+     bgp router-id interface Lo0
      no bgp default ipv4-unicast
      neighbor 10.1.255.1 remote-as 65001
      neighbor 10.1.255.1 update-source Loopback0
@@ -105,6 +106,7 @@ S1/S2 node
     conf t
     !
     router bgp 65001
+     bgp router-id interface Lo0
      no bgp default ipv4-unicast
      neighbor 10.1.255.3 remote-as 65001
      neighbor 10.1.255.3 update-source Loopback0
@@ -127,3 +129,105 @@ S1/S2 node
 
 Step 4: Verification
 ********************
+
+At this stage of the lab, we should be able to ping between hosts located in same subnet over vlan 101 (subnet 172.16.101.0/24) and vlan 102 (subnet 172.16.102.0/24).
+
+H11 node
+
+.. code-block:: console
+    :linenos:
+
+    cfg01-H11#ping 172.16.101.11
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.101.11, timeout is 2 seconds:
+    .!!!!
+    Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/1 ms
+    
+    cfg01-H11#ping 172.16.101.12
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.101.12, timeout is 2 seconds:
+    .!!!!
+    Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/2 ms
+    cfg01-H11#
+
+H12 node
+
+.. code-block:: console
+    :linenos:
+
+    cfg01-H12#ping 172.16.102.11
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.102.11, timeout is 2 seconds:
+    .!!!!
+    Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/1 ms
+    
+    cfg01-H12#ping 172.16.102.12
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 172.16.102.12, timeout is 2 seconds:
+    .!!!!
+    Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/2 ms
+    cfg01-H12#
+
+As you can see on both hosts, host were able to learn remote MAC address via ARP resolution since ARP request/reply was flooded either via unicast or multicast, depending on replication method, in fabric.
+
+.. note::
+
+    In the outputs below, you can see that IP addresses 172.16.101.1 / 172.16.102.1 have incomplete ARP entry. These IP addresses are used as default gateways for their respective subnet. Purpose of this lab task is to demonstrate L2 connectivity, and these IP addresses will be added as part of next lab task, where we will be configuring L3 connectivity over fabric.
+
+H11 node
+
+.. code-block:: console
+    :linenos:
+
+    cfg01-H11# show ip arp
+    Protocol  Address          Age (min)  Hardware Addr   Type   Interface
+    Internet  172.16.101.1            0   Incomplete      ARPA
+    Internet  172.16.101.10           -   0000.0001.0101  ARPA   Ethernet0/0
+    Internet  172.16.101.11           0   0000.0002.0101  ARPA   Ethernet0/0
+    Internet  172.16.101.12           0   0000.0003.0101  ARPA   Ethernet0/0
+
+H12 node
+
+.. code-block:: console
+    :linenos:
+
+    cfg01-H12# show ip arp
+    Protocol  Address          Age (min)  Hardware Addr   Type   Interface
+    Internet  172.16.102.1            0   Incomplete      ARPA
+    Internet  172.16.102.10           -   0000.0001.0102  ARPA   Ethernet0/0
+    Internet  172.16.102.11           0   0000.0002.0102  ARPA   Ethernet0/0
+    Internet  172.16.102.12           0   0000.0003.0102  ARPA   Ethernet0/0
+
+Let’s verify also control plane state on leaf switches. As you can see below, NVE peers been discovered over L2 VNI. Please note that type L2CP indicate that it is used for L2 connectivity.
+
+L1 node
+
+.. code-block:: console
+    :linenos:
+
+    cfg01-L1# show nve peers
+    'M' - MAC entry download flag  'A' - Adjacency download flag
+    '4' - IPv4 flag  '6' - IPv6 flag
+
+    Interface  VNI      Type Peer-IP          RMAC/Num_RTs   eVNI     state flags UP time
+    nve1       10101    L2CP 10.1.254.4       3              10101      UP   N/A  1d19h
+    nve1       10101    L2CP 10.1.254.5       3              10101      UP   N/A  1d19h
+    nve1       10102    L2CP 10.1.254.4       2              10102      UP   N/A  1d19h
+    nve1       10102    L2CP 10.1.254.5       2              10102      UP   N/A  1d19h
+
+Based on the available routes in BGP protocol, device will populate l2route table with locally originated routes (L2VPN flag) and remote learned routes (BGP flag). We can see also information about associated EVI instance and next hop information including VNI and remote peer IP address in case of remote entry. 
+
+L1 node
+
+.. code-block:: console
+    :linenos:
+
+    cfg01-L1#sh l2route evpn mac ip
+    EVI       ETag  Prod    Mac Address         Host IP                Next Hop(s)
+    ----- ---------- ----- -------------- --------------- --------------------------
+    101          0 L2VPN 0000.0001.0101   172.16.101.10                  Et1/1:101
+    101          0   BGP 0000.0002.0101   172.16.101.11         V:10101 10.1.254.4
+    101          0   BGP 0000.0003.0101   172.16.101.12         V:10101 10.1.254.5
+    102          0 L2VPN 0000.0001.0102   172.16.102.10                  Et1/2:102
+    102          0   BGP 0000.0002.0102   172.16.102.11         V:10102 10.1.254.4
+    102          0   BGP 0000.0003.0102   172.16.102.12         V:10102 10.1.254.5
