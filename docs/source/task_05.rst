@@ -200,7 +200,7 @@ S2 node
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :class: highlight-command highlight-command-30
 
     ts02-S2#show bgp l2vpn evpn neighbors 10.1.255.3 | begin L2VPN E-VPN
     For address family: L2VPN E-VPN
