@@ -46,6 +46,7 @@ L1/L2/L3 nodes
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 6,9,13,15
 
     conf t
     !
