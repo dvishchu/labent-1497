@@ -81,6 +81,7 @@ L1/L2/L3 node
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 11
 
     conf t
     !
@@ -102,6 +103,7 @@ S1/S2 node
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 13
 
     conf t
     !
@@ -132,6 +134,7 @@ S1 node
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 3,4,5
     :class: highlight-command
 
     cfg01-S1#sh bgp l2vpn evpn summary | beg Neighbor
@@ -144,6 +147,7 @@ S2 node
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 3,4,5
     :class: highlight-command
 
     cfg01-S2#sh bgp l2vpn evpn summary | beg Neighbor
