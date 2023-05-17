@@ -16,10 +16,28 @@ We will start with L2VPN configuration. Configuration can be defined either in g
 
 First, we will define replication type based on which we will be flooding BUM traffic in the fabric. The BGP EVPN control plane uses two methods for this purpose: multicast based (static), where multicast is flooded over dedicated multicast group to rest of the leaf switches or unicast based (ingress replication - ingress), where BUM traffic is delivered to leaf switched over unicast. 
 
-In this scenario, we will configure global context with replication type ingress (unicast based) and define two EVI isntances:
+In this scenario, we will configure global context with replication type ingress (unicast based) and define two EVI instances:
     
     * EVI 101 – replication type ingress (unicast based), VNI 10101
     * EVI 102 – replication type static (multicast based), VNI 10102
+
+.. list-table::
+    :widths: 33 33 33
+    :header-rows: 1
+    :width: 100%
+
+    * - EVI
+      - VLAN
+      - VNI
+      - Replication
+    * - 101
+      - 101
+      - 10101
+      - ingress (unicast)
+    * - 102
+      - 102
+      - 10102
+      - static (multicast)
 
 .. note::
 
