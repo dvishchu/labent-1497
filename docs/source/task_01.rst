@@ -136,6 +136,7 @@ H11 node
 
 .. code-block:: console
     :linenos:
+    :class: highlight-command highlight-command-13
 
     cfg01-H11#ping 172.16.101.11
     Type escape sequence to abort.
@@ -154,7 +155,7 @@ H12 node
 
 .. code-block:: console
     :linenos:
-    :class: highlight-command
+    :class: highlight-command highlight-command-13
 
     cfg01-H12#ping 172.16.102.11
     Type escape sequence to abort.
@@ -173,12 +174,13 @@ As you can see on both hosts, host were able to learn remote MAC address via ARP
 
 .. note::
 
-    In the outputs below, you can see that IP addresses 172.16.101.1 / 172.16.102.1 have incomplete ARP entry. These IP addresses are used as default gateways for their respective subnet. Purpose of this lab task is to demonstrate L2 connectivity, and these IP addresses will be added as part of next lab task, where we will be configuring L3 connectivity over fabric.
+    In the outputs below, you can see that IP addresses 172.16.101.1 / 172.16.102.1 have ``incomplete`` ARP entry. These IP addresses are used as default gateways for their respective subnet. Purpose of this lab task is to demonstrate L2 connectivity, and these IP addresses will be added as part of next lab task, where we will be configuring L3 connectivity over fabric.
 
 H11 node
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 5,6
     :class: highlight-command
 
     cfg01-H11# show ip arp
@@ -192,6 +194,7 @@ H12 node
 
 .. code-block:: console
     :linenos:
+    :emphasize-lines: 5,6
     :class: highlight-command
 
     cfg01-H12# show ip arp
