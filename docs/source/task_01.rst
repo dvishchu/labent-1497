@@ -3,6 +3,7 @@ Task CFG01: Configure L2 EVPN connectivity with Spines
 
 .. image:: assets/cfg01_topology.png
     :align: center
+    :class: margin-b-20
 
 In this task, we will be configuring L2 connectivity in EVPN fabric. L2 connectivity will be extended across the leaf switches which will allow hosts connected to different leafs communicate with each other as they would be connected to same leaf. To achieve this, we will configure L2 VNI and hosts will be able to communicate within same L2 domain only.  
 
@@ -41,6 +42,7 @@ In this scenario, we will configure global context with replication type ingress
 
 .. image:: assets/cfg01_vni.png
     :align: center
+    :class: margin-b-20
 
 .. note::
 

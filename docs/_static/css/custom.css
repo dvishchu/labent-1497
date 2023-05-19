@@ -260,3 +260,9 @@
 .emphasize-hll-120 pre :nth-child(120) {
   background-color: #94c5f9;
 }
+
+/* MARGIN FOR PICTURES */
+
+.margin-b-20 {
+  margin-bottom: 20px;
+}
