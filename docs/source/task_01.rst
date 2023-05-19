@@ -39,6 +39,9 @@ In this scenario, we will configure global context with replication type ingress
       - 10102
       - static (multicast)
 
+.. image:: assets/cfg01_vni.png
+    :align: center
+
 .. note::
 
     VXLAN encapsulation format is a default setting. 
