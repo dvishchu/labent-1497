@@ -1,7 +1,7 @@
 Task CFG02: Configure L3 EVPN connectivity in fabric
 ====================================================
 
-.. image:: assets/cfg01_topology.png
+.. image:: assets/cfg02_topology.png
     :align: center
 
 In this task, we will continue work in previous spine / leaf topology and we will add L3 connectivity to fabric with addition of L3 VNI. 
@@ -146,7 +146,7 @@ At this step, we create vlan 901 and SVI 901 to be mapped to L3VNI 50901. Simila
       - 50901
       - ip unnumbered lo1
 
-.. image:: assets/cfg01_vni.png
+.. image:: assets/cfg02_vni.png
     :align: center
 
 .. note::
