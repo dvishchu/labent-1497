@@ -1,7 +1,7 @@
 Task CFG03: Configure L3 connectivity between external network and fabric
 =========================================================================
 
-.. image:: assets/cfg02_topology.png
+.. image:: assets/cfg03_topology.png
     :align: center
 
 In this task we are configuring the more complex topology with a connectivity between fabric and external networks, using the Border Leaf switches.
@@ -26,7 +26,7 @@ To get started, please select in ``lab manager`` option ``03`` to initialize lab
 Step 1: Add IP interfaces to BL1/2 and EXT1/2
 *********************************************
 
-.. image:: assets/cfg02_step1_topology.png
+.. image:: assets/cfg03_step1_topology.png
     :align: center
 
 First, we need to configure underlay and OSPF for routes exchange (area 0 is used for the lab scenario). Note that Border Leaf 1 and 2 interfaces towards EXT nodes are part of VRF “green”.
@@ -197,7 +197,7 @@ EXT2 node
 Step 2: Redistribute OSPF 100 to BGP 65001 and vice versa on BL1/2
 ******************************************************************
 
-.. image:: assets/cfg02_redistribution.png
+.. image:: assets/cfg03_redistribution.png
     :align: center
 
 Next, redistribution of between OSPF and BGP has to be done on the Border Leafs. Such redistribution of the IGP is required in the BGP VRF address family to distribute the external prefixes into the BGP EVPN VXLAN fabric.
