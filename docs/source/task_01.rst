@@ -102,7 +102,7 @@ Step 3: Configure BGP
 
 As last step, we will configure BGP protocol, so we can advertise host reachability information via L2VPN EVPN address family in fabric. In this scenario, both spine and leaf switches are part of same AS 65001 and spine switches are acting like route reflectors.
 
-.. image:: assets/cfg01_vni.png
+.. image:: assets/cfg01_bgp.png
     :align: center
 
 L1/L2/L3 node
