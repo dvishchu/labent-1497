@@ -3,6 +3,7 @@ Task CFG02: Configure L3 EVPN connectivity in fabric
 
 .. image:: assets/cfg02_topology.png
     :align: center
+    :class: margin-b-20
 
 In this task, we will continue work in previous spine / leaf topology and we will add L3 connectivity to fabric with addition of L3 VNI. 
 
