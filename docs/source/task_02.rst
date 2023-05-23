@@ -149,6 +149,7 @@ At this step, we create vlan 901 and SVI 901 to be mapped to L3VNI 50901. Simila
 
 .. image:: assets/cfg02_vni.png
     :align: center
+    :class: margin-b-20
 
 .. note::
 
