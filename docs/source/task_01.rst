@@ -5,7 +5,7 @@ Task CFG01: Configure L2 EVPN connectivity with Spines
     :align: center
     :class: margin-b-20
 
-In this task, we will be configuring L2 connectivity in EVPN fabric. L2 connectivity will be extended across the leaf switches which will allow hosts connected to different leafs communicate with each other as they would be connected to same leaf. To achieve this, we will configure L2 VNI and hosts will be able to communicate within same L2 domain only.  
+In this task, we will be configuring L2 connectivity in EVPN fabric. L2 connectivity will be extended across the leaf switches which will allow hosts connected to different leafs communicate with each other over L2 domain. To achieve this, we will configure L2 VNI and hosts will be able to communicate within same L2 domain only.  
 
 To get started, please select in ``lab manager`` option ``01`` to initialize lab devices.
 
@@ -18,7 +18,7 @@ Step 1: Configure L2VNP and VNI-EVI-VLAN stitching
 
 We will start with L2VPN configuration. Configuration can be defined either in global context (l2vpn evpn) or per instance (l2vpn evpn instance …). In case that settings are not overridden in per instance context, they are inherited from global. 
 
-First, we will define replication type based on which we will be flooding BUM traffic in the fabric. The BGP EVPN control plane uses two methods for this purpose: multicast based (static), where multicast is flooded over dedicated multicast group to rest of the leaf switches or unicast based (ingress replication - ingress), where BUM traffic is delivered to leaf switched over unicast. 
+First, we will define replication type based on which we will be flooding BUM traffic in the fabric. The BGP EVPN control plane uses two methods for this purpose: multicast based (static), where multicast is flooded over dedicated multicast group to rest of the leaf switches or unicast based (ingress replication - ingress), where BUM traffic is delivered to leaf switches over unicast. 
 
 In this scenario, we will configure global context with replication type ingress (unicast based) and define two EVI instances – 101 and 102. Parameters of each EVI instance can be found in table below.
    
