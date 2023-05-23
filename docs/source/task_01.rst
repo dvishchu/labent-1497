@@ -82,7 +82,7 @@ Next, we have to configure network virtualization endpoint (NVE) interface. The 
 
 Specified replication type defined on NVE interface have to match replication type on EVI instance. In case of multicast based replication (static), we have to define multicast group which will be used for flooding of BUM traffic. In case of unicast based replication (ingress), this is not needed since BGP control plane will built list of leafs where BUM traffic have to be replicated via unicast. 
 
-In this topology, we are using Loopback 0 for underlaying routing and Loopback 1 for EVPN routing. Therefore, we will specify Loopback 1 as source for NVE interface. This will make sure that Loopback 1 will be used as next-hop for EVPN routes. 
+In this topology, we are using Loopback 0 for underlaying routing and Loopback 1 as source for VXLAN tunnel. Therefore, we will specify Loopback 1 as source for NVE interface. Loopback 1 should be seen as next-hop for EVPN routes.  
 
 L1/L2/L3 nodes
 
