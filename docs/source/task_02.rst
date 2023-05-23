@@ -85,7 +85,7 @@ Step 2: Configure MAC Aliasing for the distributed anycast gateway
 
     Distributed anycast gateway is a default gateway addressing mechanism in a BGP EVPN VXLAN fabric.
 
-    This feature enables the use of the same gateway IP and MAC address across all the Leafs in an EVPN VXLAN network, to ensure that every Leaf functions as the default gateway for the workloads directly connected to it. The feature facilitates flexible workload placement, host mobility, and optimal traffic forwarding across the BGP EVPN VXLAN fabric. 
+    This feature enables the use of the same gateway IP address across all the Leafs in an EVPN VXLAN network, to ensure that every Leaf functions as the default gateway for the workloads directly connected to it. The feature facilitates flexible workload placement, host mobility, and optimal traffic forwarding across the BGP EVPN VXLAN fabric. 
 
 In our lab scenario we are using ``MAC aliasing``, which allows the Leafs to advertise their VLAN MAC addresses as the gateway MAC addresses to all the other Leafs in the network. The Leafs in the network store the advertised MAC address as a gateway MAC address provided their VLAN IP address matches with the gateway IP address.
 
@@ -153,7 +153,7 @@ At this step, we create vlan 901 and SVI 901 to be mapped to L3VNI 50901. Simila
 
 .. note::
 
-    Same gateway IP and MAC address are used for L2VNI SVI interfaces across all the Leafs, to make a distributed anycast gateway.
+    Same gateway IP addresses are used for L2VNI SVI interfaces across all the Leafs, to make a distributed anycast gateway.
 
 L1/L2/L3 nodes
 
