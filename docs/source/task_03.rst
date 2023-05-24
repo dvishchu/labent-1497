@@ -24,8 +24,8 @@ To get started, please select in ``lab manager`` option ``03`` to initialize lab
     L3 interfaces in a dedicated VRF “green” are used on Border Leafs for external connectivity between borders and external nodes.
 
 
-Step 1: Add IP interfaces to BL1/2 and EXT1/2
-*********************************************
+Step 1: Configure routing between BL1/2 and EXT1/2
+**************************************************
 
 .. image:: assets/cfg03_step1_topology.png
     :align: center
