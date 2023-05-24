@@ -29,6 +29,7 @@ Step 1: Configure routing between BL1/2 and EXT1/2
 
 .. image:: assets/cfg03_step1_topology.png
     :align: center
+    :class: margin-b-20
 
 First, we need to configure underlay and OSPF for routes exchange (area 0 is used for the lab scenario). Note that Border Leaf 1 and 2 interfaces towards EXT nodes are part of VRF “green”.
 
