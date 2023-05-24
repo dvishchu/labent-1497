@@ -3,6 +3,7 @@ Task TS02: H11(172.16.101.10) cannot ping H31(172.16.101.12)
 
 .. image:: assets/ts02_topology.png
     :align: center
+    :class: margin-b-20
 
 .. note:: 
 
