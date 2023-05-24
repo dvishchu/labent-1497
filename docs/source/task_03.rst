@@ -201,6 +201,7 @@ Step 2: Redistribute OSPF 100 to BGP 65001 and vice versa on BL1/2
 
 .. image:: assets/cfg03_redistribution.png
     :align: center
+    :class: margin-b-20
 
 Next, redistribution of between OSPF and BGP has to be done on the Border Leafs. Such redistribution of the IGP is required in the BGP VRF address family to distribute the external prefixes into the BGP EVPN VXLAN fabric.
 
