@@ -3,6 +3,7 @@ Task CFG03: Configure L3 connectivity between external network and fabric
 
 .. image:: assets/cfg03_topology.png
     :align: center
+    :class: margin-b-20
 
 In this task we are configuring the more complex topology with a connectivity between fabric and external networks, using the Border Leaf switches.
 
