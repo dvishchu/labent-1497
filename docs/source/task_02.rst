@@ -5,7 +5,7 @@ Task CFG02: Configure L3 EVPN connectivity in fabric
     :align: center
     :class: margin-b-20
 
-In this task, we will continue work in previous spine / leaf topology and we will add L3 connectivity to fabric with addition of L3 VNI. 
+In this task, we will continue to work in previous spine / leaf topology and we will add L3 connectivity to fabric with addition of L3 VNI. 
 
 An EVPN VXLAN Layer 3 overlay network allows host devices in different Layer 2 networks to send Layer 3 or routed traffic to each other. The network forwards the routed traffic using a Layer 3 virtual network instance (VNI) and an IP VRF.
 
@@ -258,7 +258,7 @@ H12 node
     !!!!!
     Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
 
-Let’s now verify state of control plane on our devices. As you can see below, NVE interface state is Up. In terms of EVI 101 and 102, we can see that state is ``established``, which means that EVI was successfully provisioned on device. From the outputs, we can also verify L2 and L3 VNI information’s for corresponding EVI.
+Let’s verify now a state of the control plane on our devices. As you can see below, NVE interface state is Up. In terms of EVI 101 and 102, we can see that state is ``established``, which means that EVI was successfully provisioned on device. From the outputs, we can also verify L2 and L3 VNI information’s for corresponding EVI.
 
 L1 node
 
@@ -349,7 +349,7 @@ L1 node
         10.1.254.5
             Routes: 2 MAC, 2 MAC/IP, 0 IMET, 0 EAD
 
-We can also see that NVE peers been discovered in both L2 and L3 VNI. Please note that type L3CP indicate that it is used for routing.
+We can also see that NVE peers has been discovered in both L2 and L3 VNI. Please note that type L3CP indicate that it is used for routing.
 
 L1 node
 
