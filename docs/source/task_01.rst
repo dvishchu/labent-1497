@@ -13,7 +13,7 @@ To get started, please select in ``lab manager`` option ``01`` to initialize lab
 
     At beginning of this task, underlay configuration was already preconfigured for you. This includes configuration of IGP - OSPF for loopback reachability and multicast routing to support flooding of broadcast  / multicast / unknown unicast (BUM) traffic.
 
-Step 1: Configure L2VNP and VNI-EVI-VLAN stitching
+Step 1: Configure L2VPN and VNI-EVI-VLAN stitching
 **************************************************
 
 We will start with L2VPN configuration. Configuration can be defined either in global context (l2vpn evpn) or per instance (l2vpn evpn instance …). In case that settings are not overridden in per instance context, they are inherited from global. 
@@ -78,11 +78,11 @@ L1/L2/L3 nodes
 Step 2: Configure NVE interface
 *******************************
 
-Next, we have to configure network virtualization endpoint (NVE) interface. The NVE interface is logical interface where encapsulation and decapsulation of traffic happens for VXLAN traffic.  
+Next, we have to configure network virtualization endpoint (NVE) interface. The NVE interface is a logical interface where encapsulation and decapsulation of traffic happens for VXLAN traffic.  
 
-Specified replication type defined on NVE interface have to match replication type on EVI instance. In case of multicast based replication (static), we have to define multicast group which will be used for flooding of BUM traffic. In case of unicast based replication (ingress), this is not needed since BGP control plane will built list of leafs where BUM traffic have to be replicated via unicast. 
+Specified replication type defined on NVE interface have to match replication type on EVI instance. In case of multicast based replication (static), we have to define multicast group which will be used for flooding of BUM traffic. In case of unicast based replication (ingress), this is not needed since BGP control plane will build the list of leafs where BUM traffic have to be replicated via unicast. 
 
-In this topology, we are using Loopback 0 for underlaying routing and Loopback 1 as source for VXLAN tunnel. Therefore, we will specify Loopback 1 as source for NVE interface. Loopback 1 should be seen as next-hop for EVPN routes.  
+In this topology, we are using Loopback 0 for underlay routing and Loopback 1 as a source of VXLAN tunnel. Therefore, we will specify Loopback 1 as source for NVE interface. Loopback 1 should be seen as next-hop for EVPN routes.  
 
 L1/L2/L3 nodes
 
@@ -102,7 +102,7 @@ L1/L2/L3 nodes
 Step 3: Configure BGP
 *********************
 
-As last step, we will configure BGP protocol, so we can advertise host reachability information via L2VPN EVPN address family in fabric. In this scenario, both spine and leaf switches are part of same AS 65001 and spine switches are acting like route reflectors.
+As last step, we will configure BGP protocol, so we can advertise host reachability information to the fabric via L2VPN EVPN address family. In this scenario, both spine and leaf switches are part of same AS 65001 and spine switches are acting like route reflectors.
 
 .. image:: assets/cfg01_bgp.png
     :align: center
@@ -191,6 +191,10 @@ Step 4: Verification
 
 At this stage of the lab, we should be able to ping between hosts located in same subnet over vlan 101 (subnet 172.16.101.0/24) and vlan 102 (subnet 172.16.102.0/24).
 
+.. note::
+
+    It may take a few minutes for fabric to converge after the configuration changes above, before the connectivity between hosts can be established.
+
 H11 node
 
 .. code-block:: console
@@ -229,7 +233,7 @@ H12 node
     Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/2 ms
     cfg01-H12#
 
-As you can see on both hosts, host were able to learn remote MAC address via ARP resolution since ARP request/reply was flooded either via unicast or multicast, depending on replication method, in fabric.
+As you can see on both hosts, they were able to learn remote MAC address via ARP resolution since ARP request/reply was flooded either via unicast or multicast, depending on replication method, in fabric.
 
 .. note::
 
