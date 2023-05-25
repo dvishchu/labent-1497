@@ -6,7 +6,7 @@ Please connect to lab via one of the presented connection options and then proce
 WIL workstation option
 **********************
 
-If you are using a WIL workstation, please click **Connect VPN** button.
+If you are using a WIL workstation, please click **Connect VPN** button in the WIL Assistant webpage.
 
 BYOD Option
 ***********
