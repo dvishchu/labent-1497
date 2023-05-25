@@ -7,7 +7,7 @@ Task TS02: H11(172.16.101.10) cannot ping H31(172.16.101.12)
 
 .. note:: 
 
-    To get started, please select in lab manager option ``05`` to initialize lab devices. Please, wait a minute after lab start for network convergence.
+    To get started, please select in lab manager option ``05`` to initialize lab devices. Please wait a minute after lab starts for network convergence.
 
 H11 node 
 
