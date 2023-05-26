@@ -292,6 +292,10 @@ BL1/BL2 nodes
 
 After we updated our configuration of redistribution, we can see that EXT devices now holds only single /16 route, which aggregates host /32 routes from fabric.
 
+.. note:: 
+
+    It may take few seconds till aggregate route will appear in routing table. 
+
 EXT1 node
 
 .. code-block:: console
