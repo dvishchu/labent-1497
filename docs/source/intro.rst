@@ -33,7 +33,7 @@ After connecting to the VPN of the lab pod, use RDP to connect to the jumphost w
 
     **IP Address**: 198.18.133.36
 
-    **Credentials**: admin / C1sco12345
+    **Credentials**: .\admin / C1sco12345
 
 On the jumphost workstation you have all required sessions preconfigured for use in the **SuperPutty** session manager. 
 
