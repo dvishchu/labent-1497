@@ -167,7 +167,7 @@ S1 node
     :emphasize-lines: 3,4,5
     :class: highlight-command
 
-    cfg01-S1#sh bgp l2vpn evpn summary | beg Neighbor
+    cfg01-S1#show bgp l2vpn evpn summary | beg Neighbor
     Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
     10.1.255.3      4        65001    2936    2954       16    0    0 1d20h           0
     10.1.255.4      4        65001    2944    2950       16    0    0 1d20h           0
@@ -180,7 +180,7 @@ S2 node
     :emphasize-lines: 3,4,5
     :class: highlight-command
 
-    cfg01-S2#sh bgp l2vpn evpn summary | beg Neighbor
+    cfg01-S2#show bgp l2vpn evpn summary | beg Neighbor
     Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
     10.1.255.3      4        65001    2942    2951       16    0    0 1d20h           0
     10.1.255.4      4        65001    2941    2942       16    0    0 1d20h           0
