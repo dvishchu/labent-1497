@@ -3,15 +3,10 @@ Get started
 
 Please connect to lab via one of the presented connection options and then proceed to **Connecting to lab devices** section.
 
-WIL workstation option
-**********************
-
-If you are using a WIL workstation, please click **Connect VPN** button in the WIL Assistant webpage.
-
 BYOD Option
 ***********
 
-Please connect to the lab with **Cisco AnyConnect** (you can get server name and credentials from WIL Assistant webpage):
+Please connect to the lab with **Cisco AnyConnect** (server name: dcloud-sjc-anyconnect.cisco.com, you can get credentials from the proctor):
 
 #. Start **Cisco AnyConnect** on your laptop
 #. Copy the **Host** URL from the **AnyConnect Credentials** and then paste it in the **URL Connection box** in the **AnyConnect** login window.
